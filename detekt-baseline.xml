@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <Blacklist></Blacklist>
+  <Whitelist>
+    <ID>ComplexMethod:Akismet.kt$Akismet$fun checkComment(userIp: String, userAgent: String, referrer: String = "", permalink: String = "", type: String = "", author: String = "", authorEmail: String = "", authorUrl: String = "", content: String = "", dateGmt: String = "", postModifiedGmt: String = "", blogLang: String = "", blogCharset: String = "", userRole: String = "", recheckReason: String = "", isTest: Boolean = false, other: Map&lt;String, String&gt; = emptyMap() ): Boolean</ID>
+    <ID>LongMethod:Akismet.kt$Akismet$fun checkComment(userIp: String, userAgent: String, referrer: String = "", permalink: String = "", type: String = "", author: String = "", authorEmail: String = "", authorUrl: String = "", content: String = "", dateGmt: String = "", postModifiedGmt: String = "", blogLang: String = "", blogCharset: String = "", userRole: String = "", recheckReason: String = "", isTest: Boolean = false, other: Map&lt;String, String&gt; = emptyMap() ): Boolean</ID>
+    <ID>LongParameterList:Akismet.kt$Akismet$(userIp: String, userAgent: String, referrer: String = "", permalink: String = "", type: String = "", author: String = "", authorEmail: String = "", authorUrl: String = "", content: String = "", dateGmt: String = "", postModifiedGmt: String = "", blogLang: String = "", blogCharset: String = "", userRole: String = "", recheckReason: String = "", isTest: Boolean = false, other: Map&lt;String, String&gt; = emptyMap() )</ID>
+  </Whitelist>
+</SmellBaseline>
