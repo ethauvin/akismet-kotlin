@@ -92,19 +92,24 @@ open class Akismet(apiKey: String, blog: String) {
     /**
      * The HTTP status code of the last operation.
      */
+    @Suppress("MemberVisibilityCanBePrivate")
+    var httpStatusCode: Int = 0
         private set
+
     /**
      * The X-akismet-pro-tip header from the last operation, if any.
      */
     @Suppress("MemberVisibilityCanBePrivate")
     var proTip: String = ""
         private set
+
     /**
      * The X-akismet-error header from the last operation, if any.
      */
     @Suppress("MemberVisibilityCanBePrivate")
     var error: String = ""
         private set
+
     /**
      * The X-akismet-debug-help header from the last operation, if any.
      */
@@ -431,6 +436,7 @@ open class Akismet(apiKey: String, blog: String) {
             val request = Request.Builder().url(apiUrl).post(formBody).header("User-Agent", libUserAgent).build()
             try {
                 val result = client.newCall(request).execute()
+                httpStatusCode = result.code
                 proTip = result.header("x-akismet-pro-tip", "").toString()
                 error = result.header("x-akismet-error", "").toString()
                 degugHelp = result.header("X-akismet-debug-help", "").toString()
