@@ -132,17 +132,15 @@ open class Akismet(apiKey: String, blog: String) {
         this.apiKey = apiKey
         this.blog = blog
 
-        if (logger.isLoggable(Level.FINE)) {
-            val logging = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-                override fun log(message: String) {
-                    logger.log(Level.FINE, message)
+        val logging = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
+            override fun log(message: String) {
+                if (logger.isLoggable(Level.FINE)) {
+                    logger.log(Level.FINE, message.replace(apiKey, "xxxxxxxx" + apiKey.substring(8), true))
                 }
-            })
-            logging.level = HttpLoggingInterceptor.Level.BODY
-            client = OkHttpClient.Builder().addInterceptor(logging).build()
-        } else {
-            client = OkHttpClient()
-        }
+            }
+        })
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        client = OkHttpClient.Builder().addInterceptor(logging).build()
     }
 
     /**
@@ -472,7 +470,7 @@ open class Akismet(apiKey: String, blog: String) {
                 logger.log(Level.SEVERE, "An IO error occurred while communicating with the Akismet service.", e)
             }
         } else {
-            logger.severe("Invalid API end point URL: $method. The API Key is likely invalid.")
+            logger.severe("Invalid API end point URL. The API Key is likely invalid.")
         }
         return false
     }
