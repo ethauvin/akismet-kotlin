@@ -456,7 +456,7 @@ open class Akismet(apiKey: String, blog: String) {
                 httpStatusCode = result.code
                 proTip = result.header("x-akismet-pro-tip", "").toString()
                 error = result.header("x-akismet-error", "").toString()
-                degugHelp = result.header("X-akismet-debug-help", "").toString()
+                degugHelp = result.header("x-akismet-debug-help", "").toString()
                 val body = result.body?.string()
                 if (body != null) {
                     val response = body.trim()
@@ -495,7 +495,7 @@ open class Akismet(apiKey: String, blog: String) {
             }
         }
 
-        if (other.isEmpty()) {
+        if (other.isNotEmpty()) {
             params.putAll(other)
         }
 
