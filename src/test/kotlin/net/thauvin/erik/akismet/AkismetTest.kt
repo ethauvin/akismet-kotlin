@@ -51,14 +51,6 @@ import java.util.logging.ConsoleHandler
 import java.util.logging.Level
 import javax.servlet.http.HttpServletRequest
 
-/**
- * The <code>AkismetTest</code> class.
- *
- * @author <a href="https://erik.thauvin.net/" target="_blank">Erik C. Thauvin</a>
- * @created 2019-09-17
- * @since 1.0
- */
-
 fun getApiKey(): String {
     var apiKey = System.getenv("AKISMET_API_KEY") ?: ""
     if (apiKey.isBlank()) {
@@ -119,44 +111,106 @@ class AkismetTest {
 
     @Test
     fun verifyKeyTest() {
-        assertFalse(akismet.isValidKey, "isValidKey -> false")
+        assertFalse(akismet.isVerifiedKey, "isVerifiedKey -> false")
         assertTrue(akismet.verifyKey(), "verify_key")
-        assertTrue(akismet.isValidKey, "isValidKey -> true")
+        assertTrue(akismet.isVerifiedKey, "isVerifiedKey -> true")
     }
 
     @Test
     fun checkCommentTest() {
-//        assertFalse(akismet.checkComment(userIp = userIp,
-//                                         userAgent = userAgent,
-//                                         referrer = referrer,
-//                                         permalink = permalink,
-//                                         type = type,
-//                                         author = author,
-//                                         authorEmail = authorEmail,
-//                                         authorUrl = authorUrl,
-//                                         content = content,
-//                                         userRole = Akismet.ADMIN_ROLE,
-//                                         isTest = true), "check_comment -> false")
-//
-//        assertTrue(akismet.checkComment(userIp = userIp,
-//                                        userAgent = userAgent,
-//                                        referrer = referrer,
-//                                        permalink = permalink,
-//                                        type = type,
-//                                        author = author,
-//                                        authorEmail = authorEmail,
-//                                        authorUrl = authorUrl,
-//                                        content = content,
-//                                        isTest = true), "check_comment -> true")
+        assertFalse(
+            akismet.checkComment(
+                userIp = userIp,
+                userAgent = userAgent,
+                referrer = referrer,
+                permalink = permalink,
+                type = type,
+                author = author,
+                authorEmail = authorEmail,
+                authorUrl = authorUrl,
+                content = content,
+                userRole = Akismet.ADMIN_ROLE,
+                isTest = true), "check_comment -> false")
 
-        assertTrue(akismet.checkComment(request,
-                                        permalink = permalink,
-                                        type = type,
-                                        author = author,
-                                        authorEmail = authorEmail,
-                                        authorUrl = authorUrl,
-                                        content = content,
-                                        isTest = true), "check_comment(request) -> true")
+        assertTrue(
+            akismet.checkComment(
+                userIp = userIp,
+                userAgent = userAgent,
+                referrer = referrer,
+                permalink = permalink,
+                type = type,
+                author = author,
+                authorEmail = authorEmail,
+                authorUrl = authorUrl,
+                content = content,
+                isTest = true), "check_comment -> true")
+
+        assertTrue(
+            akismet.checkComment(
+                request,
+                permalink = permalink,
+                type = type,
+                author = author,
+                authorEmail = authorEmail,
+                authorUrl = authorUrl,
+                content = content,
+                isTest = true), "check_comment(request) -> true")
+    }
+
+    @Test
+    fun submitHamTest() {
+        assertTrue(
+            akismet.submitHam(
+                userIp = userIp,
+                userAgent = userAgent,
+                referrer = referrer,
+                permalink = permalink,
+                type = type,
+                author = author,
+                authorEmail = authorEmail,
+                authorUrl = authorUrl,
+                content = content,
+                isTest = true), "submitHam")
+
+        assertTrue(
+            akismet.submitHam(
+                request,
+                permalink = permalink,
+                type = type,
+                author = author,
+                authorEmail = authorEmail,
+                authorUrl = authorUrl,
+                content = content,
+                isTest = true), "submitHam(request)")
+    }
+
+    @Test
+    fun submitSpamTest() {
+        assertTrue(
+            akismet.submitSpam(
+                userIp = userIp,
+                userAgent = userAgent,
+                referrer = referrer,
+                permalink = permalink,
+                type = type,
+                author = author,
+                authorEmail = authorEmail,
+                authorUrl = authorUrl,
+                content = content,
+                isTest = true), "submitHam")
+
+        assertTrue(
+            akismet.submitSpam(
+                request,
+                permalink = permalink,
+                type = type,
+                author = author,
+                authorEmail = authorEmail,
+                authorUrl = authorUrl,
+                content = content,
+                isTest = true), "submitHam(request)")
+    }
+
     @Test
     fun dateToGmtTest() {
         val date = Date()
