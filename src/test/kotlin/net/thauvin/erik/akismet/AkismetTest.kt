@@ -33,6 +33,7 @@
 package net.thauvin.erik.akismet
 
 import org.mockito.Mockito
+import org.testng.Assert.assertEquals
 import org.testng.Assert.assertFalse
 import org.testng.Assert.assertTrue
 import org.testng.Assert.expectThrows
@@ -40,7 +41,11 @@ import org.testng.annotations.BeforeClass
 import org.testng.annotations.Test
 import java.io.File
 import java.io.FileInputStream
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.Collections
+import java.util.Date
 import java.util.Properties
 import java.util.logging.ConsoleHandler
 import java.util.logging.Level
@@ -152,5 +157,17 @@ class AkismetTest {
                                         authorUrl = authorUrl,
                                         content = content,
                                         isTest = true), "check_comment(request) -> true")
+    @Test
+    fun dateToGmtTest() {
+        val date = Date()
+        val localDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault())
+        assertEquals(
+            akismet.dateToGmt(date),
+            akismet.dateToGmt(localDateTime),
+            "dateGmt(date) == dateGmt(localDateTime)")
+        assertEquals(
+            localDateTime.atOffset(ZoneOffset.UTC).toEpochSecond(),
+            akismet.dateToGmt(date).toLong(),
+            "localDateTime = dateGmt")
     }
 }

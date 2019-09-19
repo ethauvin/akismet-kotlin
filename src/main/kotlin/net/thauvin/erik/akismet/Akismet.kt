@@ -39,6 +39,10 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.util.Date
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.servlet.http.HttpServletRequest
@@ -421,6 +425,21 @@ open class Akismet(apiKey: String, blog: String) {
                 isTest = isTest,
                 recheckReason = recheckReason,
                 other = other))
+    }
+
+    /**
+     * Convert a [Date][java.util.Date] to a UTC timestamp (xxxGmt parameters).
+     */
+    @JvmOverloads
+    fun dateToGmt(date: Date, zoneId: ZoneId = ZoneId.systemDefault()): String {
+        return dateToGmt(LocalDateTime.ofInstant(date.toInstant(), zoneId))
+    }
+
+    /**
+     * Convert a [LocalDateTime][java.time.LocalDateTime] to a UTC timestamp (xxxGmt parameters).
+     */
+    fun dateToGmt(date: LocalDateTime): String {
+        return date.atZone(ZoneOffset.UTC)?.toEpochSecond().toString()
     }
 
     /**
