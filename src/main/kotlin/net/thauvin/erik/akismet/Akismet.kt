@@ -33,6 +33,7 @@ package net.thauvin.erik.akismet
 
 import net.thauvin.erik.semver.Version
 import okhttp3.FormBody
+import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -74,7 +75,7 @@ open class Akismet(apiKey: String, blog: String) {
         const val ADMIN_ROLE = "administrator"
     }
 
-    private val apiEndPoint = "https://%s.akismet.com/1.1/%s"
+    private val apiEndPoint = "https://%srest.akismet.com/1.1/%s"
     private val libUserAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
     private val verifyMethod = "verify-key"
     private var apiKey: String
@@ -218,7 +219,7 @@ open class Akismet(apiKey: String, blog: String) {
         require(!(userIp.isBlank() && userAgent.isBlank())) { "userIp and/or userAgent are required." }
 
         return executeMethod(
-            "comment-check",
+            buildApiUrl("comment-check"),
             buildFormBody(
                 userIp = userIp,
                 userAgent = userAgent,
@@ -307,7 +308,7 @@ open class Akismet(apiKey: String, blog: String) {
         other: Map<String, String> = emptyMap()
     ): Boolean {
         return executeMethod(
-            "submit-spam",
+            buildApiUrl("submit-spam"),
             buildFormBody(
                 userIp = userIp,
                 userAgent = userAgent,
@@ -396,7 +397,7 @@ open class Akismet(apiKey: String, blog: String) {
         other: Map<String, String> = emptyMap()
     ): Boolean {
         return executeMethod(
-            "submit-ham",
+            buildApiUrl("submit-ham"),
             buildFormBody(
                 userIp = userIp,
                 userAgent = userAgent,
@@ -417,8 +418,15 @@ open class Akismet(apiKey: String, blog: String) {
                 other = other))
     }
 
-    private fun executeMethod(method: String, formBody: FormBody): Boolean {
-        val apiUrl = buildApiUrl(method).toHttpUrlOrNull()
+    /**
+     *
+     * Execute an Akismet REST API method.
+     *
+     * @param apiUrl The Akismet API URL endpoint. (eg. https://rest.akismet.com/1.1/verify-key)
+     * @param formBody The HTTP POST form body containing the request parameters to be submitted.
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    protected fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody): Boolean {
         if (apiUrl != null) {
             val request = Request.Builder().url(apiUrl).post(formBody).header("User-Agent", libUserAgent).build()
             try {
@@ -444,11 +452,11 @@ open class Akismet(apiKey: String, blog: String) {
         return false
     }
 
-    private fun buildApiUrl(method: String): String {
+    private fun buildApiUrl(method: String): HttpUrl? {
         if (method == verifyMethod) {
-            return String.format(apiEndPoint, "rest", method)
+            return String.format(apiEndPoint, "", method).toHttpUrlOrNull()
         }
-        return String.format(apiEndPoint, apiKey, method)
+        return String.format(apiEndPoint, "$apiKey.", method).toHttpUrlOrNull()
     }
 
     private fun buildPhpVars(request: HttpServletRequest, other: Map<String, String>): HashMap<String, String> {
