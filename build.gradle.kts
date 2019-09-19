@@ -21,7 +21,7 @@ plugins {
 }
 
 group = "net.thauvin.erik"
-description = "Akismet for Kotlin/Java, a client library for accesssing the Automattic Kismet (Akismet) spam comments filtering service."
+description = "Akismet for Kotlin/Java, a client library for accessing the Automattic Kismet (Akismet) spam comments filtering service."
 
 val gitHub = "ethauvin/$name"
 val mavenUrl = "https://github.com/$gitHub"
