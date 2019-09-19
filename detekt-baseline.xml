@@ -2,8 +2,12 @@
 <SmellBaseline>
   <Blacklist></Blacklist>
   <Whitelist>
-    <ID>ComplexMethod:Akismet.kt$Akismet$fun checkComment(userIp: String, userAgent: String, referrer: String = "", permalink: String = "", type: String = "", author: String = "", authorEmail: String = "", authorUrl: String = "", content: String = "", dateGmt: String = "", postModifiedGmt: String = "", blogLang: String = "", blogCharset: String = "", userRole: String = "", recheckReason: String = "", isTest: Boolean = false, other: Map&lt;String, String&gt; = emptyMap() ): Boolean</ID>
-    <ID>LongMethod:Akismet.kt$Akismet$fun checkComment(userIp: String, userAgent: String, referrer: String = "", permalink: String = "", type: String = "", author: String = "", authorEmail: String = "", authorUrl: String = "", content: String = "", dateGmt: String = "", postModifiedGmt: String = "", blogLang: String = "", blogCharset: String = "", userRole: String = "", recheckReason: String = "", isTest: Boolean = false, other: Map&lt;String, String&gt; = emptyMap() ): Boolean</ID>
-    <ID>LongParameterList:Akismet.kt$Akismet$(userIp: String, userAgent: String, referrer: String = "", permalink: String = "", type: String = "", author: String = "", authorEmail: String = "", authorUrl: String = "", content: String = "", dateGmt: String = "", postModifiedGmt: String = "", blogLang: String = "", blogCharset: String = "", userRole: String = "", recheckReason: String = "", isTest: Boolean = false, other: Map&lt;String, String&gt; = emptyMap() )</ID>
+    <ID>ComplexMethod:Akismet.kt$Akismet$private fun buildFormBody( userIp: String, userAgent: String, referrer: String, permalink: String, type: String, author: String, authorEmail: String, authorUrl: String, content: String, dateGmt: String, postModifiedGmt: String, blogLang: String, blogCharset: String, userRole: String, isTest: Boolean, recheckReason: String, other: Map&lt;String, String&gt; ): FormBody</ID>
+    <ID>LongMethod:Akismet.kt$Akismet$private fun buildFormBody( userIp: String, userAgent: String, referrer: String, permalink: String, type: String, author: String, authorEmail: String, authorUrl: String, content: String, dateGmt: String, postModifiedGmt: String, blogLang: String, blogCharset: String, userRole: String, isTest: Boolean, recheckReason: String, other: Map&lt;String, String&gt; ): FormBody</ID>
+    <ID>MagicNumber:Akismet.kt$Akismet$12</ID>
+    <ID>MagicNumber:Akismet.kt$Akismet.&lt;no name provided&gt;$8</ID>
+    <ID>NestedBlockDepth:Akismet.kt$Akismet$ @Suppress("MemberVisibilityCanBePrivate") protected fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody): Boolean</ID>
+    <ID>NestedBlockDepth:AkismetTest.kt$fun getApiKey(): String</ID>
+    <ID>TooManyFunctions:Akismet.kt$Akismet</ID>
   </Whitelist>
 </SmellBaseline>
