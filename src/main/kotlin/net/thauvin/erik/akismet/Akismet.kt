@@ -43,7 +43,14 @@ import java.util.logging.Logger
 import javax.servlet.http.HttpServletRequest
 
 /**
- * Akismet Kotlin/Java Client Library
+ * A small Kotlin/Java library for accessing the Akismet service.
+ *
+ * @constructor Creates a new instance.
+ *
+ * @param apiKey The [Akismet](https://www.askimet.com/) API key.
+ * @param blog The URL registered with Akismet.
+ *
+ * @author [Erik C. Thauvin](https://erik.thauvin.net/)
  */
 @Version(properties = "version.properties", type = "kt")
 open class Akismet(apiKey: String, blog: String) {
@@ -75,17 +82,38 @@ open class Akismet(apiKey: String, blog: String) {
     private var client: OkHttpClient
 
     var isValidKey: Boolean = false
+    /**
+     * Check if the API Key has been verified.
+     */
+    var isVerifiedKey: Boolean = false
         private set
+
+    /**
+     * The HTTP status code of the last operation.
+     */
+        private set
+    /**
+     * The X-akismet-pro-tip header from the last operation, if any.
+     */
     @Suppress("MemberVisibilityCanBePrivate")
     var proTip: String = ""
         private set
+    /**
+     * The X-akismet-error header from the last operation, if any.
+     */
     @Suppress("MemberVisibilityCanBePrivate")
     var error: String = ""
         private set
+    /**
+     * The X-akismet-debug-help header from the last operation, if any.
+     */
     @Suppress("MemberVisibilityCanBePrivate")
     var degugHelp: String = ""
         private set
 
+    /**
+     * The logger instance.
+     */
     val logger: Logger by lazy { Logger.getLogger(Akismet::class.java.simpleName) }
 
     init {
@@ -109,9 +137,8 @@ open class Akismet(apiKey: String, blog: String) {
     }
 
     /**
-     * Key Verification
-     *
-     * @see <a href="https://akismet.com/development/api/#verify-key">Akismet API</a>
+     * Key Verification.
+     * See the [Akismet API](https://akismet.com/development/api/#verify-key) for more details.
      */
     fun verifyKey(): Boolean {
         val params = HashMap<String, String>()
@@ -122,9 +149,9 @@ open class Akismet(apiKey: String, blog: String) {
     }
 
     /**
-     * Comment Check using [HttpServletRequest][request] content.
-     *
-     * @see <a href="https://akismet.com/development/api/#comment-check">Akismet API</a>
+     * Comment Check using the content of a
+     * [HttpServletRequest](https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html).
+     * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
      */
     @JvmOverloads
     fun checkComment(
@@ -165,9 +192,7 @@ open class Akismet(apiKey: String, blog: String) {
     }
 
     /**
-     * Comment Check
-     *
-     * @see <a href="https://akismet.com/development/api/#comment-check">Akismet API</a>
+     * Comment Check. See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
      */
     @JvmOverloads
     fun checkComment(
@@ -215,9 +240,9 @@ open class Akismet(apiKey: String, blog: String) {
     }
 
     /**
-     * Submit Spam
-     *
-     * @see <a href="https://akismet.com/development/api/#submit-spam">Akismet API</a>
+     * Submit Spam (missed spam) using the content of a
+     * [HttpServletRequest](https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html).
+     * See the [Akismet API](https://akismet.com/development/api/#submit-spam) for more details.
      */
     @JvmOverloads
     fun submitSpam(
@@ -258,9 +283,8 @@ open class Akismet(apiKey: String, blog: String) {
     }
 
     /**
-     * Submit Spam (missed spam)
-     *
-     * @see <a href="https://akismet.com/development/api/#submit-spam">Akismet API</a>
+     * Submit Spam (missed spam).
+     * See the [Akismet API](https://akismet.com/development/api/#submit-spam) for more details.
      */
     @JvmOverloads
     fun submitSpam(
@@ -305,9 +329,9 @@ open class Akismet(apiKey: String, blog: String) {
     }
 
     /**
-     * Submit Ham (false positives)
-     *
-     * @see <a href="https://akismet.com/development/api/#submit-ham">Akismet API</a>
+     * Submit Ham (false positives) using the content of a
+     * [HttpServletRequest](https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html).
+     * See the [Akismet API](https://akismet.com/development/api/#submit-ham) for more details.
      */
     @JvmOverloads
     fun submitHam(
@@ -348,9 +372,8 @@ open class Akismet(apiKey: String, blog: String) {
     }
 
     /**
-     * Submit Ham
-     *
-     * @see <a href="https://akismet.com/development/api/#submit-ham">Akismet API</a>
+     * Submit Ham.
+     * See the [Akismet API](https://akismet.com/development/api/#submit-ham) for more details.
      */
     @JvmOverloads
     fun submitHam(
