@@ -86,7 +86,6 @@ open class Akismet(apiKey: String, blog: String) {
     private var blog: String
     private var client: OkHttpClient
 
-    var isValidKey: Boolean = false
     /**
      * Check if the API Key has been verified.
      */
@@ -151,11 +150,12 @@ open class Akismet(apiKey: String, blog: String) {
      * See the [Akismet API](https://akismet.com/development/api/#verify-key) for more details.
      */
     fun verifyKey(): Boolean {
-        val params = HashMap<String, String>()
-        params["key"] = apiKey
-        params["blog"] = blog
-        isValidKey = executeMethod(verifyMethod, FormBody.Builder().build())
-        return isValidKey
+        val body = FormBody.Builder().apply {
+            add("key", apiKey)
+            add("blog", blog)
+        }.build()
+        isVerifiedKey = executeMethod(buildApiUrl(verifyMethod), body)
+        return isVerifiedKey
     }
 
     /**
