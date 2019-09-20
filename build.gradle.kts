@@ -53,8 +53,6 @@ repositories {
 dependencies {
     kapt(semverProcessor)
     implementation(semverProcessor)
-    
-    implementation("org.mockito:mockito-core:3.0.0")
 
     compile("javax.servlet:javax.servlet-api:4.0.1")
     compile("com.squareup.okhttp3:okhttp:4.2.0")
@@ -62,6 +60,7 @@ dependencies {
 
     compile(kotlin("stdlib"))
 
+    testImplementation("org.mockito:mockito-core:3.0.0")
     testImplementation("org.testng:testng:7.0.0")
 }
 
