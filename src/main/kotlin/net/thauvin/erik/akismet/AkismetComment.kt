@@ -124,10 +124,11 @@ open class AkismetComment() {
     var recheckReason: String = ""
     /**
      * In PHP, there is an array of environmental variables called $_SERVER that contains information about the Web
-     * server itself as well as a key/value for every HTTP header sent with the request.
-     *
-     * This data is highly useful to Akismet. How the submitted content interacts with the server can be very telling,
-     * so please include as much of it as possible.
+     * server itself as well as a key/value for every HTTP header sent with the request.This data is highly useful to
+     * Akismet.
+     * 
+     * How the submitted content interacts with the server can be very telling, so please include as much of it as
+     * ossible.
      */
     var other: Map<String, String> = emptyMap()
 

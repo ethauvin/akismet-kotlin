@@ -84,10 +84,28 @@ open class Akismet(apiKey: String) {
         private set
 
     /**
+     * The actual response sent by Aksimet from the last operation.
+     *
+     * For example: ```true```, ```false```, ```valid```, ```invalid```, etc.
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    var response: String = ""
+        private set
+
+    /**
      * The X-akismet-pro-tip header from the last operation, if any.
      */
     @Suppress("MemberVisibilityCanBePrivate")
     var proTip: String = ""
+        private set
+
+    /**
+     * Set to true if Akismet has determined that the last [checked comment][checkComment] is blatant spam, and you
+     * can safely discard it without saving it in any spam queue. Read more about this feature in this
+     * [Akismet blog post](https://blog.akismet.com/2014/04/23/theres-a-ninja-in-your-akismet/).
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    var isDiscard: Boolean = false
         private set
 
     /**
@@ -156,9 +174,7 @@ open class Akismet(apiKey: String) {
      * Submit Spam (missed spam).
      * See the [Akismet API](https://akismet.com/development/api/#submit-spam) for more details.
      */
-    fun submitSpam(
-        comment: AkismetComment
-    ): Boolean {
+    fun submitSpam(comment: AkismetComment): Boolean {
         return executeMethod(buildApiUrl("submit-spam"), buildFormBody(comment))
     }
 
@@ -167,9 +183,7 @@ open class Akismet(apiKey: String) {
      * See the [Akismet API](https://akismet.com/development/api/#submit-ham) for more details.
      */
 
-    fun submitHam(
-        comment: AkismetComment
-    ): Boolean {
+    fun submitHam(comment: AkismetComment): Boolean {
         return executeMethod(buildApiUrl("submit-ham"), buildFormBody(comment))
     }
 
@@ -205,11 +219,12 @@ open class Akismet(apiKey: String) {
                 val result = client.newCall(request).execute()
                 httpStatusCode = result.code
                 proTip = result.header("x-akismet-pro-tip", "").toString()
+                isDiscard = proTip.equals("discard", true)
                 error = result.header("x-akismet-error", "").toString()
                 debugHelp = result.header("x-akismet-debug-help", "").toString()
                 val body = result.body?.string()
                 if (body != null) {
-                    val response = body.trim()
+                    response = body.trim()
                     if (response.equals("valid", true) ||
                         response.equals("true", true) ||
                         response.startsWith("Thanks", true)) {
