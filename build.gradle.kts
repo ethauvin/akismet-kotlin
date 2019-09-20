@@ -53,10 +53,10 @@ repositories {
 dependencies {
     kapt(semverProcessor)
     implementation(semverProcessor)
-
-    implementation("javax.servlet:javax.servlet-api:4.0.1")
+    
     implementation("org.mockito:mockito-core:3.0.0")
 
+    compile("javax.servlet:javax.servlet-api:4.0.1")
     compile("com.squareup.okhttp3:okhttp:4.2.0")
     compile("com.squareup.okhttp3:logging-interceptor:4.2.0")
 
@@ -144,7 +144,7 @@ tasks {
         jdkVersion = 8
         val mapping = LinkMapping().apply {
             dir = "src/main/kotlin"
-            url = "https://github.com/ethauvin/$name/blob/${project.version}/src/main/kotlin"
+            url = "https://github.com/ethauvin/${project.name}/blob/${project.version}/src/main/kotlin"
             suffix = "#L"
         }
 
