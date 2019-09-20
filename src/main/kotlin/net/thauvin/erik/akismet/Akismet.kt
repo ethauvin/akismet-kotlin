@@ -50,15 +50,10 @@ import javax.servlet.http.HttpServletRequest
 /**
  * A small Kotlin/Java library for accessing the Akismet service.
  *
- * @constructor Creates a new instance.
- *
- * @param apiKey The [Akismet](https://www.askimet.com/) API key.
- * @param blog The URL registered with Akismet.
- *
- * @author [Erik C. Thauvin](https://erik.thauvin.net/)
+ * @constructor Create new instance using the provided [Akismet](https://www.askimet.com/) API key.
  */
 @Version(properties = "version.properties", type = "kt")
-open class Akismet(apiKey: String, blog: String) {
+open class Akismet(apiKey: String) {
     @Suppress("unused")
     companion object {
         /** A blog comment. */
@@ -75,7 +70,7 @@ open class Akismet(apiKey: String, blog: String) {
         const val COMMENT_TYPE_SIGNUP = "signup"
         /**  A message sent between just a few users. */
         const val COMMENT_TYPE_MESSAGE = "message"
-        /** Administrator role */
+        /** Administrator role. If used, Akismet will always return false. */
         const val ADMIN_ROLE = "administrator"
     }
 
@@ -83,8 +78,16 @@ open class Akismet(apiKey: String, blog: String) {
     private val libUserAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
     private val verifyMethod = "verify-key"
     private var apiKey: String
-    private var blog: String
     private var client: OkHttpClient
+
+    /**
+     * The URL registered with Akismet.
+     */
+    var blog = ""
+        set(value) {
+            require(!value.isBlank()) { "A Blog URL must be specified." }
+            field = value
+        }
 
     /**
      * Check if the API Key has been verified.
@@ -127,10 +130,8 @@ open class Akismet(apiKey: String, blog: String) {
 
     init {
         require(!apiKey.isBlank() || apiKey.length != 12) { "An Akismet API key must be specified." }
-        require(!blog.isBlank()) { "A Blog URL must be specified." }
 
         this.apiKey = apiKey
-        this.blog = blog
 
         val logging = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
             override fun log(message: String) {
@@ -141,6 +142,13 @@ open class Akismet(apiKey: String, blog: String) {
         })
         logging.level = HttpLoggingInterceptor.Level.BODY
         client = OkHttpClient.Builder().addInterceptor(logging).build()
+    }
+
+    /**
+     * Create a new instance using [Akismet](https://www.askimet.com/) API key and blog URL registered with Akismet.
+     */
+    constructor(apiKey: String, blog: String) : this(apiKey) {
+        this.blog = blog
     }
 
     /**
