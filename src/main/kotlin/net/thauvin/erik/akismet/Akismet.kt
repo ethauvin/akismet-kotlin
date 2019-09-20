@@ -120,7 +120,7 @@ open class Akismet(apiKey: String) {
      * The X-akismet-debug-help header from the last operation, if any.
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    var degugHelp: String = ""
+    var debugHelp: String = ""
         private set
 
     /**
@@ -145,7 +145,7 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Create a new instance using [Akismet](https://www.askimet.com/) API key and blog URL registered with Akismet.
+     * Create a new instance using an [Akismet](https://www.askimet.com/) API key and blog URL registered with Akismet.
      */
     constructor(apiKey: String, blog: String) : this(apiKey) {
         this.blog = blog
@@ -464,7 +464,7 @@ open class Akismet(apiKey: String) {
                 httpStatusCode = result.code
                 proTip = result.header("x-akismet-pro-tip", "").toString()
                 error = result.header("x-akismet-error", "").toString()
-                degugHelp = result.header("x-akismet-debug-help", "").toString()
+                debugHelp = result.header("x-akismet-debug-help", "").toString()
                 val body = result.body?.string()
                 if (body != null) {
                     val response = body.trim()
