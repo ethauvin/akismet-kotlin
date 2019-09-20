@@ -51,10 +51,9 @@ import java.util.logging.ConsoleHandler
 import java.util.logging.Level
 import javax.servlet.http.HttpServletRequest
 
-fun getKeys(): Array<String> {
-    var apiKey = System.getenv("AKISMET_API_KEY") ?: ""
-    var blog = System.getenv("AKISMET_BLOG") ?: ""
-    if (apiKey.isBlank()) {
+fun getKey(key: String): String {
+    var value = System.getenv(key) ?: ""
+    if (value.isBlank()) {
         val localProps = File("local.properties")
         if (localProps.exists())
             localProps.apply {
@@ -62,17 +61,20 @@ fun getKeys(): Array<String> {
                     FileInputStream(this).use { fis ->
                         Properties().apply {
                             load(fis)
-                            apiKey = getProperty("AKISMET_API_KEY", "")
-                            blog = getProperty("AKISMET_BLOG", "")
+                            value = getProperty(key, "")
                         }
                     }
                 }
             }
     }
-    return arrayOf(apiKey, blog)
+    return value
 }
 
+/**
+ * AKISMET_API_KEY and AKISMET_BLOG should be in env vars or local.properties
+ */
 class AkismetTest {
+    private val blog = getKey("AKISMET_BLOG")
     private val userIp = "127.0.0.1"
     private val userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
     private val referrer = "http://www.google.com"
@@ -84,7 +86,7 @@ class AkismetTest {
     private val content = "It means a lot that you would take the time to review our software.  Thanks again."
     private val spamAuthor = "viagra-test-123"
     private val spamEmail = "akismet-guaranteed-spam@example.com"
-    private val akismet = Akismet(getKeys()[0], getKeys()[1])
+    private val akismet = Akismet(getKey("AKISMET_API_KEY"), blog)
     private val request = Mockito.mock(HttpServletRequest::class.java)
 
     @BeforeClass
@@ -105,12 +107,20 @@ class AkismetTest {
     }
 
     @Test
-    fun constructorTest() {
+    fun constructorsTest() {
         expectThrows(IllegalArgumentException::class.java) {
             Akismet("123456789012", "http://www.foo.com/")
             Akismet("", "http://www.foo.com/")
             Akismet("123456789012", "")
         }
+    }
+
+    @Test
+    fun blogPropertyTest() {
+        expectThrows(IllegalArgumentException::class.java) {
+            akismet.blog = ""
+        }
+        assertEquals(akismet.blog, blog, "valid property")
     }
 
     @Test
