@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.thauvin.erik</groupId>
+  <artifactId>akismet-kotlin</artifactId>
+  <version>0.9.0-beta</version>
+  <dependencies>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.2.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>logging-interceptor</artifactId>
+      <version>4.2.0</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>1.3.50</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.thauvin.erik</groupId>
+      <artifactId>semver</artifactId>
+      <version>1.2.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.0.0</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+  <name>akismet-kotlin</name>
+  <description>Akismet for Kotlin/Java, a client library for accessing the Automattic Kismet (Akismet) spam comments filtering service.</description>
+  <url>https://github.com/ethauvin/akismet-kotlin</url>
+  <licenses>
+    <license>
+      <name>BSD 3-Clause</name>
+      <url>https://opensource.org/licenses/BSD-3-Clause</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>ethauvin</id>
+      <name>Erik C. Thauvin</name>
+      <email>erik@thauvin.net</email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://github.com/ethauvin/akismet-kotlin.git</connection>
+    <developerConnection>scm:git:git@github.com:ethauvin/akismet-kotlin.git</developerConnection>
+    <url>https://github.com/ethauvin/akismet-kotlin</url>
+  </scm>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/ethauvin/akismet-kotlin/issues</url>
+  </issueManagement>
+</project>
