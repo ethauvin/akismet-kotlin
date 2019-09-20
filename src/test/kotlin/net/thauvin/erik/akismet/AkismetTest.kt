@@ -51,8 +51,9 @@ import java.util.logging.ConsoleHandler
 import java.util.logging.Level
 import javax.servlet.http.HttpServletRequest
 
-fun getApiKey(): String {
+fun getKeys(): Array<String> {
     var apiKey = System.getenv("AKISMET_API_KEY") ?: ""
+    var blog = System.getenv("AKISMET_BLOG") ?: ""
     if (apiKey.isBlank()) {
         val localProps = File("local.properties")
         if (localProps.exists())
@@ -62,12 +63,13 @@ fun getApiKey(): String {
                         Properties().apply {
                             load(fis)
                             apiKey = getProperty("AKISMET_API_KEY", "")
+                            blog = getProperty("AKISMET_BLOG", "")
                         }
                     }
                 }
             }
     }
-    return apiKey
+    return arrayOf(apiKey, blog)
 }
 
 class AkismetTest {
@@ -80,7 +82,9 @@ class AkismetTest {
     private val authorEmail = "test@test.com"
     private val authorUrl = "http://www.CheckOutMyCoolSite.com"
     private val content = "It means a lot that you would take the time to review our software.  Thanks again."
-    private val akismet = Akismet(getApiKey(), "http://erik.thauvin.net/blog/")
+    private val spamAuthor = "viagra-test-123"
+    private val spamEmail = "akismet-guaranteed-spam@example.com"
+    private val akismet = Akismet(getKeys()[0], getKeys()[1])
     private val request = Mockito.mock(HttpServletRequest::class.java)
 
     @BeforeClass
@@ -112,7 +116,7 @@ class AkismetTest {
     @Test
     fun verifyKeyTest() {
         assertFalse(akismet.isVerifiedKey, "isVerifiedKey -> false")
-        assertTrue(akismet.verifyKey(), "verify_key")
+        assertTrue(akismet.verifyKey(), "verifyKey()")
         assertTrue(akismet.isVerifiedKey, "isVerifiedKey -> true")
     }
 
@@ -130,7 +134,7 @@ class AkismetTest {
                 authorUrl = authorUrl,
                 content = content,
                 userRole = Akismet.ADMIN_ROLE,
-                isTest = true), "check_comment -> false")
+                isTest = true), "check_comment(admin) -> false")
 
         assertTrue(
             akismet.checkComment(
@@ -139,8 +143,8 @@ class AkismetTest {
                 referrer = referrer,
                 permalink = permalink,
                 type = type,
-                author = author,
-                authorEmail = authorEmail,
+                author = spamAuthor,
+                authorEmail = spamEmail,
                 authorUrl = authorUrl,
                 content = content,
                 isTest = true), "check_comment -> true")
@@ -150,8 +154,8 @@ class AkismetTest {
                 request,
                 permalink = permalink,
                 type = type,
-                author = author,
-                authorEmail = authorEmail,
+                author = spamAuthor,
+                authorEmail = spamEmail,
                 authorUrl = authorUrl,
                 content = content,
                 isTest = true), "check_comment(request) -> true")
@@ -193,8 +197,8 @@ class AkismetTest {
                 referrer = referrer,
                 permalink = permalink,
                 type = type,
-                author = author,
-                authorEmail = authorEmail,
+                author = spamAuthor,
+                authorEmail = spamEmail,
                 authorUrl = authorUrl,
                 content = content,
                 isTest = true), "submitHam")
@@ -204,8 +208,8 @@ class AkismetTest {
                 request,
                 permalink = permalink,
                 type = type,
-                author = author,
-                authorEmail = authorEmail,
+                author = spamAuthor,
+                authorEmail = spamEmail,
                 authorUrl = authorUrl,
                 content = content,
                 isTest = true), "submitHam(request)")
