@@ -43,7 +43,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.util.Collections
 import java.util.Date
 import java.util.Properties
@@ -75,19 +74,28 @@ fun getKey(key: String): String {
  */
 class AkismetTest {
     private val blog = getKey("AKISMET_BLOG")
-    private val userIp = "127.0.0.1"
-    private val userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
-    private val referrer = "http://www.google.com"
-    private val permalink = "http://yourblogdomainname.com/blog/post=1"
-    private val type = Akismet.COMMENT_TYPE_COMMENT
-    private val author = "admin"
-    private val authorEmail = "test@test.com"
-    private val authorUrl = "http://www.CheckOutMyCoolSite.com"
-    private val content = "It means a lot that you would take the time to review our software.  Thanks again."
-    private val spamAuthor = "viagra-test-123"
-    private val spamEmail = "akismet-guaranteed-spam@example.com"
+    private val comment = AkismetComment(
+        userIp = "127.0.0.1",
+        userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",
+        referrer = "http://www.google.com",
+        permalink = "http://yourblogdomainname.com/blog/post=1",
+        type = AkismetComment.TYPE_COMMENT,
+        author = "admin",
+        authorEmail = "test@test.com",
+        authorUrl = "http://www.CheckOutMyCoolSite.com",
+        userRole = AkismetComment.ADMIN_ROLE,
+        content = "It means a lot that you would take the time to review our software.  Thanks again.",
+        isTest = true)
     private val akismet = Akismet(getKey("AKISMET_API_KEY"), blog)
-    private val request = Mockito.mock(HttpServletRequest::class.java)
+    private val mockComment: AkismetComment = AkismetComment(
+        request = getMockRequest(),
+        permalink = comment.permalink,
+        type = comment.type,
+        author = comment.author,
+        authorUrl = comment.authorUrl,
+        userRole = AkismetComment.ADMIN_ROLE,
+        content = comment.content,
+        isTest = true)
 
     @BeforeClass
     fun beforeClass() {
@@ -95,15 +103,6 @@ class AkismetTest {
             addHandler(ConsoleHandler().apply { level = Level.FINE })
             level = Level.FINE
         }
-
-        Mockito.`when`(request.remoteAddr).thenReturn(userIp)
-        Mockito.`when`(request.requestURI).thenReturn("/blog/post=1")
-        Mockito.`when`(request.getHeader("User-Agent")).thenReturn(userAgent)
-        Mockito.`when`(request.getHeader("Referer")).thenReturn(referrer)
-        Mockito.`when`(request.getHeader("Cookie")).thenReturn("name=value; name2=value2; name3=value3")
-        Mockito.`when`(request.getHeader("Accept-Encoding")).thenReturn("gzip")
-        Mockito.`when`(request.headerNames)
-            .thenReturn(Collections.enumeration(listOf("User-Agent", "Referer", "Cookie", "Accept-Encoding")))
     }
 
     @Test
@@ -132,97 +131,27 @@ class AkismetTest {
 
     @Test
     fun checkCommentTest() {
-        assertFalse(
-            akismet.checkComment(
-                userIp = userIp,
-                userAgent = userAgent,
-                referrer = referrer,
-                permalink = permalink,
-                type = type,
-                author = author,
-                authorEmail = authorEmail,
-                authorUrl = authorUrl,
-                content = content,
-                userRole = Akismet.ADMIN_ROLE,
-                isTest = true), "check_comment(admin) -> false")
+        assertFalse(akismet.checkComment(comment), "check_comment(admin) -> false")
+        comment.userRole = ""
+        assertTrue(akismet.checkComment(comment), "check_comment -> true")
 
-        akismet.isTest = true
-
-        assertTrue(
-            akismet.checkComment(
-                userIp = userIp,
-                userAgent = userAgent,
-                referrer = referrer,
-                permalink = permalink,
-                type = type,
-                author = spamAuthor,
-                authorEmail = spamEmail,
-                authorUrl = authorUrl,
-                content = content), "check_comment -> true")
-
-        assertTrue(
-            akismet.checkComment(
-                request,
-                permalink = permalink,
-                type = type,
-                author = spamAuthor,
-                authorEmail = spamEmail,
-                authorUrl = authorUrl,
-                content = content), "check_comment(request) -> true")
+        assertFalse(akismet.checkComment(mockComment), "check_comment(request) -> false")
+        mockComment.userRole = ""
+        assertTrue(akismet.checkComment(mockComment), "check_comment(request) -> true")
     }
 
     @Test
     fun submitHamTest() {
-        assertTrue(
-            akismet.submitHam(
-                userIp = userIp,
-                userAgent = userAgent,
-                referrer = referrer,
-                permalink = permalink,
-                type = type,
-                author = author,
-                authorEmail = authorEmail,
-                authorUrl = authorUrl,
-                content = content,
-                isTest = true), "submitHam")
+        assertTrue(akismet.submitHam(comment), "submitHam")
 
-        assertTrue(
-            akismet.submitHam(
-                request,
-                permalink = permalink,
-                type = type,
-                author = author,
-                authorEmail = authorEmail,
-                authorUrl = authorUrl,
-                content = content,
-                isTest = true), "submitHam(request)")
+        assertTrue(akismet.submitHam(mockComment), "submitHam(request)")
     }
 
     @Test
     fun submitSpamTest() {
-        assertTrue(
-            akismet.submitSpam(
-                userIp = userIp,
-                userAgent = userAgent,
-                referrer = referrer,
-                permalink = permalink,
-                type = type,
-                author = spamAuthor,
-                authorEmail = spamEmail,
-                authorUrl = authorUrl,
-                content = content,
-                isTest = true), "submitHam")
+        assertTrue(akismet.submitSpam(comment), "submitHam")
 
-        assertTrue(
-            akismet.submitSpam(
-                request,
-                permalink = permalink,
-                type = type,
-                author = spamAuthor,
-                authorEmail = spamEmail,
-                authorUrl = authorUrl,
-                content = content,
-                isTest = true), "submitHam(request)")
+        assertTrue(akismet.submitSpam(mockComment), "submitHam(request)")
     }
 
     @Test
@@ -233,9 +162,18 @@ class AkismetTest {
             akismet.dateToGmt(date),
             akismet.dateToGmt(localDateTime),
             "dateGmt(date) == dateGmt(localDateTime)")
-        assertEquals(
-            localDateTime.atOffset(ZoneOffset.UTC).toEpochSecond(),
-            akismet.dateToGmt(date).toLong(),
-            "localDateTime = dateGmt")
+    }
+
+    private fun getMockRequest(): HttpServletRequest {
+        val request = Mockito.mock(HttpServletRequest::class.java)
+        Mockito.`when`(request.remoteAddr).thenReturn(comment.userIp)
+        Mockito.`when`(request.requestURI).thenReturn("/blog/post=1")
+        Mockito.`when`(request.getHeader("User-Agent")).thenReturn(comment.userAgent)
+        Mockito.`when`(request.getHeader("Referer")).thenReturn(comment.referrer)
+        Mockito.`when`(request.getHeader("Cookie")).thenReturn("name=value; name2=value2; name3=value3")
+        Mockito.`when`(request.getHeader("Accept-Encoding")).thenReturn("gzip")
+        Mockito.`when`(request.headerNames)
+            .thenReturn(Collections.enumeration(listOf("User-Agent", "Referer", "Cookie", "Accept-Encoding")))
+        return request
     }
 }

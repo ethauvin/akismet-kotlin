@@ -47,7 +47,6 @@ import java.time.temporal.ChronoUnit
 import java.util.Date
 import java.util.logging.Level
 import java.util.logging.Logger
-import javax.servlet.http.HttpServletRequest
 
 /**
  * A small Kotlin/Java library for accessing the Akismet service.
@@ -56,26 +55,6 @@ import javax.servlet.http.HttpServletRequest
  */
 @Version(properties = "version.properties", type = "kt")
 open class Akismet(apiKey: String) {
-    @Suppress("unused")
-    companion object {
-        /** A blog comment. */
-        const val COMMENT_TYPE_COMMENT = "comment"
-        /** A top-level forum post. */
-        const val COMMENT_TYPE_FORUM_POST = "forum-post"
-        /** A reply to a top-level forum post. */
-        const val COMMENT_TYPE_REPLY = "reply"
-        /** A blog post. */
-        const val COMMENT_TYPE_BLOG_POST = "blog-post"
-        /** A contact form or feedback form submission. */
-        const val COMMENT_TYPE_CONTACT_FORM = "contact-form"
-        /**  A new user account. */
-        const val COMMENT_TYPE_SIGNUP = "signup"
-        /**  A message sent between just a few users. */
-        const val COMMENT_TYPE_MESSAGE = "message"
-        /** Administrator role. If used, Akismet will always return false. */
-        const val ADMIN_ROLE = "administrator"
-    }
-
     private val apiEndPoint = "https://%srest.akismet.com/1.1/%s"
     private val libUserAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
     private val verifyMethod = "verify-key"
@@ -90,11 +69,6 @@ open class Akismet(apiKey: String) {
             require(!value.isBlank()) { "A Blog URL must be specified." }
             field = value
         }
-
-    /**
-     * Set the test parameter globally. Can be overwritten in [checkComment], [submitHam] and [submitSpam].
-     */
-    var isTest: Boolean = false
 
     /**
      * Check if the API Key has been verified.
@@ -172,272 +146,31 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Comment Check using the content of a
-     * [HttpServletRequest](https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html).
-     * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
-     */
-    @JvmOverloads
-    fun checkComment(
-        request: HttpServletRequest,
-        permalink: String = "",
-        type: String = "",
-        author: String = "",
-        authorEmail: String = "",
-        authorUrl: String = "",
-        content: String = "",
-        dateGmt: String = "",
-        postModifiedGmt: String = "",
-        blogLang: String = "",
-        blogCharset: String = "",
-        userRole: String = "",
-        isTest: Boolean = this.isTest,
-        recheckReason: String = "",
-        other: Map<String, String> = emptyMap()
-    ): Boolean {
-        return checkComment(
-            userIp = request.remoteAddr,
-            userAgent = request.getHeader("User-Agent"),
-            referrer = request.getHeader("Referer"),
-            permalink = permalink,
-            type = type,
-            author = author,
-            authorEmail = authorEmail,
-            authorUrl = authorUrl,
-            content = content,
-            dateGmt = dateGmt,
-            postModifiedGmt = postModifiedGmt,
-            blogLang = blogLang,
-            blogCharset = blogCharset,
-            userRole = userRole,
-            isTest = isTest,
-            recheckReason = recheckReason,
-            other = buildPhpVars(request, other))
-    }
-
-    /**
      * Comment Check. See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
      */
-    @JvmOverloads
-    fun checkComment(
-        userIp: String,
-        userAgent: String,
-        referrer: String = "",
-        permalink: String = "",
-        type: String = "",
-        author: String = "",
-        authorEmail: String = "",
-        authorUrl: String = "",
-        content: String = "",
-        dateGmt: String = "",
-        postModifiedGmt: String = "",
-        blogLang: String = "",
-        blogCharset: String = "",
-        userRole: String = "",
-        isTest: Boolean = this.isTest,
-        recheckReason: String = "",
-        other: Map<String, String> = emptyMap()
-    ): Boolean {
-
-        require(!(userIp.isBlank() && userAgent.isBlank())) { "userIp and/or userAgent are required." }
-
-        return executeMethod(
-            buildApiUrl("comment-check"),
-            buildFormBody(
-                userIp = userIp,
-                userAgent = userAgent,
-                referrer = referrer,
-                permalink = permalink,
-                type = type,
-                author = author,
-                authorEmail = authorEmail,
-                authorUrl = authorUrl,
-                content = content,
-                dateGmt = dateGmt,
-                postModifiedGmt = postModifiedGmt,
-                blogLang = blogLang,
-                blogCharset = blogCharset,
-                userRole = userRole,
-                isTest = isTest,
-                recheckReason = recheckReason,
-                other = other))
-    }
-
-    /**
-     * Submit Spam (missed spam) using the content of a
-     * [HttpServletRequest](https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html).
-     * See the [Akismet API](https://akismet.com/development/api/#submit-spam) for more details.
-     */
-    @JvmOverloads
-    fun submitSpam(
-        request: HttpServletRequest,
-        permalink: String = "",
-        type: String = "",
-        author: String = "",
-        authorEmail: String = "",
-        authorUrl: String = "",
-        content: String = "",
-        dateGmt: String = "",
-        postModifiedGmt: String = "",
-        blogLang: String = "",
-        blogCharset: String = "",
-        userRole: String = "",
-        isTest: Boolean = this.isTest,
-        recheckReason: String = "",
-        other: Map<String, String> = emptyMap()
-    ): Boolean {
-        return submitSpam(
-            userIp = request.remoteAddr,
-            userAgent = request.getHeader("User-Agent"),
-            referrer = request.getHeader("Referer"),
-            permalink = permalink,
-            type = type,
-            author = author,
-            authorEmail = authorEmail,
-            authorUrl = authorUrl,
-            content = content,
-            dateGmt = dateGmt,
-            postModifiedGmt = postModifiedGmt,
-            blogLang = blogLang,
-            blogCharset = blogCharset,
-            userRole = userRole,
-            isTest = isTest,
-            recheckReason = recheckReason,
-            other = buildPhpVars(request, other))
+    fun checkComment(comment: AkismetComment): Boolean {
+        return executeMethod(buildApiUrl("comment-check"), buildFormBody(comment))
     }
 
     /**
      * Submit Spam (missed spam).
      * See the [Akismet API](https://akismet.com/development/api/#submit-spam) for more details.
      */
-    @JvmOverloads
     fun submitSpam(
-        userIp: String,
-        userAgent: String,
-        referrer: String = "",
-        permalink: String = "",
-        type: String = "",
-        author: String = "",
-        authorEmail: String = "",
-        authorUrl: String = "",
-        content: String = "",
-        dateGmt: String = "",
-        postModifiedGmt: String = "",
-        blogLang: String = "",
-        blogCharset: String = "",
-        userRole: String = "",
-        isTest: Boolean = this.isTest,
-        recheckReason: String = "",
-        other: Map<String, String> = emptyMap()
+        comment: AkismetComment
     ): Boolean {
-        return executeMethod(
-            buildApiUrl("submit-spam"),
-            buildFormBody(
-                userIp = userIp,
-                userAgent = userAgent,
-                referrer = referrer,
-                permalink = permalink,
-                type = type,
-                author = author,
-                authorEmail = authorEmail,
-                authorUrl = authorUrl,
-                content = content,
-                dateGmt = dateGmt,
-                postModifiedGmt = postModifiedGmt,
-                blogLang = blogLang,
-                blogCharset = blogCharset,
-                userRole = userRole,
-                isTest = isTest,
-                recheckReason = recheckReason,
-                other = other))
-    }
-
-    /**
-     * Submit Ham (false positives) using the content of a
-     * [HttpServletRequest](https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html).
-     * See the [Akismet API](https://akismet.com/development/api/#submit-ham) for more details.
-     */
-    @JvmOverloads
-    fun submitHam(
-        request: HttpServletRequest,
-        permalink: String = "",
-        type: String = "",
-        author: String = "",
-        authorEmail: String = "",
-        authorUrl: String = "",
-        content: String = "",
-        dateGmt: String = "",
-        postModifiedGmt: String = "",
-        blogLang: String = "",
-        blogCharset: String = "",
-        userRole: String = "",
-        isTest: Boolean = this.isTest,
-        recheckReason: String = "",
-        other: Map<String, String> = emptyMap()
-    ): Boolean {
-        return submitHam(
-            userIp = request.remoteAddr,
-            userAgent = request.getHeader("User-Agent"),
-            referrer = request.getHeader("Referer"),
-            permalink = permalink,
-            type = type,
-            author = author,
-            authorEmail = authorEmail,
-            authorUrl = authorUrl,
-            content = content,
-            dateGmt = dateGmt,
-            postModifiedGmt = postModifiedGmt,
-            blogLang = blogLang,
-            blogCharset = blogCharset,
-            userRole = userRole,
-            isTest = isTest,
-            recheckReason = recheckReason,
-            other = buildPhpVars(request, other))
+        return executeMethod(buildApiUrl("submit-spam"), buildFormBody(comment))
     }
 
     /**
      * Submit Ham.
      * See the [Akismet API](https://akismet.com/development/api/#submit-ham) for more details.
      */
-    @JvmOverloads
+
     fun submitHam(
-        userIp: String,
-        userAgent: String,
-        referrer: String = "",
-        permalink: String = "",
-        type: String = "",
-        author: String = "",
-        authorEmail: String = "",
-        authorUrl: String = "",
-        content: String = "",
-        dateGmt: String = "",
-        postModifiedGmt: String = "",
-        blogLang: String = "",
-        blogCharset: String = "",
-        userRole: String = "",
-        isTest: Boolean = this.isTest,
-        recheckReason: String = "",
-        other: Map<String, String> = emptyMap()
+        comment: AkismetComment
     ): Boolean {
-        return executeMethod(
-            buildApiUrl("submit-ham"),
-            buildFormBody(
-                userIp = userIp,
-                userAgent = userAgent,
-                referrer = referrer,
-                permalink = permalink,
-                type = type,
-                author = author,
-                authorEmail = authorEmail,
-                authorUrl = authorUrl,
-                content = content,
-                dateGmt = dateGmt,
-                postModifiedGmt = postModifiedGmt,
-                blogLang = blogLang,
-                blogCharset = blogCharset,
-                userRole = userRole,
-                isTest = isTest,
-                recheckReason = recheckReason,
-                other = other))
+        return executeMethod(buildApiUrl("submit-ham"), buildFormBody(comment))
     }
 
     /**
@@ -461,7 +194,7 @@ open class Akismet(apiKey: String) {
      *
      * Execute an Akismet REST API method.
      *
-     * @param apiUrl The Akismet API URL endpoint. (eg. https://rest.akismet.com/1.1/verify-key)
+     * @param apiUrl The Akismet API URL endpoint. (e.g. https://rest.akismet.com/1.1/verify-key)
      * @param formBody The HTTP POST form body containing the request parameters to be submitted.
      */
     @Suppress("MemberVisibilityCanBePrivate")
@@ -499,94 +232,57 @@ open class Akismet(apiKey: String) {
         return String.format(apiEndPoint, "$apiKey.", method).toHttpUrlOrNull()
     }
 
-    private fun buildPhpVars(request: HttpServletRequest, other: Map<String, String>): HashMap<String, String> {
-        val params = HashMap<String, String>()
-        params["REMOTE_ADDR"] = request.remoteAddr
-        params["REQUEST_URI"] = request.requestURI
-
-        val names = request.headerNames
-        while (names.hasMoreElements()) {
-            val name = names.nextElement()
-            if (!name.equals("cookie", true)) {
-                params["HTTP_${name.toUpperCase()}"] = request.getHeader(name)
-            }
-        }
-
-        if (other.isNotEmpty()) {
-            params.putAll(other)
-        }
-
-        return params
-    }
-
-    private fun buildFormBody(
-        userIp: String,
-        userAgent: String,
-        referrer: String,
-        permalink: String,
-        type: String,
-        author: String,
-        authorEmail: String,
-        authorUrl: String,
-        content: String,
-        dateGmt: String,
-        postModifiedGmt: String,
-        blogLang: String,
-        blogCharset: String,
-        userRole: String,
-        isTest: Boolean,
-        recheckReason: String,
-        other: Map<String, String>
-    ): FormBody {
+    private fun buildFormBody(comment: AkismetComment): FormBody {
+        require(!(comment.userIp.isBlank() && comment.userAgent.isBlank())) { "userIp and/or userAgent are required." }
         return FormBody.Builder().apply {
             add("blog", blog)
-            add("user_ip", userIp)
-            add("user_agent", userAgent)
+            add("user_ip", comment.userIp)
+            add("user_agent", comment.userAgent)
 
-            if (referrer.isNotBlank()) {
-                add("referrer", referrer)
+            if (comment.referrer.isNotBlank()) {
+                add("referrer", comment.referrer)
             }
-            if (permalink.isNotBlank()) {
-                add("permalink", permalink)
+            if (comment.permalink.isNotBlank()) {
+                add("permalink", comment.permalink)
             }
-            if (type.isNotBlank()) {
-                add("comment_type", type)
+            if (comment.type.isNotBlank()) {
+                add("comment_type", comment.type)
             }
-            if (author.isNotBlank()) {
-                add("comment_author", author)
+            if (comment.author.isNotBlank()) {
+                add("comment_author", comment.author)
             }
-            if (authorEmail.isNotBlank()) {
-                add("comment_author_email", authorEmail)
+            if (comment.authorEmail.isNotBlank()) {
+                add("comment_author_email", comment.authorEmail)
             }
-            if (authorUrl.isNotBlank()) {
-                add("comment_author_url", authorUrl)
+            if (comment.authorUrl.isNotBlank()) {
+                add("comment_author_url", comment.authorUrl)
             }
-            if (content.isNotBlank()) {
-                add("comment_content", content)
+            if (comment.content.isNotBlank()) {
+                add("comment_content", comment.content)
             }
-            if (dateGmt.isNotBlank()) {
-                add("comment_date_gmt", dateGmt)
+            if (comment.dateGmt.isNotBlank()) {
+                add("comment_date_gmt", comment.dateGmt)
             }
-            if (postModifiedGmt.isNotBlank()) {
-                add("comment_post_modified_gmt", postModifiedGmt)
+            if (comment.postModifiedGmt.isNotBlank()) {
+                add("comment_post_modified_gmt", comment.postModifiedGmt)
             }
-            if (blogLang.isNotBlank()) {
-                add("blog_lang", blogLang)
+            if (comment.blogLang.isNotBlank()) {
+                add("blog_lang", comment.blogLang)
             }
-            if (blogCharset.isNotBlank()) {
-                add("blog_charset", blogCharset)
+            if (comment.blogCharset.isNotBlank()) {
+                add("blog_charset", comment.blogCharset)
             }
-            if (userRole.isNotBlank()) {
-                add("user_role", userRole)
+            if (comment.userRole.isNotBlank()) {
+                add("user_role", comment.userRole)
             }
-            if (isTest) {
+            if (comment.isTest) {
                 add("is_test", "true")
             }
-            if (recheckReason.isNotBlank()) {
-                add("recheck_reason", recheckReason)
+            if (comment.recheckReason.isNotBlank()) {
+                add("recheck_reason", comment.recheckReason)
             }
 
-            other.forEach { (k, v) -> add(k, v) }
+            comment.other.forEach { (k, v) -> add(k, v) }
         }.build()
     }
 }
