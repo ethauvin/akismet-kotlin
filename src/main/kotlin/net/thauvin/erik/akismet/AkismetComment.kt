@@ -195,23 +195,23 @@ open class AkismetComment() {
         recheckReason: String = "",
         other: Map<String, String> = emptyMap()
     ) : this(
-        request.remoteAddr,
-        request.getHeader("User-Agent"),
-        request.getHeader("Referer"),
-        permalink,
-        type,
-        author,
-        authorEmail,
-        authorUrl,
-        content,
-        dateGmt,
-        postModifiedGmt,
-        blogLang,
-        blogCharset,
-        userRole,
-        isTest,
-        recheckReason,
-        buildPhpVars(request, other))
+        userIp = request.remoteAddr,
+        userAgent = request.getHeader("User-Agent"),
+        referrer = request.getHeader("Referer"),
+        permalink = permalink,
+        type = type,
+        author = author,
+        authorEmail = authorEmail,
+        authorUrl = authorUrl,
+        content = content,
+        dateGmt = dateGmt,
+        postModifiedGmt = postModifiedGmt,
+        blogLang = blogLang,
+        blogCharset = blogCharset,
+        userRole = userRole,
+        isTest = isTest,
+        recheckReason = recheckReason,
+        other = buildPhpVars(request, other))
 }
 
 private fun buildPhpVars(request: HttpServletRequest, other: Map<String, String>): HashMap<String, String> {
