@@ -40,8 +40,10 @@ import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.Date
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -439,18 +441,20 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Convert a [Date][java.util.Date] to a UTC timestamp (xxxGmt parameters).
+     * Convert a [Date][java.util.Date] to a UTC timestamp for use with [dateGmt][AkismetComment.dateGmt], etc.
      */
-    @JvmOverloads
-    fun dateToGmt(date: Date, zoneId: ZoneId = ZoneId.systemDefault()): String {
-        return dateToGmt(LocalDateTime.ofInstant(date.toInstant(), zoneId))
+    fun dateToGmt(date: Date): String {
+        return DateTimeFormatter.ISO_DATE_TIME.format(
+            OffsetDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()).truncatedTo(ChronoUnit.SECONDS))
     }
 
     /**
-     * Convert a [LocalDateTime][java.time.LocalDateTime] to a UTC timestamp (xxxGmt parameters).
+     * Convert a [LocalDateTime][java.time.LocalDateTime] to a UTC timestamp for use with
+     * [dateGmt][AkismetComment.dateGmt], etc.
      */
     fun dateToGmt(date: LocalDateTime): String {
-        return date.atZone(ZoneOffset.UTC)?.toEpochSecond().toString()
+        return DateTimeFormatter.ISO_DATE_TIME.format(
+            date.atOffset(OffsetDateTime.now().offset).truncatedTo(ChronoUnit.SECONDS))
     }
 
     /**
