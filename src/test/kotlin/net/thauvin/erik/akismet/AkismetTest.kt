@@ -79,7 +79,7 @@ class AkismetTest {
     private val userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
     private val referrer = "http://www.google.com"
     private val permalink = "http://yourblogdomainname.com/blog/post=1"
-    private val type = "comment"
+    private val type = Akismet.COMMENT_TYPE_COMMENT
     private val author = "admin"
     private val authorEmail = "test@test.com"
     private val authorUrl = "http://www.CheckOutMyCoolSite.com"
@@ -146,6 +146,8 @@ class AkismetTest {
                 userRole = Akismet.ADMIN_ROLE,
                 isTest = true), "check_comment(admin) -> false")
 
+        akismet.isTest = true
+
         assertTrue(
             akismet.checkComment(
                 userIp = userIp,
@@ -156,8 +158,7 @@ class AkismetTest {
                 author = spamAuthor,
                 authorEmail = spamEmail,
                 authorUrl = authorUrl,
-                content = content,
-                isTest = true), "check_comment -> true")
+                content = content), "check_comment -> true")
 
         assertTrue(
             akismet.checkComment(
@@ -167,8 +168,7 @@ class AkismetTest {
                 author = spamAuthor,
                 authorEmail = spamEmail,
                 authorUrl = authorUrl,
-                content = content,
-                isTest = true), "check_comment(request) -> true")
+                content = content), "check_comment(request) -> true")
     }
 
     @Test

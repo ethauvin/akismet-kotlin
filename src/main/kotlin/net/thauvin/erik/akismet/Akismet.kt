@@ -90,6 +90,11 @@ open class Akismet(apiKey: String) {
         }
 
     /**
+     * Set the test parameter globally. Can be overwritten in [checkComment], [submitHam] and [submitSpam].
+     */
+    var isTest: Boolean = false
+
+    /**
      * Check if the API Key has been verified.
      */
     var isVerifiedKey: Boolean = false
@@ -183,7 +188,7 @@ open class Akismet(apiKey: String) {
         blogLang: String = "",
         blogCharset: String = "",
         userRole: String = "",
-        isTest: Boolean = false,
+        isTest: Boolean = this.isTest,
         recheckReason: String = "",
         other: Map<String, String> = emptyMap()
     ): Boolean {
@@ -226,7 +231,7 @@ open class Akismet(apiKey: String) {
         blogLang: String = "",
         blogCharset: String = "",
         userRole: String = "",
-        isTest: Boolean = false,
+        isTest: Boolean = this.isTest,
         recheckReason: String = "",
         other: Map<String, String> = emptyMap()
     ): Boolean {
@@ -274,7 +279,7 @@ open class Akismet(apiKey: String) {
         blogLang: String = "",
         blogCharset: String = "",
         userRole: String = "",
-        isTest: Boolean = false,
+        isTest: Boolean = this.isTest,
         recheckReason: String = "",
         other: Map<String, String> = emptyMap()
     ): Boolean {
@@ -318,7 +323,7 @@ open class Akismet(apiKey: String) {
         blogLang: String = "",
         blogCharset: String = "",
         userRole: String = "",
-        isTest: Boolean = false,
+        isTest: Boolean = this.isTest,
         recheckReason: String = "",
         other: Map<String, String> = emptyMap()
     ): Boolean {
@@ -363,7 +368,7 @@ open class Akismet(apiKey: String) {
         blogLang: String = "",
         blogCharset: String = "",
         userRole: String = "",
-        isTest: Boolean = false,
+        isTest: Boolean = this.isTest,
         recheckReason: String = "",
         other: Map<String, String> = emptyMap()
     ): Boolean {
@@ -407,7 +412,7 @@ open class Akismet(apiKey: String) {
         blogLang: String = "",
         blogCharset: String = "",
         userRole: String = "",
-        isTest: Boolean = false,
+        isTest: Boolean = this.isTest,
         recheckReason: String = "",
         other: Map<String, String> = emptyMap()
     ): Boolean {
