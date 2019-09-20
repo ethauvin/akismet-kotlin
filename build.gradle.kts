@@ -147,6 +147,8 @@ tasks {
             url = "https://github.com/ethauvin/$name/blob/${project.version}/src/main/kotlin"
             suffix = "#L"
         }
+
+        includes = listOf("config/dokka/packages.md")
         linkMappings = arrayListOf(mapping)
         includeNonPublic = false
     }
