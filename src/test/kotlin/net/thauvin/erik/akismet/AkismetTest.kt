@@ -126,14 +126,18 @@ class AkismetTest {
     fun verifyKeyTest() {
         assertFalse(akismet.isVerifiedKey, "isVerifiedKey -> false")
         assertTrue(akismet.verifyKey(), "verifyKey()")
+        assertEquals(akismet.response, "valid", "response -> valid")
         assertTrue(akismet.isVerifiedKey, "isVerifiedKey -> true")
+
     }
 
     @Test
     fun checkCommentTest() {
         assertFalse(akismet.checkComment(comment), "check_comment(admin) -> false")
+        assertEquals(akismet.response, "false", "response -> false")
         comment.userRole = ""
         assertTrue(akismet.checkComment(comment), "check_comment -> true")
+        assertEquals(akismet.response, "true", "response -> true")
 
         assertFalse(akismet.checkComment(mockComment), "check_comment(request) -> false")
         mockComment.userRole = ""
