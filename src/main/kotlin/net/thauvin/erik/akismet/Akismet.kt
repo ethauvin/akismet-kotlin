@@ -84,7 +84,7 @@ open class Akismet(apiKey: String) {
         private set
 
     /**
-     * The actual response sent by Aksimet from the last operation.
+     * The actual response sent by Akismet from the last operation.
      *
      * For example: ```true```, ```false```, ```valid```, ```invalid```, etc.
      */
@@ -295,7 +295,7 @@ open class Akismet(apiKey: String) {
                 add("recheck_reason", comment.recheckReason)
             }
 
-            comment.other.forEach { (k, v) -> add(k, v) }
+            comment.serverEnv.forEach { (k, v) -> add(k, v) }
         }.build()
     }
 }

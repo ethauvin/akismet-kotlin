@@ -8,16 +8,18 @@ fun main() {
     val akismet = Akismet("YOUR_API_KEY", "YOUR_BLOG_URL")
     val comment = AkismetComment(
         userIp = "127.0.0.1",
-        userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",
-        referrer = "http://www.google.com",
-        permalink = "http://yourblogdomainname.com/blog/post=1",
-        type = AkismetComment.TYPE_COMMENT,
-        author = "admin",
-        authorEmail = "test@test.com",
-        authorUrl = "http://www.CheckOutMyCoolSite.com",
-//        userRole = AkismetComment.ADMIN_ROLE,
-        content = "It means a lot that you would take the time to review our software.  Thanks again.",
-        isTest = true)
+        userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6")
+
+    comment.isTest = true
+    
+    comment.referrer = "http://www.google.com"
+    comment.permalink = "http://yourblogdomainname.com/blog/post=1"
+    comment.type = AkismetComment.TYPE_COMMENT
+    comment.author = "admin"
+    comment.authorEmail = "test@test.com"
+    comment.authorUrl = "http://www.CheckOutMyCoolSite.com"
+//    comment.userRole = AkismetComment.ADMIN_ROLE
+    comment.content = "It means a lot that you would take the time to review our software.  Thanks again."
 
 //    with(akismet.logger) {
 //        addHandler(ConsoleHandler().apply { level = Level.FINE })

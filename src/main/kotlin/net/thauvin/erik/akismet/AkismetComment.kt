@@ -39,8 +39,11 @@ import javax.servlet.http.HttpServletRequest
  *
  * @constructor Create an Akismet comment instance. See the
  * [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
+ *
+ * @param userIp IP address of the comment submitter.
+ * @param userAgent User agent string of the web browser submitting the comment.
  */
-open class AkismetComment() {
+open class AkismetComment(val userIp: String, val userAgent: String) {
     @Suppress("unused")
     companion object {
         /** A blog comment. */
@@ -61,10 +64,6 @@ open class AkismetComment() {
         const val ADMIN_ROLE = "administrator"
     }
 
-    /** IP address of the comment submitter. */
-    var userIp: String = ""
-    /** User agent string of the web browser submitting the comment. */
-    var userAgent: String = ""
     /** The content of the referer header should be set here. */
     var referrer: String = ""
     /** The full permanent URL of the entry the comment was submitted to. */
@@ -124,98 +123,27 @@ open class AkismetComment() {
     var recheckReason: String = ""
     /**
      * In PHP, there is an array of environmental variables called $_SERVER that contains information about the Web
-     * server itself as well as a key/value for every HTTP header sent with the request.This data is highly useful to
+     * server itself as well as a key/value for every HTTP header sent with the request. This data is highly useful to
      * Akismet.
      * 
      * How the submitted content interacts with the server can be very telling, so please include as much of it as
      * possible.
      */
-    var other: Map<String, String> = emptyMap()
+    var serverEnv: Map<String, String> = emptyMap()
 
     /**
-     * Create an Akismet comment instance.
-     * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
+     * Create an Akismet comment extracting the [userIp], [userAgent], [referrer] and [serverEnv] environment variables
+     * from a Servlet request. See the
+     * [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
+     *
+     * @see [serverEnv]
      */
-    constructor(
-        userIp: String,
-        userAgent: String,
-        referrer: String = "",
-        permalink: String = "",
-        type: String = "",
-        author: String = "",
-        authorEmail: String = "",
-        authorUrl: String = "",
-        content: String = "",
-        dateGmt: String = "",
-        postModifiedGmt: String = "",
-        blogLang: String = "",
-        blogCharset: String = "",
-        userRole: String = "",
-        isTest: Boolean = false,
-        recheckReason: String = "",
-        other: Map<String, String> = emptyMap()
-    ) : this() {
-        this.userIp = userIp
-        this.userAgent = userAgent
-        this.referrer = referrer
-        this.permalink = permalink
-        this.type = type
-        this.author = author
-        this.authorEmail = authorEmail
-        this.authorUrl = authorUrl
-        this.content = content
-        this.dateGmt = dateGmt
-        this.postModifiedGmt = postModifiedGmt
-        this.blogLang = blogLang
-        this.blogCharset = blogCharset
-        this.userRole = userRole
-        this.isTest = isTest
-        this.recheckReason = recheckReason
-        this.other = other
+    constructor(request: HttpServletRequest) : this(request.remoteAddr, request.getHeader("User-Agent")) {
+        serverEnv = buildPhpVars(request)
     }
-
-    /**
-     * Create Akismet comment extracting [userIp], [userAgent], [referrer] and [other] variables from a
-     * [HttpServletRequest](https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html).
-     * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
-     */
-    constructor(
-        request: HttpServletRequest,
-        permalink: String = "",
-        type: String = "",
-        author: String = "",
-        authorEmail: String = "",
-        authorUrl: String = "",
-        content: String = "",
-        dateGmt: String = "",
-        postModifiedGmt: String = "",
-        blogLang: String = "",
-        blogCharset: String = "",
-        userRole: String = "",
-        isTest: Boolean = false,
-        recheckReason: String = "",
-        other: Map<String, String> = emptyMap()
-    ) : this(
-        userIp = request.remoteAddr,
-        userAgent = request.getHeader("User-Agent"),
-        referrer = request.getHeader("Referer"),
-        permalink = permalink,
-        type = type,
-        author = author,
-        authorEmail = authorEmail,
-        authorUrl = authorUrl,
-        content = content,
-        dateGmt = dateGmt,
-        postModifiedGmt = postModifiedGmt,
-        blogLang = blogLang,
-        blogCharset = blogCharset,
-        userRole = userRole,
-        isTest = isTest,
-        recheckReason = recheckReason,
-        other = buildPhpVars(request, other))
 }
 
-private fun buildPhpVars(request: HttpServletRequest, other: Map<String, String>): HashMap<String, String> {
+private fun buildPhpVars(request: HttpServletRequest): HashMap<String, String> {
     val params = HashMap<String, String>()
     params["REMOTE_ADDR"] = request.remoteAddr
     params["REQUEST_URI"] = request.requestURI
@@ -224,12 +152,8 @@ private fun buildPhpVars(request: HttpServletRequest, other: Map<String, String>
     while (names.hasMoreElements()) {
         val name = names.nextElement()
         if (!name.equals("cookie", true)) {
-            params["HTTP_${name.toUpperCase()}"] = request.getHeader(name)
+            params["HTTP_${name.toUpperCase().replace('-', '_')}"] = request.getHeader(name)
         }
-    }
-
-    if (other.isNotEmpty()) {
-        params.putAll(other)
     }
 
     return params

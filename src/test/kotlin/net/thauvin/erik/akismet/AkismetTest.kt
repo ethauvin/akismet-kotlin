@@ -76,26 +76,9 @@ class AkismetTest {
     private val blog = getKey("AKISMET_BLOG")
     private val comment = AkismetComment(
         userIp = "127.0.0.1",
-        userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",
-        referrer = "http://www.google.com",
-        permalink = "http://yourblogdomainname.com/blog/post=1",
-        type = AkismetComment.TYPE_COMMENT,
-        author = "admin",
-        authorEmail = "test@test.com",
-        authorUrl = "http://www.CheckOutMyCoolSite.com",
-        userRole = AkismetComment.ADMIN_ROLE,
-        content = "It means a lot that you would take the time to review our software.  Thanks again.",
-        isTest = true)
+        userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6")
     private val akismet = Akismet(getKey("AKISMET_API_KEY"), blog)
-    private val mockComment: AkismetComment = AkismetComment(
-        request = getMockRequest(),
-        permalink = comment.permalink,
-        type = comment.type,
-        author = comment.author,
-        authorUrl = comment.authorUrl,
-        userRole = AkismetComment.ADMIN_ROLE,
-        content = comment.content,
-        isTest = true)
+    private val mockComment: AkismetComment = AkismetComment(request = getMockRequest())
 
     @BeforeClass
     fun beforeClass() {
@@ -103,6 +86,24 @@ class AkismetTest {
             addHandler(ConsoleHandler().apply { level = Level.FINE })
             level = Level.FINE
         }
+
+        comment.referrer = "http://www.google.com"
+        comment.permalink = "http://yourblogdomainname.com/blog/post=1"
+        comment.type = AkismetComment.TYPE_COMMENT
+        comment.author = "admin"
+        comment.authorEmail = "test@test.com"
+        comment.authorUrl = "http://www.CheckOutMyCoolSite.com"
+        comment.userRole = AkismetComment.ADMIN_ROLE
+        comment.content = "It means a lot that you would take the time to review our software.  Thanks again."
+        comment.isTest = true
+
+        mockComment.permalink = comment.permalink
+        mockComment.type = comment.type
+        mockComment.author = comment.author
+        mockComment.authorUrl = comment.authorUrl
+        mockComment.userRole = AkismetComment.ADMIN_ROLE
+        mockComment.content = comment.content
+        mockComment.isTest = true
     }
 
     @Test
@@ -129,6 +130,14 @@ class AkismetTest {
         assertEquals(akismet.response, "valid", "response -> valid")
         assertTrue(akismet.isVerifiedKey, "isVerifiedKey -> true")
 
+    }
+
+    @Test
+    fun checkMockComment() {
+        assertEquals(mockComment.userIp, comment.userIp, "userIp")
+        assertEquals(mockComment.userAgent, comment.userAgent, "userAgent")
+        assertTrue(mockComment.serverEnv.containsKey("HTTP_ACCEPT_ENCODING"), "HTTP_ACCEPT_ENCODING")
+        assertTrue(mockComment.serverEnv.containsKey("REQUEST_URI"), "REQUEST_URI")
     }
 
     @Test
