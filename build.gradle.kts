@@ -1,7 +1,7 @@
-
 import com.jfrog.bintray.gradle.tasks.BintrayUploadTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
+import java.net.URL
 import java.util.Properties
 
 plugins {
@@ -144,10 +144,14 @@ tasks {
 
         linkMapping {
             dir = "src/main/kotlin"
-            url = "https://github.com/ethauvin/akismet-kotlin/blob/master/src/main/kotlin"
+            url = "https://github.com/ethauvin/${project.name}/blob/master/src/main/kotlin"
             suffix = "#L"
         }
-
+        
+        externalDocumentationLink {
+            url = URL("https://javaee.github.io/javaee-spec/javadocs/")
+        }
+        
         includes = listOf("config/dokka/packages.md")
         includeNonPublic = false
     }
