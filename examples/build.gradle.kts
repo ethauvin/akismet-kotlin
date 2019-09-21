@@ -23,6 +23,5 @@ tasks {
         group = "application"
         main = "com.example.AkismetSample"
         classpath = sourceSets["main"].runtimeClasspath
-
     }
 }

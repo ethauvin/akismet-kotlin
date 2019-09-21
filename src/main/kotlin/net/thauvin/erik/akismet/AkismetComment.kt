@@ -128,7 +128,7 @@ open class AkismetComment() {
      * Akismet.
      * 
      * How the submitted content interacts with the server can be very telling, so please include as much of it as
-     * ossible.
+     * possible.
      */
     var other: Map<String, String> = emptyMap()
 

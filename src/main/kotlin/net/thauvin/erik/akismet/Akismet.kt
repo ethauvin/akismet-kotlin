@@ -182,13 +182,12 @@ open class Akismet(apiKey: String) {
      * Submit Ham.
      * See the [Akismet API](https://akismet.com/development/api/#submit-ham) for more details.
      */
-
     fun submitHam(comment: AkismetComment): Boolean {
         return executeMethod(buildApiUrl("submit-ham"), buildFormBody(comment))
     }
 
     /**
-     * Convert a [Date][java.util.Date] to a UTC timestamp for use with [dateGmt][AkismetComment.dateGmt], etc.
+     * Convert a date to a UTC timestamp.
      */
     fun dateToGmt(date: Date): String {
         return DateTimeFormatter.ISO_DATE_TIME.format(
@@ -196,8 +195,7 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Convert a [LocalDateTime][java.time.LocalDateTime] to a UTC timestamp for use with
-     * [dateGmt][AkismetComment.dateGmt], etc.
+     * Convert a locale date/time to a UTC timestamp.
      */
     fun dateToGmt(date: LocalDateTime): String {
         return DateTimeFormatter.ISO_DATE_TIME.format(
@@ -291,7 +289,7 @@ open class Akismet(apiKey: String) {
                 add("user_role", comment.userRole)
             }
             if (comment.isTest) {
-                add("is_test", "true")
+                add("is_test", "1")
             }
             if (comment.recheckReason.isNotBlank()) {
                 add("recheck_reason", comment.recheckReason)

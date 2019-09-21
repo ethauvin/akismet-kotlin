@@ -1,5 +1,5 @@
+
 import com.jfrog.bintray.gradle.tasks.BintrayUploadTask
-import org.jetbrains.dokka.gradle.LinkMapping
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
 import java.util.Properties
@@ -141,14 +141,14 @@ tasks {
         outputFormat = "html"
         outputDirectory = "$buildDir/javadoc"
         jdkVersion = 8
-        val mapping = LinkMapping().apply {
+
+        linkMapping {
             dir = "src/main/kotlin"
-            url = "https://github.com/ethauvin/${project.name}/blob/${project.version}/src/main/kotlin"
+            url = "https://github.com/ethauvin/akismet-kotlin/blob/master/src/main/kotlin"
             suffix = "#L"
         }
 
         includes = listOf("config/dokka/packages.md")
-        linkMappings = arrayListOf(mapping)
         includeNonPublic = false
     }
 
