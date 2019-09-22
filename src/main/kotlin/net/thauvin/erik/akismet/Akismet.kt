@@ -300,7 +300,6 @@ open class Akismet(apiKey: String) {
      * @param formBody The HTTP POST form body containing the request parameters to be submitted.
      * @param trueOnError Set to return _true_ on error (IO, empty response, etc.)
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     @JvmOverloads
     fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody, trueOnError: Boolean = false): Boolean {
         reset()
@@ -309,9 +308,9 @@ open class Akismet(apiKey: String) {
             try {
                 val result = client.newCall(request).execute()
                 httpStatusCode = result.code
-                proTip = result.header("x-akismet-pro-tip", "").toString()
-                isDiscard = proTip.equals("discard", true)
-                debugHelp = result.header("x-akismet-debug-help", "").toString()
+                proTip = result.header("x-akismet-pro-tip", "").toString().trim()
+                isDiscard = (proTip == "discard")
+                debugHelp = result.header("x-akismet-debug-help", "").toString().trim()
                 val body = result.body?.string()
                 if (body != null) {
                     response = body.trim()
@@ -364,58 +363,61 @@ open class Akismet(apiKey: String) {
         require(!(comment.userIp.isBlank() && comment.userAgent.isBlank())) { "userIp and/or userAgent are required." }
         return FormBody.Builder().apply {
             add("blog", blog)
-            add("user_ip", comment.userIp)
-            add("user_agent", comment.userAgent)
 
-            if (comment.referrer.isNotBlank()) {
-                add("referrer", comment.referrer)
-            }
-            if (comment.permalink.isNotBlank()) {
-                add("permalink", comment.permalink)
-            }
-            if (comment.type.isNotBlank()) {
-                add("comment_type", comment.type)
-            }
-            if (comment.author.isNotBlank()) {
-                add("comment_author", comment.author)
-            }
-            if (comment.authorEmail.isNotBlank()) {
-                add("comment_author_email", comment.authorEmail)
-            }
-            if (comment.authorUrl.isNotBlank()) {
-                add("comment_author_url", comment.authorUrl)
-            }
-            if (comment.content.isNotBlank()) {
-                add("comment_content", comment.content)
-            }
-            if (comment.dateGmt.isNotBlank()) {
-                add("comment_date_gmt", comment.dateGmt)
-            }
-            if (comment.postModifiedGmt.isNotBlank()) {
-                add("comment_post_modified_gmt", comment.postModifiedGmt)
-            }
-            if (comment.blogLang.isNotBlank()) {
-                add("blog_lang", comment.blogLang)
-            }
-            if (comment.blogCharset.isNotBlank()) {
-                add("blog_charset", comment.blogCharset)
-            }
-            if (comment.userRole.isNotBlank()) {
-                add("user_role", comment.userRole)
-            }
-            if (comment.isTest) {
-                add("is_test", "1")
-            }
-            if (comment.recheckReason.isNotBlank()) {
-                add("recheck_reason", comment.recheckReason)
-            }
+            with(comment) {
+                add("user_ip", userIp)
+                add("user_agent", userAgent)
 
-            comment.serverEnv.forEach { (k, v) -> add(k, v) }
+                if (referrer.isNotBlank()) {
+                    add("referrer", referrer)
+                }
+                if (permalink.isNotBlank()) {
+                    add("permalink", permalink)
+                }
+                if (type.isNotBlank()) {
+                    add("comment_type", type)
+                }
+                if (author.isNotBlank()) {
+                    add("comment_author", author)
+                }
+                if (authorEmail.isNotBlank()) {
+                    add("comment_author_email", authorEmail)
+                }
+                if (authorUrl.isNotBlank()) {
+                    add("comment_author_url", authorUrl)
+                }
+                if (content.isNotBlank()) {
+                    add("comment_content", content)
+                }
+                if (dateGmt.isNotBlank()) {
+                    add("comment_date_gmt", dateGmt)
+                }
+                if (postModifiedGmt.isNotBlank()) {
+                    add("comment_post_modified_gmt", postModifiedGmt)
+                }
+                if (blogLang.isNotBlank()) {
+                    add("blog_lang", blogLang)
+                }
+                if (blogCharset.isNotBlank()) {
+                    add("blog_charset", blogCharset)
+                }
+                if (userRole.isNotBlank()) {
+                    add("user_role", userRole)
+                }
+                if (isTest) {
+                    add("is_test", "1")
+                }
+                if (recheckReason.isNotBlank()) {
+                    add("recheck_reason", recheckReason)
+                }
+
+                serverEnv.forEach { (k, v) -> add(k, v) }
+            }
         }.build()
     }
 
-    private fun buildUserAgent(): String {
-        return if (applicationName.isNotBlank() && applicationVersion.isBlank()) {
+    internal fun buildUserAgent(): String {
+        return if (applicationName.isNotBlank() && applicationVersion.isNotBlank()) {
             "$applicationName/$applicationVersion | $libUserAgent"
         } else {
             libUserAgent
