@@ -226,6 +226,25 @@ class AkismetTest {
     }
 
     @Test
+    fun testBuildUserAgent() {
+        val libAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
+        assertEquals(
+            akismet.buildUserAgent(), libAgent, "libAgent"
+        )
+        akismet.applicationName = "My App"
+
+        assertEquals(
+            akismet.buildUserAgent(), libAgent, "libAgent, no app"
+        )
+        
+        akismet.applicationVersion = "1.0-test"
+        assertEquals(
+            akismet.buildUserAgent(), "${akismet.applicationName}/${akismet.applicationVersion} | $libAgent",
+            "my app"
+        )
+    }
+
+    @Test
     fun dateToGmtTest() {
         val localDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault())
         val utcDate = akismet.dateToGmt(date)
