@@ -315,6 +315,18 @@ open class Akismet(apiKey: String) {
         return false
     }
 
+    /**
+     * Reset the [debugHelp], [httpStatusCode], [isDiscard], [isVerifiedKey], [proTip], and [response] properties.
+     */
+    fun reset() {
+        debugHelp = ""
+        httpStatusCode = 0
+        isDiscard = false
+        isVerifiedKey = false
+        proTip = ""
+        response = ""
+    }
+
     private fun buildApiUrl(method: String): HttpUrl? {
         if (method == verifyMethod) {
             return String.format(apiEndPoint, "", method).toHttpUrlOrNull()
