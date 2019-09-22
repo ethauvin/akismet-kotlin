@@ -165,6 +165,28 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      */
     constructor(request: HttpServletRequest) : this(request.remoteAddr, request.getHeader("User-Agent")) {
         serverEnv = buildPhpVars(request)
+    /**
+     * Returns a string representation of the comment.
+     */
+    override fun toString(): String {
+        return this.javaClass.simpleName +
+            "(userIp=$userIp" +
+            ", userAgent=$userAgent" +
+            ", referrer=$referrer" +
+            ", permalink=$permalink" +
+            ", type=$type" +
+            ", author=$author" +
+            ", authorEmail=$authorEmail" +
+            ", authorUrl=$authorUrl" +
+            ", content=$content" +
+            ", dateGmt=$dateGmt" +
+            ", postModifiedGmt=$postModifiedGmt" +
+            ", blogLang=$blogLang" +
+            ", blogCharset=$blogCharset" +
+            ", userRole=$userRole" +
+            ", isTest=$isTest" +
+            ", recheckReason=$recheckReason" +
+            ", serverEnv=$serverEnv)"
     }
 }
 
