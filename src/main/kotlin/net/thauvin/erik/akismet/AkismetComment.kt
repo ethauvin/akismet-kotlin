@@ -158,13 +158,18 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
 
     /**
      * Create an Akismet comment extracting the [userIp], [userAgent], [referrer] and [serverEnv] environment variables
-     * from a Servlet request. See the
+     * from a Servlet request.
+     *
+     * See the
      * [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
      *
      * @see [serverEnv]
      */
-    constructor(request: HttpServletRequest) : this(request.remoteAddr, request.getHeader("User-Agent")) {
-        serverEnv = buildPhpVars(request)
+    constructor(request: HttpServletRequest) : this(request.remoteAddr, request.getNonNullHeader("User-Agent")) {
+        referrer = request.getNonNullHeader("referer")
+        serverEnv = buildServerEnv(request)
+    }
+
     /**
      * Returns a string representation of the comment.
      */
@@ -190,18 +195,29 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     }
 }
 
-private fun buildPhpVars(request: HttpServletRequest): HashMap<String, String> {
+private fun buildServerEnv(request: HttpServletRequest): HashMap<String, String> {
     val params = HashMap<String, String>()
-    params["REMOTE_ADDR"] = request.remoteAddr
-    params["REQUEST_URI"] = request.requestURI
+
+    if (request.remoteAddr != null)
+        params["REMOTE_ADDR"] = request.remoteAddr
+    if (request.requestURI != null)
+        params["REQUEST_URI"] = request.requestURI
 
     val names = request.headerNames
     while (names.hasMoreElements()) {
         val name = names.nextElement()
         if (!name.equals("cookie", true)) {
-            params["HTTP_${name.toUpperCase().replace('-', '_')}"] = request.getHeader(name)
+            params["HTTP_${name.toUpperCase().replace('-', '_')}"] = request.getNonNullHeader(name)
         }
     }
 
     return params
+}
+
+private fun HttpServletRequest.getNonNullHeader(name: String): String {
+    val header = getHeader(name)
+    if (header != null) {
+        return header
+    }
+    return ""
 }
