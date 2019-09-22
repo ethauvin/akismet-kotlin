@@ -156,7 +156,13 @@ open class Akismet(apiKey: String) {
     val logger: Logger by lazy { Logger.getLogger(Akismet::class.java.simpleName) }
 
     init {
-        require(!apiKey.isBlank() || apiKey.length != 12) { "An Akismet API key must be specified." }
+        require(
+            (apiKey.isNotBlank() &&
+                apiKey.length == 12 &&
+                apiKey.matches(Regex("[A-Za-z0-9]+")))
+        ) {
+            "An Akismet API key must be specified."
+        }
 
         this.apiKey = apiKey
 
