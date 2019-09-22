@@ -71,6 +71,22 @@ open class Akismet(apiKey: String) {
         }
 
     /**
+     * The application name to be used in the user agent string.
+     *
+     * See the [Akismet API](https://akismet.com/development/api/#detailed-docs) for more details.
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    var applicationName = ""
+
+    /**
+     * The application version to be used in the user agent string.
+     *
+     * See the [Akismet API](https://akismet.com/development/api/#detailed-docs) for more details.
+     */
+    @Suppress("MemberVisibilityCanBePrivate")
+    var applicationVersion = ""
+
+    /**
      * Check if the API Key has been verified.
      */
     var isVerifiedKey: Boolean = false
@@ -213,6 +229,7 @@ open class Akismet(apiKey: String) {
     protected fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody): Boolean {
         if (apiUrl != null) {
             val request = Request.Builder().url(apiUrl).post(formBody).header("User-Agent", libUserAgent).build()
+            val request = Request.Builder().url(apiUrl).post(formBody).header("User-Agent", buildUserAgent()).build()
             try {
                 val result = client.newCall(request).execute()
                 httpStatusCode = result.code
@@ -297,5 +314,13 @@ open class Akismet(apiKey: String) {
 
             comment.serverEnv.forEach { (k, v) -> add(k, v) }
         }.build()
+    }
+
+    private fun buildUserAgent(): String {
+        return if (applicationName.isNotBlank() && applicationVersion.isBlank()) {
+            "$applicationName/$applicationVersion | $libUserAgent"
+        } else {
+            libUserAgent
+        }
     }
 }
