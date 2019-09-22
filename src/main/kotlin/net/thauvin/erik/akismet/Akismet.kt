@@ -31,6 +31,8 @@
  */
 package net.thauvin.erik.akismet
 
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import net.thauvin.erik.semver.Version
 import okhttp3.FormBody
 import okhttp3.HttpUrl
@@ -106,6 +108,16 @@ open class Akismet(apiKey: String) {
      */
     @Suppress("MemberVisibilityCanBePrivate")
     var response: String = ""
+        private set
+
+    /**
+     * The error message.
+     *
+     * The error (IO, empty response from Akismet, etc.) message is also logged as a warning.
+     *
+     * @see [Akismet.checkComment]
+     */
+    var errorMessage: String = ""
         private set
 
     /**
@@ -270,6 +282,15 @@ open class Akismet(apiKey: String) {
     }
 
     /**
+     * (Re)Create a [comment][AkismetComment] from a JSON string.
+     *
+     * @see [AkismetComment.toString]
+     */
+    fun jsonComment(json: String): AkismetComment {
+        return Json(JsonConfiguration.Stable).parse(AkismetComment.serializer(), json)
+    }
+
+    /**
      * Convert a date to a UTC timestamp. (ISO 8601)
      *
      * @see [AkismetComment.dateGmt]
@@ -304,7 +325,11 @@ open class Akismet(apiKey: String) {
     fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody, trueOnError: Boolean = false): Boolean {
         reset()
         if (apiUrl != null) {
-            val request = Request.Builder().url(apiUrl).post(formBody).header("User-Agent", buildUserAgent()).build()
+            val request = if (formBody.size == 0) {
+                Request.Builder().url(apiUrl).header("User-Agent", buildUserAgent()).build()
+            } else {
+                Request.Builder().url(apiUrl).post(formBody).header("User-Agent", buildUserAgent()).build()
+            }
             try {
                 val result = client.newCall(request).execute()
                 httpStatusCode = result.code
@@ -317,26 +342,28 @@ open class Akismet(apiKey: String) {
                     if (response == "valid" || response == "true" || response.startsWith("Thanks")) {
                         return true
                     } else if (response != "false" && response != "invalid") {
-                        logger.warning("Unexpected response: $body")
-                        return trueOnError
+                        errorMessage = "Unexpected response: " + if (body.isBlank()) "(0-byte body)" else body
                     }
                 } else {
                     val message = "An empty response was received from Akismet."
-                    if (debugHelp.isNotBlank()) {
-                        logger.warning("$message: $debugHelp")
+                    errorMessage = if (debugHelp.isNotBlank()) {
+                        "$message: $debugHelp"
                     } else {
-                        logger.warning(message)
+                        message
                     }
-                    return trueOnError
                 }
             } catch (e: IOException) {
-                logger.log(Level.SEVERE, "An IO error occurred while communicating with the Akismet service.", e)
-                return trueOnError
+                errorMessage = "An IO error occurred while communicating with the Akismet service."
             }
         } else {
-            logger.severe("Invalid API end point URL.")
+            errorMessage = "Invalid API end point URL."
+        }
+
+        if (errorMessage.isNotEmpty()) {
+            logger.warning(errorMessage)
             return trueOnError
         }
+        
         return false
     }
 
@@ -345,6 +372,7 @@ open class Akismet(apiKey: String) {
      */
     fun reset() {
         debugHelp = ""
+        errorMessage = ""
         httpStatusCode = 0
         isDiscard = false
         isVerifiedKey = false

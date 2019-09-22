@@ -37,6 +37,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.mockito.Mockito
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertFalse
+import org.testng.Assert.assertNotEquals
 import org.testng.Assert.assertTrue
 import org.testng.Assert.expectThrows
 import org.testng.annotations.BeforeClass
@@ -180,11 +181,36 @@ class AkismetTest {
     }
 
     @Test
+    fun testEmptyResponse() {
+        assertTrue(
+            akismet.executeMethod(
+                "https://postman-echo.com/status/200".toHttpUrlOrNull(), FormBody.Builder().build(), true
+            )
+        )
+        val expected = "{\"status\":200}"
+        assertEquals(akismet.response, expected, expected)
+        assertTrue(akismet.errorMessage.contains(expected), "errorMessage contains $expected")
+    }
+
+    @Test
+    fun testProTipResponse() {
+        assertFalse(
+            akismet.executeMethod(
+                "https://postman-echo.com/response-headers?x-akismet-pro-tip=test".toHttpUrlOrNull(),
+                FormBody.Builder().build()
+            )
+        )
+        assertEquals(akismet.proTip, "test")
+    }
+
+    @Test
     fun resetTest() {
         akismet.reset()
+
+        //@TODO fix
         assertTrue(
-            akismet.debugHelp == "" && akismet.httpStatusCode == 0 && !akismet.isDiscard &&
-                !akismet.isVerifiedKey && akismet.proTip == "" && akismet.response == ""
+            akismet.debugHelp == "" && akismet.errorMessage == "" && akismet.httpStatusCode == 0 &&
+                !akismet.isDiscard && !akismet.isVerifiedKey && akismet.proTip == "" && akismet.response == ""
         )
     }
 
@@ -226,17 +252,24 @@ class AkismetTest {
     }
 
     @Test
+    fun testJsonComment() {
+        val jsonComment = akismet.jsonComment(mockComment.toString())
+
+        assertEquals(jsonComment, mockComment, "equals")
+        assertEquals(jsonComment.hashCode(), mockComment.hashCode(), "hashcode")
+
+        assertNotEquals(jsonComment, comment, "json is different")
+        assertNotEquals(jsonComment.hashCode(), comment.hashCode(), "json hashcode is different")
+    }
+
+    @Test
     fun testBuildUserAgent() {
         val libAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
-        assertEquals(
-            akismet.buildUserAgent(), libAgent, "libAgent"
-        )
-        akismet.applicationName = "My App"
+        assertEquals(akismet.buildUserAgent(), libAgent, "libAgent")
 
-        assertEquals(
-            akismet.buildUserAgent(), libAgent, "libAgent, no app"
-        )
-        
+        akismet.applicationName = "My App"
+        assertEquals(akismet.buildUserAgent(), libAgent, "libAgent, no app")
+
         akismet.applicationVersion = "1.0-test"
         assertEquals(
             akismet.buildUserAgent(), "${akismet.applicationName}/${akismet.applicationVersion} | $libAgent",

@@ -16,6 +16,7 @@ plugins {
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
     id("org.jetbrains.dokka") version "0.9.18"
     id("org.jetbrains.kotlin.kapt").version("1.3.50")
+    id("org.jetbrains.kotlin.plugin.serialization").version("1.3.50")
     id("org.jmailen.kotlinter") version "2.1.1"
     id("org.sonarqube") version "2.7.1"
 }
@@ -59,6 +60,7 @@ dependencies {
     compile("com.squareup.okhttp3:logging-interceptor:4.2.0")
 
     compile(kotlin("stdlib"))
+    compile("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.13.0")
 
     testImplementation("org.mockito:mockito-core:3.0.0")
     testImplementation("org.testng:testng:7.0.0")

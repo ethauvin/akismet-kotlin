@@ -32,6 +32,9 @@
 
 package net.thauvin.erik.akismet
 
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import javax.servlet.http.HttpServletRequest
 
 /**
@@ -50,6 +53,7 @@ import javax.servlet.http.HttpServletRequest
  * @param userIp IP address of the comment submitter.
  * @param userAgent User agent string of the web browser submitting the comment.
  */
+@Serializable
 open class AkismetComment(val userIp: String, val userAgent: String) {
     @Suppress("unused")
     companion object {
@@ -171,27 +175,68 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     }
 
     /**
-     * Returns a string representation of the comment.
+     * Returns a JSON representation of the comment.
+     *
+     * @see [Akismet.jsonComment]
      */
     override fun toString(): String {
-        return this.javaClass.simpleName +
-            "(userIp=$userIp" +
-            ", userAgent=$userAgent" +
-            ", referrer=$referrer" +
-            ", permalink=$permalink" +
-            ", type=$type" +
-            ", author=$author" +
-            ", authorEmail=$authorEmail" +
-            ", authorUrl=$authorUrl" +
-            ", content=$content" +
-            ", dateGmt=$dateGmt" +
-            ", postModifiedGmt=$postModifiedGmt" +
-            ", blogLang=$blogLang" +
-            ", blogCharset=$blogCharset" +
-            ", userRole=$userRole" +
-            ", isTest=$isTest" +
-            ", recheckReason=$recheckReason" +
-            ", serverEnv=$serverEnv)"
+        return Json(JsonConfiguration.Stable).stringify(serializer(), this)
+    }
+
+    /**
+     * Indicates whether some other object is _equal to_ this one.
+     */
+    @Suppress("DuplicatedCode")
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as AkismetComment
+
+        if (userIp != other.userIp) return false
+        if (userAgent != other.userAgent) return false
+        if (referrer != other.referrer) return false
+        if (permalink != other.permalink) return false
+        if (type != other.type) return false
+        if (author != other.author) return false
+        if (authorEmail != other.authorEmail) return false
+        if (authorUrl != other.authorUrl) return false
+        if (content != other.content) return false
+        if (dateGmt != other.dateGmt) return false
+        if (postModifiedGmt != other.postModifiedGmt) return false
+        if (blogLang != other.blogLang) return false
+        if (blogCharset != other.blogCharset) return false
+        if (userRole != other.userRole) return false
+        if (isTest != other.isTest) return false
+        if (recheckReason != other.recheckReason) return false
+        if (serverEnv != other.serverEnv) return false
+
+        return true
+    }
+
+    /**
+     * Returns a hash code value for the object.
+     */
+    @Suppress("DuplicatedCode")
+    override fun hashCode(): Int {
+        var result = userIp.hashCode()
+        result = 31 * result + userAgent.hashCode()
+        result = 31 * result + referrer.hashCode()
+        result = 31 * result + permalink.hashCode()
+        result = 31 * result + type.hashCode()
+        result = 31 * result + author.hashCode()
+        result = 31 * result + authorEmail.hashCode()
+        result = 31 * result + authorUrl.hashCode()
+        result = 31 * result + content.hashCode()
+        result = 31 * result + dateGmt.hashCode()
+        result = 31 * result + postModifiedGmt.hashCode()
+        result = 31 * result + blogLang.hashCode()
+        result = 31 * result + blogCharset.hashCode()
+        result = 31 * result + userRole.hashCode()
+        result = 31 * result + isTest.hashCode()
+        result = 31 * result + recheckReason.hashCode()
+        result = 31 * result + serverEnv.hashCode()
+        return result
     }
 }
 
