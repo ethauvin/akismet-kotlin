@@ -93,7 +93,7 @@ open class Akismet(apiKey: String) {
         private set
 
     /**
-     * The HTTP status code of the last operation.
+     * The [HTTP status code](https://www.restapitutorial.com/httpstatuscodes.html) of the last operation.
      */
     @Suppress("MemberVisibilityCanBePrivate")
     var httpStatusCode: Int = 0
@@ -102,14 +102,22 @@ open class Akismet(apiKey: String) {
     /**
      * The actual response sent by Akismet from the last operation.
      *
-     * For example: ```true```, ```false```, ```valid```, ```invalid```, etc.
+     * For example: _true_, _false_, _valid_, _invalid_, etc.
      */
     @Suppress("MemberVisibilityCanBePrivate")
     var response: String = ""
         private set
 
     /**
-     * The X-akismet-pro-tip header from the last operation, if any.
+     * The _x-akismet-pro-tip_ header from the last operation, if any.
+     *
+     * If the _x-akismet-pro-tip_ header is set to discard, then Akismet has determined that the comment is blatant spam,
+     * and you can safely discard it without saving it in any spam queue.
+     *
+     * Read more about this feature in this
+     * [Akismet blog post](https://blog.akismet.com/2014/04/23/theres-a-ninja-in-your-akismet/).
+     *
+     * @see [Akismet.isDiscard]
      */
     @Suppress("MemberVisibilityCanBePrivate")
     var proTip: String = ""
@@ -117,24 +125,28 @@ open class Akismet(apiKey: String) {
 
     /**
      * Set to true if Akismet has determined that the last [checked comment][checkComment] is blatant spam, and you
-     * can safely discard it without saving it in any spam queue. Read more about this feature in this
+     * can safely discard it without saving it in any spam queue.
+     *
+     * Read more about this feature in this
      * [Akismet blog post](https://blog.akismet.com/2014/04/23/theres-a-ninja-in-your-akismet/).
+     *
+     * @see [Akismet.proTip]
      */
     @Suppress("MemberVisibilityCanBePrivate")
     var isDiscard: Boolean = false
         private set
 
     /**
-     * The X-akismet-error header from the last operation, if any.
+     * The _x-akismet-debug-help_ header from the last operation, if any.
+     *
+     * If the call returns neither _true_ nor _false_, the _x-akismet-debug-help_ header will provide context for any
+     * error that has occurred.
+     *
+     * Note that the _x-akismet-debug-help_ header will not always be sent if a response does not return _false_
+     * or _true_.
+     *
+     * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
      */
-    @Suppress("MemberVisibilityCanBePrivate")
-    var error: String = ""
-        private set
-
-    /**
-     * The X-akismet-debug-help header from the last operation, if any.
-     */
-    @Suppress("MemberVisibilityCanBePrivate")
     var debugHelp: String = ""
         private set
 
@@ -160,7 +172,7 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Create a new instance using an [Akismet](https://www.askimet.com/) API key and blog URL registered with Akismet.
+     * Create a new instance using an [Akismet](https://www.askimet.com/) API key and URL registered with Akismet.
      */
     constructor(apiKey: String, blog: String) : this(apiKey) {
         this.blog = blog
@@ -168,7 +180,16 @@ open class Akismet(apiKey: String) {
 
     /**
      * Key Verification.
+     *
+     * Key verification authenticates your key before calling the [comment check][Akismet.checkComment],
+     * [submit spam][Akismet.submitSpam], or [submit ham][Akismet.submitHam] methods. This is the first call that you
+     * should make to Akismet and is especially useful if you will have multiple users with their own Akismet
+     * subscriptions using your application.
+     *
      * See the [Akismet API](https://akismet.com/development/api/#verify-key) for more details.
+     *
+     * @return _true_ if the key is valid, _false_ otherwise.
+     * @see [isVerifiedKey]
      */
     fun verifyKey(): Boolean {
         val body = FormBody.Builder().apply {
@@ -187,35 +208,68 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Submit Spam (missed spam).
+     * Submit Spam. (Missed Spam)
+     *
+     * This call is for submitting comments that weren't marked as spam but should have been.
+     *
+     * It is very important that the values you submit with this call match those of your
+     * [comment check][Akismet.checkComment] calls as closely as possible. In order to learn from its mistakes,
+     * Akismet needs to match your missed spam and false positive reports to the original comment-check API calls made
+     * when the content was first posted. While it is normal for less information to be available for submit-spam and
+     * submit-ham calls (most comment systems and forums will not store all metadata), you should ensure that the
+     * values that you do send match those of the original content.
+     *
      * See the [Akismet API](https://akismet.com/development/api/#submit-spam) for more details.
+     *
+     * @return _true_ if the comment was submitted, _false_ otherwise.
      */
     fun submitSpam(comment: AkismetComment): Boolean {
         return executeMethod(buildApiUrl("submit-spam"), buildFormBody(comment))
     }
 
     /**
-     * Submit Ham.
+     * Submit Ham. (False Positives)
+     *
+     * This call is intended for the submission of false positives - items that were incorrectly classified as spam by
+     * Akismet. It takes identical arguments as [comment check][Akismet.checkComment] and
+     * [submit spam][Akismet.submitSpam].
+     *
+     * It is very important that the values you submit with this call match those of your
+     * [comment check][Akismet.checkComment] calls as closely as possible. In order to learn from its mistakes,
+     * Akismet needs to match your missed spam and false positive reports to the original comment-check API calls made
+     * when the content was first posted. While it is normal for less information to be available for submit-spam and
+     * submit-ham calls (most comment systems and forums will not store all metadata), you should ensure that the
+     * values that you do send match those of the original content.
+     *
      * See the [Akismet API](https://akismet.com/development/api/#submit-ham) for more details.
+     *
+     * @return _true_ if the comment was submitted, _false_ otherwise.
      */
     fun submitHam(comment: AkismetComment): Boolean {
         return executeMethod(buildApiUrl("submit-ham"), buildFormBody(comment))
     }
 
     /**
-     * Convert a date to a UTC timestamp.
+     * Convert a date to a UTC timestamp. (ISO 8601)
+     *
+     * @see [AkismetComment.dateGmt]
+     * @see [AkismetComment.postModifiedGmt]
      */
     fun dateToGmt(date: Date): String {
         return DateTimeFormatter.ISO_DATE_TIME.format(
-            OffsetDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()).truncatedTo(ChronoUnit.SECONDS))
+            OffsetDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()).truncatedTo(ChronoUnit.SECONDS)
+        )
     }
 
     /**
-     * Convert a locale date/time to a UTC timestamp.
+     * Convert a locale date/time to a UTC timestamp. (ISO 8601)
+     *
+     * @see [AkismetComment.dateGmt]
+     * @see [AkismetComment.postModifiedGmt]
      */
     fun dateToGmt(date: LocalDateTime): String {
         return DateTimeFormatter.ISO_DATE_TIME.format(
-            date.atOffset(OffsetDateTime.now().offset).truncatedTo(ChronoUnit.SECONDS))
+            date.atOffset(OffsetDateTime.now().offset).truncatedTo(ChronoUnit.SECONDS)
     }
 
     /**

@@ -37,8 +37,15 @@ import javax.servlet.http.HttpServletRequest
 /**
  * A comment to send to Akismet.
  *
- * @constructor Create an Akismet comment instance. See the
- * [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
+ * Most everything is optional. Performance can drop dramatically if you choose to exclude data points. The more data
+ * you send Akismet about each comment, the greater the accuracy. They recommend erring on the side of including
+ * too much data.
+ *
+ * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
+ *
+ * @constructor Create an Akismet comment instance.
+ *
+ * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
  *
  * @param userIp IP address of the comment submitter.
  * @param userAgent User agent string of the web browser submitting the comment.
@@ -66,8 +73,10 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
 
     /** The content of the referer header should be set here. */
     var referrer: String = ""
+
     /** The full permanent URL of the entry the comment was submitted to. */
     var permalink: String = ""
+
     /**
      * A string that describes the type of content being sent, such as  [TYPE_COMMENT], [TYPE_FORUM_POST], [TYPE_REPLY],
      * [TYPE_BLOG_POST], [TYPE_CONTACT_FORM], [TYPE_SIGNUP], or [TYPE_MESSAGE].
@@ -77,14 +86,19 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      * This is further explained [here](http://blog.akismet.com/2012/06/19/pro-tip-tell-us-your-comment_type/).
      */
     var type: String = ""
+
     /** Name submitted with the comment. */
     var author: String = ""
+
     /** Email address submitted with the comment. */
     var authorEmail: String = ""
+
     /** URL submitted with comment. */
     var authorUrl: String = ""
+
     /** The content that was submitted. */
     var content: String = ""
+
     /**
      * The UTC timestamp of the creation of the comment, in ISO 8601 format.
      *
@@ -93,26 +107,36 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      * @see [Akismet.dateToGmt]
      */
     var dateGmt: String = ""
-    /** The UTC timestamp of the publication time for the post, page or thread on which the comment was posted. */
+
+    /**
+     * The UTC timestamp of the publication time for the post, page or thread on which the comment was posted.
+     *
+     * @see [Akismet.dateToGmt]
+     */
     var postModifiedGmt: String = ""
+
     /**
      * Indicates the language(s) in use on the blog or site, in ISO 639-1 format, comma-separated.
      *
      * A site with articles in English and French might use: ```en, fr_ca```
      */
     var blogLang: String = ""
+
     /**
      * The character encoding for the form values included in comment parameters, such as UTF-8 or ISO-8859-1
      */
     var blogCharset: String = ""
+
     /**
      * The user role of the user who submitted the comment. This is an optional parameter.
      *
      * If you set it to [ADMIN_ROLE], Akismet will always return false.
      */
     var userRole: String = ""
+
     /** This is an optional parameter. You can use it when submitting test queries to Akismet. */
     var isTest: Boolean = false
+
     /**
      * If you are sending content to Akismet to be rechecked, such as a post that has been edited or old pending
      * comments that you'd like to recheck, include this parameter with a string describing why the content is
@@ -121,11 +145,12 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      * For example: ```edit```
      */
     var recheckReason: String = ""
+
     /**
      * In PHP, there is an array of environmental variables called $_SERVER that contains information about the Web
      * server itself as well as a key/value for every HTTP header sent with the request. This data is highly useful to
      * Akismet.
-     * 
+     *
      * How the submitted content interacts with the server can be very telling, so please include as much of it as
      * possible.
      */
