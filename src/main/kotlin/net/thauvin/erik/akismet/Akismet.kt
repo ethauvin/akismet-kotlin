@@ -207,10 +207,24 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Comment Check. See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
+     * Comment Check.
+     *
+     * This is the call you will make the most. It takes a number of arguments and characteristics about the submitted
+     * content and then returns a thumbs up or thumbs down. Performance can drop dramatically if you choose to exclude
+     * data points. The more data you send Akismet about each comment, the greater the accuracy. They recommend erring
+     * on the side of including too much data
+     *
+     * By default, if an error (IO, empty response from Akismet, etc.) occurs the function will return _false_ and
+     * log the error, use the _trueOnError_ parameter to change this behavior.
+     *
+     * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
+     *
+     * @param trueOnError Set to return _true_ on error.
+     * @return _true_ if the comment is spam, _false_ if the comment is ham.
      */
-    fun checkComment(comment: AkismetComment): Boolean {
-        return executeMethod(buildApiUrl("comment-check"), buildFormBody(comment))
+    @JvmOverloads
+    fun checkComment(comment: AkismetComment, trueOnError: Boolean = false): Boolean {
+        return executeMethod(buildApiUrl("comment-check"), buildFormBody(comment), trueOnError)
     }
 
     /**
@@ -276,41 +290,53 @@ open class Akismet(apiKey: String) {
     fun dateToGmt(date: LocalDateTime): String {
         return DateTimeFormatter.ISO_DATE_TIME.format(
             date.atOffset(OffsetDateTime.now().offset).truncatedTo(ChronoUnit.SECONDS)
+        )
     }
 
     /**
-     *
-     * Execute an Akismet REST API method.
+     * Execute a call to an Akismet REST API method.
      *
      * @param apiUrl The Akismet API URL endpoint. (e.g. https://rest.akismet.com/1.1/verify-key)
      * @param formBody The HTTP POST form body containing the request parameters to be submitted.
+     * @param trueOnError Set to return _true_ on error (IO, empty response, etc.)
      */
     @Suppress("MemberVisibilityCanBePrivate")
-    protected fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody): Boolean {
+    @JvmOverloads
+    fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody, trueOnError: Boolean = false): Boolean {
+        reset()
         if (apiUrl != null) {
-            val request = Request.Builder().url(apiUrl).post(formBody).header("User-Agent", libUserAgent).build()
             val request = Request.Builder().url(apiUrl).post(formBody).header("User-Agent", buildUserAgent()).build()
             try {
                 val result = client.newCall(request).execute()
                 httpStatusCode = result.code
                 proTip = result.header("x-akismet-pro-tip", "").toString()
                 isDiscard = proTip.equals("discard", true)
-                error = result.header("x-akismet-error", "").toString()
                 debugHelp = result.header("x-akismet-debug-help", "").toString()
                 val body = result.body?.string()
                 if (body != null) {
                     response = body.trim()
-                    if (response.equals("valid", true) ||
-                        response.equals("true", true) ||
-                        response.startsWith("Thanks", true)) {
+                    if (response == "valid" || response == "true" || response.startsWith("Thanks")) {
                         return true
+                    } else if (response != "false" && response != "invalid") {
+                        logger.warning("Unexpected response: $body")
+                        return trueOnError
                     }
+                } else {
+                    val message = "An empty response was received from Akismet."
+                    if (debugHelp.isNotBlank()) {
+                        logger.warning("$message: $debugHelp")
+                    } else {
+                        logger.warning(message)
+                    }
+                    return trueOnError
                 }
             } catch (e: IOException) {
                 logger.log(Level.SEVERE, "An IO error occurred while communicating with the Akismet service.", e)
+                return trueOnError
             }
         } else {
-            logger.severe("Invalid API end point URL. The API Key is likely invalid.")
+            logger.severe("Invalid API end point URL.")
+            return trueOnError
         }
         return false
     }
