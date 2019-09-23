@@ -3,6 +3,8 @@ plugins {
     application
 }
 
+// ./gradlew run runJava
+
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
 
 repositories {

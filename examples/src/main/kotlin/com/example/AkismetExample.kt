@@ -8,10 +8,11 @@ fun main() {
     val akismet = Akismet("YOUR_API_KEY", "YOUR_BLOG_URL")
     val comment = AkismetComment(
         userIp = "127.0.0.1",
-        userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6")
+        userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
+    )
 
     comment.isTest = true
-    
+
     comment.referrer = "http://www.google.com"
     comment.permalink = "http://yourblogdomainname.com/blog/post=1"
     comment.type = AkismetComment.TYPE_COMMENT
@@ -35,6 +36,8 @@ fun main() {
 
             if (hasBeenSubmitted) {
                 println("The comment was successfully submitted as SPAM to Akismet.")
+            } else {
+                System.err.println(akismet.errorMessage)
             }
         } else {
             println("The comment is not SPAM (HAM) according to Akismet.")
@@ -43,6 +46,8 @@ fun main() {
 
             if (hasBeenSubmitted) {
                 println("The comment was successfully submitted as HAM to Akismet.")
+            } else {
+                System.err.println(akismet.errorMessage)
             }
         }
     } else {

@@ -34,13 +34,17 @@ public class AkismetSample {
                 final boolean hasBenSubmitted = akismet.submitSpam(comment);
                 if (hasBenSubmitted) {
                     System.out.println("The comment has been submitted as SPAM to Akismet");
+                } else {
+                    System.err.println(akismet.getErrorMessage());
                 }
             } else {
-                System.out.println("The comment is not SPAM (HAM) according to Akismet.");
+                System.out.println("The comment is not SPAM according to Akismet.");
 
                 final boolean hasBeenSubmitted = akismet.submitHam(comment);
                 if (hasBeenSubmitted) {
                     System.out.println("The comment has been submitted as HAM to Akismet");
+                } else {
+                    System.err.println(akismet.getErrorMessage());
                 }
             }
         } else {
