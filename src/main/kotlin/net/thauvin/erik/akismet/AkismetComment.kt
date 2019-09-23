@@ -122,7 +122,7 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     /**
      * Indicates the language(s) in use on the blog or site, in ISO 639-1 format, comma-separated.
      *
-     * A site with articles in English and French might use: ```en, fr_ca```
+     * A site with articles in English and French might use: `en, fr_ca`
      */
     var blogLang: String = ""
 
@@ -146,7 +146,7 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      * comments that you'd like to recheck, include this parameter with a string describing why the content is
      * being rechecked.
      *
-     * For example: ```edit```
+     * For example: `edit`
      */
     var recheckReason: String = ""
 

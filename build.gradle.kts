@@ -53,7 +53,7 @@ repositories {
 
 dependencies {
     kapt(semverProcessor)
-    implementation(semverProcessor)
+    compileOnly(semverProcessor)
 
     compile("javax.servlet:javax.servlet-api:4.0.1")
     compile("com.squareup.okhttp3:okhttp:4.2.0")
@@ -149,11 +149,11 @@ tasks {
             url = "https://github.com/ethauvin/${project.name}/blob/master/src/main/kotlin"
             suffix = "#L"
         }
-        
+
         externalDocumentationLink {
             url = URL("https://javaee.github.io/javaee-spec/javadocs/")
         }
-        
+
         includes = listOf("config/dokka/packages.md")
         includeNonPublic = false
     }

@@ -30,10 +30,10 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>net.thauvin.erik</groupId>
-      <artifactId>semver</artifactId>
-      <version>1.2.0</version>
-      <scope>runtime</scope>
+      <groupId>org.jetbrains.kotlinx</groupId>
+      <artifactId>kotlinx-serialization-runtime</artifactId>
+      <version>0.13.0</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
   <name>akismet-kotlin</name>

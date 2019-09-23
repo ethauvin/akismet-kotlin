@@ -73,23 +73,24 @@ open class Akismet(apiKey: String) {
         }
 
     /**
-     * The application name to be used in the user agent string.
+     * The application user agent to be sent to Akismet.
+     *
+     * If possible, the application user agent string should always use the following format:
+     *
+     * ```
+     *     Application Name/Version
+     * ```
+     *
+     * The library's own user agent string will automatically be appended.
      *
      * See the [Akismet API](https://akismet.com/development/api/#detailed-docs) for more details.
      */
-    @Suppress("MemberVisibilityCanBePrivate")
-    var applicationName = ""
+    var appUserAgent = ""
 
     /**
-     * The application version to be used in the user agent string.
+     * Check if the API Key has been verified
      *
-     * See the [Akismet API](https://akismet.com/development/api/#detailed-docs) for more details.
-     */
-    @Suppress("MemberVisibilityCanBePrivate")
-    var applicationVersion = ""
-
-    /**
-     * Check if the API Key has been verified.
+     * @see [Akismet.verifyKey]
      */
     var isVerifiedKey: Boolean = false
         private set
@@ -104,7 +105,7 @@ open class Akismet(apiKey: String) {
     /**
      * The actual response sent by Akismet from the last operation.
      *
-     * For example: _true_, _false_, _valid_, _invalid_, etc.
+     * For example: `true`, `false`, `valid`, `invalid`, etc.
      */
     @Suppress("MemberVisibilityCanBePrivate")
     var response: String = ""
@@ -121,9 +122,9 @@ open class Akismet(apiKey: String) {
         private set
 
     /**
-     * The _x-akismet-pro-tip_ header from the last operation, if any.
+     * The`x-akismet-pro-tip` header from the last operation, if any.
      *
-     * If the _x-akismet-pro-tip_ header is set to discard, then Akismet has determined that the comment is blatant spam,
+     * If the `x-akismet-pro-tip` header is set to discard, then Akismet has determined that the comment is blatant spam,
      * and you can safely discard it without saving it in any spam queue.
      *
      * Read more about this feature in this
@@ -149,13 +150,13 @@ open class Akismet(apiKey: String) {
         private set
 
     /**
-     * The _x-akismet-debug-help_ header from the last operation, if any.
+     * The `x-akismet-debug-help` header from the last operation, if any.
      *
-     * If the call returns neither _true_ nor _false_, the _x-akismet-debug-help_ header will provide context for any
+     * If the call returns neither `true` nor `false`, the `x-akismet-debug-help` header will provide context for any
      * error that has occurred.
      *
-     * Note that the _x-akismet-debug-help_ header will not always be sent if a response does not return _false_
-     * or _true_.
+     * Note that the `x-akismet-debug-help` header will not always be sent if a response does not return `false`
+     * or `true`.
      *
      * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
      */
@@ -206,8 +207,8 @@ open class Akismet(apiKey: String) {
      *
      * See the [Akismet API](https://akismet.com/development/api/#verify-key) for more details.
      *
-     * @return _true_ if the key is valid, _false_ otherwise.
-     * @see [isVerifiedKey]
+     * @return `true` if the key is valid, `false` otherwise.
+     * @see [Akismet.isVerifiedKey]
      */
     fun verifyKey(): Boolean {
         val body = FormBody.Builder().apply {
@@ -226,13 +227,13 @@ open class Akismet(apiKey: String) {
      * data points. The more data you send Akismet about each comment, the greater the accuracy. They recommend erring
      * on the side of including too much data
      *
-     * By default, if an error (IO, empty response from Akismet, etc.) occurs the function will return _false_ and
-     * log the error, use the _trueOnError_ parameter to change this behavior.
+     * By default, if an error (IO, empty response from Akismet, etc.) occurs the function will return `false` and
+     * log the error, use the `trueOnError` parameter to change this behavior.
      *
      * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
      *
-     * @param trueOnError Set to return _true_ on error.
-     * @return _true_ if the comment is spam, _false_ if the comment is ham.
+     * @param trueOnError Set to return `true` on error.
+     * @return `true` if the comment is spam, `false` if the comment is not.
      */
     @JvmOverloads
     fun checkComment(comment: AkismetComment, trueOnError: Boolean = false): Boolean {
@@ -253,7 +254,7 @@ open class Akismet(apiKey: String) {
      *
      * See the [Akismet API](https://akismet.com/development/api/#submit-spam) for more details.
      *
-     * @return _true_ if the comment was submitted, _false_ otherwise.
+     * @return `true` if the comment was submitted, `false` otherwise.
      */
     fun submitSpam(comment: AkismetComment): Boolean {
         return executeMethod(buildApiUrl("submit-spam"), buildFormBody(comment))
@@ -275,7 +276,7 @@ open class Akismet(apiKey: String) {
      *
      * See the [Akismet API](https://akismet.com/development/api/#submit-ham) for more details.
      *
-     * @return _true_ if the comment was submitted, _false_ otherwise.
+     * @return `true` if the comment was submitted, `false` otherwise.
      */
     fun submitHam(comment: AkismetComment): Boolean {
         return executeMethod(buildApiUrl("submit-ham"), buildFormBody(comment))
@@ -319,7 +320,7 @@ open class Akismet(apiKey: String) {
      *
      * @param apiUrl The Akismet API URL endpoint. (e.g. https://rest.akismet.com/1.1/verify-key)
      * @param formBody The HTTP POST form body containing the request parameters to be submitted.
-     * @param trueOnError Set to return _true_ on error (IO, empty response, etc.)
+     * @param trueOnError Set to return `true` on error (IO, empty response, etc.)
      */
     @JvmOverloads
     fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody, trueOnError: Boolean = false): Boolean {
@@ -363,7 +364,7 @@ open class Akismet(apiKey: String) {
             logger.warning(errorMessage)
             return trueOnError
         }
-        
+
         return false
     }
 
@@ -445,8 +446,8 @@ open class Akismet(apiKey: String) {
     }
 
     internal fun buildUserAgent(): String {
-        return if (applicationName.isNotBlank() && applicationVersion.isNotBlank()) {
-            "$applicationName/$applicationVersion | $libUserAgent"
+        return if (appUserAgent.isNotBlank()) {
+            "$appUserAgent | $libUserAgent"
         } else {
             libUserAgent
         }
