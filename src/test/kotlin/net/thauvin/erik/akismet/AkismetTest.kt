@@ -86,6 +86,7 @@ class AkismetTest {
     )
     private val akismet = Akismet(apiKey, blog)
     private val mockComment: AkismetComment = AkismetComment(request = getMockRequest())
+    private val emptyFormBody = FormBody.Builder().build()
 
     @BeforeClass
     fun beforeClass() {
@@ -191,7 +192,7 @@ class AkismetTest {
     fun testEmptyResponse() {
         assertTrue(
             akismet.executeMethod(
-                "https://postman-echo.com/status/200".toHttpUrlOrNull(), FormBody.Builder().build(), true
+                "https://postman-echo.com/status/200".toHttpUrlOrNull(), emptyFormBody, true
             )
         )
         val expected = "{\"status\":200}"
@@ -210,11 +211,15 @@ class AkismetTest {
     fun testProTipResponse() {
         assertFalse(
             akismet.executeMethod(
-                "https://postman-echo.com/response-headers?x-akismet-pro-tip=test".toHttpUrlOrNull(),
-                FormBody.Builder().build()
+                "https://postman-echo.com/response-headers?x-akismet-pro-tip=discard".toHttpUrlOrNull(),
+                emptyFormBody
             )
         )
-        assertEquals(akismet.proTip, "test")
+        assertEquals(akismet.proTip, "discard")
+        assertTrue(akismet.isDiscard, "isDiscard")
+
+        akismet.reset()
+        assertTrue(!akismet.isDiscard && akismet.response.isEmpty() && akismet.httpStatusCode == 0)
     }
 
     @Test
@@ -248,16 +253,28 @@ class AkismetTest {
     }
 
     @Test
+    fun invalidApiTest() {
+        akismet.executeMethod("https://.com".toHttpUrlOrNull(), emptyFormBody)
+        assertTrue(akismet.errorMessage.startsWith("Invalid API"))
+    }
+
+    @Test
+    fun ioErrorTest() {
+        akismet.executeMethod("https://www.doesnotexists.com".toHttpUrlOrNull(), emptyFormBody)
+        assertTrue(akismet.errorMessage.contains("IO error"))
+    }
+
+    @Test
     fun submitHamTest() {
         assertTrue(akismet.submitHam(comment), "submitHam")
 
-        assertTrue(akismet.submitHam(mockComment), "submitHam(request)")
+        assertTrue(akismet.submitHam(mockComment), "submitHam(mock)")
     }
 
     @Test
     fun submitSpamTest() {
         assertTrue(akismet.submitSpam(comment), "submitHam")
-        assertTrue(akismet.submitSpam(mockComment), "submitHam(request)")
+        assertTrue(akismet.submitSpam(mockComment), "submitHam(mock)")
     }
 
     @Test
@@ -269,6 +286,8 @@ class AkismetTest {
 
         assertNotEquals(jsonComment, comment, "json is different")
         assertNotEquals(jsonComment.hashCode(), comment.hashCode(), "json hashcode is different")
+
+        assertNotEquals(this, comment, "wrong object")
     }
 
     @Test
@@ -300,7 +319,7 @@ class AkismetTest {
         Mockito.`when`(request.getHeader("Cookie")).thenReturn("name=value; name2=value2; name3=value3")
         Mockito.`when`(request.getHeader("Accept-Encoding")).thenReturn("gzip")
         Mockito.`when`(request.headerNames)
-            .thenReturn(Collections.enumeration(listOf("User-Agent", "referer", "Cookie", "Accept-Encoding")))
+            .thenReturn(Collections.enumeration(listOf("User-Agent", "referer", "Cookie", "Accept-Encoding", "Null")))
         return request
     }
 }

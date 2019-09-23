@@ -343,10 +343,10 @@ open class Akismet(apiKey: String) {
                     if (response == "valid" || response == "true" || response.startsWith("Thanks")) {
                         return true
                     } else if (response != "false" && response != "invalid") {
-                        errorMessage = "Unexpected response: " + if (body.isBlank()) "(0-byte body)" else body
+                        errorMessage = "Unexpected response: " + if (body.isBlank()) "<blank>" else body
                     }
                 } else {
-                    val message = "An empty response was received from Akismet."
+                    val message = "No response body was received from Akismet."
                     errorMessage = if (debugHelp.isNotBlank()) {
                         "$message: $debugHelp"
                     } else {
