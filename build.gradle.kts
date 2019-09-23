@@ -145,8 +145,14 @@ tasks {
         jdkVersion = 8
 
         linkMapping {
-            dir = "src/main/kotlin"
-            url = "https://github.com/ethauvin/${project.name}/blob/master/src/main/kotlin"
+            // See https://github.com/Kotlin/dokka/issues/289
+            val f = if (System.getProperty("os.name").contains("windows", true))  {
+                file("${projectDir}/src/main/kotlin").toURI().toString().replace("file:", "")
+            }  else {
+                "src/main/kotlin"
+            }
+            dir = f
+            url = "https://github.com/ethauvin/${project.name}/tree/master/src/main/kotlin"
             suffix = "#L"
         }
 
