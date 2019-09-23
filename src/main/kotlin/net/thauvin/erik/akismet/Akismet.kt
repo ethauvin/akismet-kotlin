@@ -122,13 +122,12 @@ open class Akismet(apiKey: String) {
         private set
 
     /**
-     * The`x-akismet-pro-tip` header from the last operation, if any.
+     * The `x-akismet-pro-tip` header from the last operation, if any.
      *
-     * If the `x-akismet-pro-tip` header is set to discard, then Akismet has determined that the comment is blatant spam,
-     * and you can safely discard it without saving it in any spam queue.
+     * If the `x-akismet-pro-tip` header is set to discard, then Akismet has determined that the comment is blatant
+     * spam, and you can safely discard it without saving it in any spam queue.
      *
-     * Read more about this feature in this
-     * [Akismet blog post](https://blog.akismet.com/2014/04/23/theres-a-ninja-in-your-akismet/).
+     * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
      *
      * @see [Akismet.isDiscard]
      */
@@ -140,8 +139,7 @@ open class Akismet(apiKey: String) {
      * Set to true if Akismet has determined that the last [checked comment][checkComment] is blatant spam, and you
      * can safely discard it without saving it in any spam queue.
      *
-     * Read more about this feature in this
-     * [Akismet blog post](https://blog.akismet.com/2014/04/23/theres-a-ninja-in-your-akismet/).
+     * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
      *
      * @see [Akismet.proTip]
      */
@@ -369,7 +367,8 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Reset the [debugHelp], [httpStatusCode], [isDiscard], [isVerifiedKey], [proTip], and [response] properties.
+     * Reset the [debugHelp], [errorMessage], [httpStatusCode], [isDiscard], [isVerifiedKey], [proTip], and
+     * [response] properties.
      */
     fun reset() {
         debugHelp = ""
