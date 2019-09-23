@@ -157,9 +157,16 @@ class AkismetTest {
     @Test
     fun verifyKeyTest() {
         assertFalse(akismet.isVerifiedKey, "isVerifiedKey -> false")
+
         assertTrue(akismet.verifyKey(), "verifyKey()")
         assertEquals(akismet.response, "valid", "response -> valid")
         assertTrue(akismet.isVerifiedKey, "isVerifiedKey -> true")
+
+        akismet.reset()
+        assertTrue(
+            !akismet.isVerifiedKey && akismet.response.isEmpty() && akismet.httpStatusCode == 0,
+            " reset"
+        )
 
         assertFalse(Akismet("123456789012").verifyKey(), "verifyKey() --> false")
     }
@@ -190,6 +197,13 @@ class AkismetTest {
         val expected = "{\"status\":200}"
         assertEquals(akismet.response, expected, expected)
         assertTrue(akismet.errorMessage.contains(expected), "errorMessage contains $expected")
+
+        akismet.reset()
+
+        assertTrue(
+            akismet.httpStatusCode == 0 && akismet.errorMessage.isEmpty(),
+            "reset"
+        )
     }
 
     @Test
@@ -201,17 +215,6 @@ class AkismetTest {
             )
         )
         assertEquals(akismet.proTip, "test")
-    }
-
-    @Test
-    fun resetTest() {
-        akismet.reset()
-
-        //@TODO fix
-        assertTrue(
-            akismet.debugHelp == "" && akismet.errorMessage == "" && akismet.httpStatusCode == 0 &&
-                !akismet.isDiscard && !akismet.isVerifiedKey && akismet.proTip == "" && akismet.response == ""
-        )
     }
 
     @Test
@@ -236,6 +239,12 @@ class AkismetTest {
             FormBody.Builder().apply { add("is_test", "1") }.build()
         )
         assertTrue(akismet.debugHelp.isNotEmpty(), "debugHelp not empty")
+
+        akismet.reset()
+        assertTrue(
+            akismet.httpStatusCode == 0 && akismet.debugHelp.isEmpty() && akismet.response.isEmpty(),
+            "reset"
+        )
     }
 
     @Test
@@ -267,12 +276,9 @@ class AkismetTest {
         val libAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
         assertEquals(akismet.buildUserAgent(), libAgent, "libAgent")
 
-        akismet.applicationName = "My App"
-        assertEquals(akismet.buildUserAgent(), libAgent, "libAgent, no app")
-
-        akismet.applicationVersion = "1.0-test"
+        akismet.appUserAgent = "My App/1.0"
         assertEquals(
-            akismet.buildUserAgent(), "${akismet.applicationName}/${akismet.applicationVersion} | $libAgent",
+            akismet.buildUserAgent(), "${akismet.appUserAgent} | $libAgent",
             "my app"
         )
     }
