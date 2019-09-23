@@ -71,6 +71,12 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
         const val TYPE_SIGNUP = "signup"
         /**  A message sent between just a few users. */
         const val TYPE_MESSAGE = "message"
+        /** A pingback. */
+        const val TYPE_PINGBACK = "pingback"
+        /** A trackback. */
+        const val TYPE_TRACKBACK = "trackback"
+        /** A Twitter message. */
+        const val TYPE_TWEET = "tweet"
         /** Administrator role. If used, Akismet will always return false. */
         const val ADMIN_ROLE = "administrator"
     }
@@ -82,8 +88,18 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     var permalink: String = ""
 
     /**
-     * A string that describes the type of content being sent, such as  [TYPE_COMMENT], [TYPE_FORUM_POST], [TYPE_REPLY],
-     * [TYPE_BLOG_POST], [TYPE_CONTACT_FORM], [TYPE_SIGNUP], or [TYPE_MESSAGE].
+     * A string that describes the type of content being sent, such as:
+     *
+     * - [TYPE_COMMENT]
+     * - [TYPE_FORUM_POST]
+     * - [TYPE_REPLY]
+     * - [TYPE_BLOG_POST]
+     * - [TYPE_CONTACT_FORM]
+     * - [TYPE_SIGNUP]
+     * - [TYPE_MESSAGE]
+     * - [TYPE_PINGBACK]
+     * - [TYPE_TRACKBACK]
+     * - [TYPE_TWEET]
      *
      * You may send a value not listed above if none of them accurately describe your content.
      *
@@ -151,7 +167,7 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     var recheckReason: String = ""
 
     /**
-     * In PHP, there is an array of environmental variables called $_SERVER that contains information about the Web
+     * In PHP, there is an array of environmental variables called `$_SERVER` that contains information about the Web
      * server itself as well as a key/value for every HTTP header sent with the request. This data is highly useful to
      * Akismet.
      *
