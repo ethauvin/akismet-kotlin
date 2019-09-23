@@ -102,7 +102,7 @@ class AkismetTest {
         comment.authorEmail = "test@test.com"
         comment.authorUrl = "http://www.CheckOutMyCoolSite.com"
         comment.content = "It means a lot that you would take the time to review our software.  Thanks again."
-        comment.dateGmt = akismet.dateToGmt(date)
+        comment.dateGmt = Akismet.dateToGmt(date)
         comment.postModifiedGmt = comment.dateGmt
         comment.blogLang = "en"
         comment.blogCharset = "UTF-8"
@@ -279,7 +279,7 @@ class AkismetTest {
 
     @Test
     fun testJsonComment() {
-        val jsonComment = akismet.jsonComment(mockComment.toString())
+        val jsonComment = Akismet.jsonComment(mockComment.toString())
 
         assertEquals(jsonComment, mockComment, "equals")
         assertEquals(jsonComment.hashCode(), mockComment.hashCode(), "hashcode")
@@ -305,8 +305,8 @@ class AkismetTest {
     @Test
     fun dateToGmtTest() {
         val localDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault())
-        val utcDate = akismet.dateToGmt(date)
-        assertEquals(akismet.dateToGmt(localDateTime), utcDate, "dateGmt(localDateTime) = utcDate")
+        val utcDate = Akismet.dateToGmt(date)
+        assertEquals(Akismet.dateToGmt(localDateTime), utcDate, "dateGmt(localDateTime) = utcDate")
         assertEquals(comment.dateGmt, utcDate, "dateGmt == utcDate")
     }
 

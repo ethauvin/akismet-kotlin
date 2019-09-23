@@ -57,6 +57,44 @@ import java.util.logging.Logger
  */
 @Version(properties = "version.properties", type = "kt")
 open class Akismet(apiKey: String) {
+    companion object {
+        /**
+         * (Re)Create a [comment][AkismetComment] from a JSON string.
+         *
+         * @see [AkismetComment.toString]
+         */
+        @JvmStatic
+        fun jsonComment(json: String): AkismetComment {
+            return Json(JsonConfiguration.Stable).parse(AkismetComment.serializer(), json)
+        }
+
+        /**
+         * Convert a date to a UTC timestamp. (ISO 8601)
+         *
+         * @see [AkismetComment.dateGmt]
+         * @see [AkismetComment.postModifiedGmt]
+         */
+        @JvmStatic
+        fun dateToGmt(date: Date): String {
+            return DateTimeFormatter.ISO_DATE_TIME.format(
+                OffsetDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()).truncatedTo(ChronoUnit.SECONDS)
+            )
+        }
+
+        /**
+         * Convert a locale date/time to a UTC timestamp. (ISO 8601)
+         *
+         * @see [AkismetComment.dateGmt]
+         * @see [AkismetComment.postModifiedGmt]
+         */
+        @JvmStatic
+        fun dateToGmt(date: LocalDateTime): String {
+            return DateTimeFormatter.ISO_DATE_TIME.format(
+                date.atOffset(OffsetDateTime.now().offset).truncatedTo(ChronoUnit.SECONDS)
+            )
+        }
+    }
+
     private val apiEndPoint = "https://%srest.akismet.com/1.1/%s"
     private val libUserAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
     private val verifyMethod = "verify-key"
@@ -278,39 +316,6 @@ open class Akismet(apiKey: String) {
      */
     fun submitHam(comment: AkismetComment): Boolean {
         return executeMethod(buildApiUrl("submit-ham"), buildFormBody(comment))
-    }
-
-    /**
-     * (Re)Create a [comment][AkismetComment] from a JSON string.
-     *
-     * @see [AkismetComment.toString]
-     */
-    fun jsonComment(json: String): AkismetComment {
-        return Json(JsonConfiguration.Stable).parse(AkismetComment.serializer(), json)
-    }
-
-    /**
-     * Convert a date to a UTC timestamp. (ISO 8601)
-     *
-     * @see [AkismetComment.dateGmt]
-     * @see [AkismetComment.postModifiedGmt]
-     */
-    fun dateToGmt(date: Date): String {
-        return DateTimeFormatter.ISO_DATE_TIME.format(
-            OffsetDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()).truncatedTo(ChronoUnit.SECONDS)
-        )
-    }
-
-    /**
-     * Convert a locale date/time to a UTC timestamp. (ISO 8601)
-     *
-     * @see [AkismetComment.dateGmt]
-     * @see [AkismetComment.postModifiedGmt]
-     */
-    fun dateToGmt(date: LocalDateTime): String {
-        return DateTimeFormatter.ISO_DATE_TIME.format(
-            date.atOffset(OffsetDateTime.now().offset).truncatedTo(ChronoUnit.SECONDS)
-        )
     }
 
     /**

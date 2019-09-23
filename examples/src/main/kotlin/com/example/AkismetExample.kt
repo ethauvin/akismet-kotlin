@@ -2,6 +2,7 @@ package com.example
 
 import net.thauvin.erik.akismet.Akismet
 import net.thauvin.erik.akismet.AkismetComment
+import java.util.Date
 import kotlin.system.exitProcess
 
 fun main() {
@@ -19,6 +20,7 @@ fun main() {
     comment.author = "admin"
     comment.authorEmail = "test@test.com"
     comment.authorUrl = "http://www.CheckOutMyCoolSite.com"
+    comment.dateGmt = Akismet.dateToGmt(Date())
 //    comment.userRole = AkismetComment.ADMIN_ROLE
     comment.content = "It means a lot that you would take the time to review our software.  Thanks again."
 
@@ -40,7 +42,7 @@ fun main() {
                 System.err.println(akismet.errorMessage)
             }
         } else {
-            println("The comment is not SPAM (HAM) according to Akismet.")
+            println("The comment is not SPAM according to Akismet.")
 
             val hasBeenSubmitted = akismet.submitHam(comment)
 

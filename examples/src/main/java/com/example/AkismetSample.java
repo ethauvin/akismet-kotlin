@@ -3,6 +3,8 @@ package com.example;
 import net.thauvin.erik.akismet.Akismet;
 import net.thauvin.erik.akismet.AkismetComment;
 
+import java.util.Date;
+
 public class AkismetSample {
     public static void main(String[] args) {
         final Akismet akismet = new Akismet("YOUR_API_KEY", "YOUR_BLOG_URL");
@@ -17,6 +19,7 @@ public class AkismetSample {
         comment.setAuthor("admin");
         comment.setAuthorEmail("test@test.com");
         comment.setAuthorUrl("http://www.CheckOutMyCoolSite.com");
+        comment.setDateGmt(Akismet.dateToGmt(new Date()));
         // comment.setUserRole(AkismetComment.ADMIN_ROLE);
         comment.setContent("It means a lot that you would take the time to review our software.  Thanks again.");
 
