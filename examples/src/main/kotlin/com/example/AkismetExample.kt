@@ -6,20 +6,22 @@ import java.util.Date
 import kotlin.system.exitProcess
 
 fun main() {
-    val akismet = Akismet("YOUR_API_KEY", "YOUR_BLOG_URL")
+    val akismet = Akismet("YOUR_API_KEY", "http://yourblogdomainname.com/blog/")
     val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0")
 
-    comment.isTest = true
+    with(comment) {
+        isTest = true
 
-    comment.referrer = "http://www.google.com"
-    comment.permalink = "http://yourblogdomainname.com/blog/post=1"
-    comment.type = AkismetComment.TYPE_COMMENT
-    comment.author = "admin"
-    comment.authorEmail = "test@test.com"
-    comment.authorUrl = "http://www.CheckOutMyCoolSite.com"
-    comment.dateGmt = Akismet.dateToGmt(Date())
-//    comment.userRole = AkismetComment.ADMIN_ROLE
-    comment.content = "It means a lot that you would take the time to review our software.  Thanks again."
+        referrer = "http://www.google.com"
+        permalink = "${akismet.blog}post=1"
+        type = AkismetComment.TYPE_COMMENT
+        author = "admin"
+        authorEmail = "test@test.com"
+        authorUrl = "http://www.CheckOutMyCoolSite.com"
+        dateGmt = Akismet.dateToGmt(Date())
+//        userRole = AkismetComment.ADMIN_ROLE
+        content = "It means a lot that you would take the time to review our software.  Thanks again."
+    }
 
 //    with(akismet.logger) {
 //        addHandler(ConsoleHandler().apply { level = Level.FINE })

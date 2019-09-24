@@ -7,13 +7,13 @@ import java.util.Date;
 
 public class AkismetSample {
     public static void main(String[] args) {
-        final Akismet akismet = new Akismet("YOUR_API_KEY", "YOUR_BLOG_URL");
+        final Akismet akismet = new Akismet("YOUR_API_KEY", "http://yourblogdomainname.com/blog/");
         final AkismetComment comment = new AkismetComment("127.0.0.1", "curl/7.29.0");
 
         comment.setTest(true);
 
         comment.setReferrer("http://www.google.com");
-        comment.setPermalink("http://yourblogdomainname.com/blog/post=1");
+        comment.setPermalink(akismet.getBlog() + "post=1");
         comment.setType(AkismetComment.TYPE_COMMENT);
         comment.setAuthor("admin");
         comment.setAuthorEmail("test@test.com");

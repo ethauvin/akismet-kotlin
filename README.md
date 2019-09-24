@@ -3,9 +3,9 @@
 
 # [Akismet](https://www.akismet.com) for Kotlin/Java
 
-Akismet for Kotlin/Java is a pretty complete and straightforward implementation of the [Automattic's Akismet](https://www.akismet.com/) API, a free service that can be used to actively stop comments spam.
+Akismet for Kotlin/Java is a pretty complete and straightforward implementation of the [Automattic's Akismet](https://akismet.com/development/api/) API, a free service that can be used to actively stop comments spam.
 
-## Examples
+## Examples (TL;DR)
 
 #### Kotlin
 
@@ -20,12 +20,15 @@ comment.setAuthorEmail("test@test.com");
 comment.setAuthorUrl("http://www.CheckOutMyCoolSite.com");
 comment.setDateGmt(Akismet.dateToGmt(new Date()));
 comment.setContent("It means a lot that you would take the time to review our software.");
+// ...
 
 val isSpam = akismet.checkComment(comment)
 if (isSpam) {
     // ...
 }
 ```
+
+[View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/src/main/kotlin/com/example/AkismetExample.kt)
 
 #### Java
 
@@ -40,12 +43,15 @@ comment.setAuthorEmail("test@test.com");
 comment.setAuthorUrl("http://www.CheckOutMyCoolSite.com");
 comment.setDateGmt(Akismet.dateToGmt(new Date()));
 comment.setContent("It means a lot that you would take the time to review our software.");
+//...
 
 final boolean isSpam = akismet.checkComment(comment);
 if (isSpam) {
     // ...
 }
 ```
+
+[View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/src/main/java/com/example/AkismetSample.java)
 
 ### HttpServletRequest
 
@@ -54,6 +60,8 @@ The more information is sent to Akismet, the more accurate the response is. An [
 ```kotlin
 AkismetComment(request = context.getRequest())
 ```
+
+[View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/src/main/kotlin/com/example/AkismetServlet.kt)
 
 This will ensure that the user's IP, agent, referrer and various environment variables are automatically extracted from the request.
 
@@ -67,7 +75,7 @@ var json = comment.toString()
 
 At a latter time, the comment can the be submitted:
 
-```
+```kotlin
 akismet.submitSpam(Akismet.jsonComment(json))
 ```
 
