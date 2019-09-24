@@ -7,10 +7,7 @@ import kotlin.system.exitProcess
 
 fun main() {
     val akismet = Akismet("YOUR_API_KEY", "YOUR_BLOG_URL")
-    val comment = AkismetComment(
-        userIp = "127.0.0.1",
-        userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
-    )
+    val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0")
 
     comment.isTest = true
 

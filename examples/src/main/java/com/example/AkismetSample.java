@@ -8,8 +8,7 @@ import java.util.Date;
 public class AkismetSample {
     public static void main(String[] args) {
         final Akismet akismet = new Akismet("YOUR_API_KEY", "YOUR_BLOG_URL");
-        final AkismetComment comment = new AkismetComment("127.0.0.1",
-                                                          "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6");
+        final AkismetComment comment = new AkismetComment("127.0.0.1", "curl/7.29.0");
 
         comment.setTest(true);
 
