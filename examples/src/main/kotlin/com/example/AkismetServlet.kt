@@ -16,6 +16,8 @@ class AkismetServlet : HttpServlet() {
     public override fun service(request: HttpServletRequest, response: HttpServletResponse) {
         val id = request.getParameter("id")
 
+        akismet.appUserAgent = request.servletContext.serverInfo
+        
         val comment = AkismetComment(request)
         with(comment) {
             permalink = "${akismet.blog}/comment/$id"
