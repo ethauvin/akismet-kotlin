@@ -208,7 +208,7 @@ open class Akismet(apiKey: String) {
         require(
             (apiKey.isNotBlank() &&
                 apiKey.length == 12 &&
-                apiKey.matches(Regex("[A-Za-z0-9]+")))
+                apiKey.matches(Regex("[A-Za-z0-9\\-]+")))
         ) {
             "An Akismet API key must be specified."
         }

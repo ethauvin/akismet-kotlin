@@ -95,35 +95,39 @@ class AkismetTest {
             level = Level.FINE
         }
 
-        comment.referrer = referer
-        comment.permalink = "http://yourblogdomainname.com/blog/post=1"
-        comment.type = AkismetComment.TYPE_COMMENT
-        comment.author = "admin"
-        comment.authorEmail = "test@test.com"
-        comment.authorUrl = "http://www.CheckOutMyCoolSite.com"
-        comment.content = "It means a lot that you would take the time to review our software.  Thanks again."
-        comment.dateGmt = Akismet.dateToGmt(date)
-        comment.postModifiedGmt = comment.dateGmt
-        comment.blogLang = "en"
-        comment.blogCharset = "UTF-8"
-        comment.userRole = AkismetComment.ADMIN_ROLE
-        comment.isTest = true
+        with(comment) {
+            referrer = referer
+            permalink = "http://yourblogdomainname.com/blog/post=1"
+            type = AkismetComment.TYPE_COMMENT
+            author = "admin"
+            authorEmail = "test@test.com"
+            authorUrl = "http://www.CheckOutMyCoolSite.com"
+            content = "It means a lot that you would take the time to review our software.  Thanks again."
+            dateGmt = Akismet.dateToGmt(date)
+            postModifiedGmt = dateGmt
+            blogLang = "en"
+            blogCharset = "UTF-8"
+            userRole = AkismetComment.ADMIN_ROLE
+            isTest = true
+        }
 
         akismet.logger.info(comment.toString())
 
-        mockComment.permalink = comment.permalink
-        mockComment.type = comment.type
-        mockComment.authorEmail = comment.authorEmail
-        mockComment.author = comment.author
-        mockComment.authorUrl = comment.authorUrl
-        mockComment.content = comment.content
-        mockComment.dateGmt = comment.dateGmt
-        mockComment.postModifiedGmt = comment.dateGmt
-        mockComment.blogLang = comment.blogLang
-        mockComment.blogCharset = comment.blogCharset
-        mockComment.userRole = comment.userRole
-        mockComment.recheckReason = "edit"
-        mockComment.isTest = true
+        with(mockComment) {
+            permalink = comment.permalink
+            type = comment.type
+            authorEmail = comment.authorEmail
+            author = comment.author
+            authorUrl = comment.authorUrl
+            content = comment.content
+            dateGmt = comment.dateGmt
+            postModifiedGmt = comment.dateGmt
+            blogLang = comment.blogLang
+            blogCharset = comment.blogCharset
+            userRole = comment.userRole
+            recheckReason = "edit"
+            isTest = true
+        }
 
         akismet.logger.info(mockComment.toString())
     }
@@ -158,28 +162,29 @@ class AkismetTest {
 
     @Test
     fun verifyKeyTest() {
-        assertFalse(akismet.isVerifiedKey, "isVerifiedKey -> false")
+        with(akismet) {
+            assertFalse(isVerifiedKey, "isVerifiedKey -> false")
 
-        assertTrue(akismet.verifyKey(), "verifyKey()")
-        assertEquals(akismet.response, "valid", "response -> valid")
-        assertTrue(akismet.isVerifiedKey, "isVerifiedKey -> true")
+            assertTrue(verifyKey(), "verifyKey()")
+            assertEquals(response, "valid", "response -> valid")
+            assertTrue(isVerifiedKey, "isVerifiedKey -> true")
 
-        akismet.reset()
-        assertTrue(
-            !akismet.isVerifiedKey && akismet.response.isEmpty() && akismet.httpStatusCode == 0,
-            " reset"
-        )
+            reset()
+            assertTrue(!isVerifiedKey && response.isEmpty() && httpStatusCode == 0, " reset")
+        }
 
         assertFalse(Akismet("123456789012").verifyKey(), "verifyKey() --> false")
     }
 
     @Test
     fun checkMockComment() {
-        assertEquals(mockComment.userIp, comment.userIp, "userIp")
-        assertEquals(mockComment.userAgent, comment.userAgent, "userAgent")
-        assertEquals(mockComment.referrer, comment.referrer, "referrer")
-        assertTrue(mockComment.serverEnv.containsKey("HTTP_ACCEPT_ENCODING"), "HTTP_ACCEPT_ENCODING")
-        assertTrue(mockComment.serverEnv.containsKey("REQUEST_URI"), "REQUEST_URI")
+        with(mockComment) {
+            assertEquals(userIp, comment.userIp, "userIp")
+            assertEquals(userAgent, comment.userAgent, "userAgent")
+            assertEquals(referrer, comment.referrer, "referrer")
+            assertTrue(serverEnv.containsKey("HTTP_ACCEPT_ENCODING"), "HTTP_ACCEPT_ENCODING")
+            assertTrue(serverEnv.containsKey("REQUEST_URI"), "REQUEST_URI")
+        }
     }
 
     @Test
@@ -189,84 +194,87 @@ class AkismetTest {
         }
 
         val empty = AkismetComment("", "")
-        assertFalse(empty.isTest, "isTest")
-        assertEquals(empty.permalink, "", "permalink")
-        assertEquals(empty.type, "", "type")
-        assertEquals(empty.authorEmail, "", "authorEmail")
-        assertEquals(empty.author, "", "author")
-        assertEquals(empty.authorUrl, "", "authorUrl")
-        assertEquals(empty.content, "", "content")
-        assertEquals(empty.dateGmt, "", "dateGmt")
-        assertEquals(empty.postModifiedGmt, "", "postModifiedGmt")
-        assertEquals(empty.blogLang, "", "blogLang")
-        assertEquals(empty.blogCharset, "", "blogCharset")
-        assertEquals(empty.userRole, "", "userRole")
-        assertEquals(empty.recheckReason, "", "recheckReason")
-        assertEquals(empty.serverEnv.size, 0, "serverEnv")
+        with(empty) {
+            assertFalse(isTest, "isTest")
+            assertEquals(permalink, "", "permalink")
+            assertEquals(type, "", "type")
+            assertEquals(authorEmail, "", "authorEmail")
+            assertEquals(author, "", "author")
+            assertEquals(authorUrl, "", "authorUrl")
+            assertEquals(content, "", "content")
+            assertEquals(dateGmt, "", "dateGmt")
+            assertEquals(postModifiedGmt, "", "postModifiedGmt")
+            assertEquals(blogLang, "", "blogLang")
+            assertEquals(blogCharset, "", "blogCharset")
+            assertEquals(userRole, "", "userRole")
+            assertEquals(recheckReason, "", "recheckReason")
+            assertEquals(serverEnv.size, 0, "serverEnv")
+        }
     }
 
     @Test
     fun emptyResponseTest() {
-        assertTrue(
-            akismet.executeMethod(
-                "https://postman-echo.com/status/200".toHttpUrlOrNull(), emptyFormBody, true
+        with(akismet) {
+            assertTrue(
+                executeMethod(
+                    "https://postman-echo.com/status/200".toHttpUrlOrNull(), emptyFormBody, true
+                )
             )
-        )
-        val expected = "{\"status\":200}"
-        assertEquals(akismet.response, expected, expected)
-        assertTrue(akismet.errorMessage.contains(expected), "errorMessage contains $expected")
+            val expected = "{\"status\":200}"
+            assertEquals(response, expected, expected)
+            assertTrue(errorMessage.contains(expected), "errorMessage contains $expected")
 
-        akismet.reset()
-
-        assertTrue(
-            akismet.httpStatusCode == 0 && akismet.errorMessage.isEmpty(),
-            "reset"
-        )
+            reset()
+            assertTrue(httpStatusCode == 0 && errorMessage.isEmpty(), "reset")
+        }
     }
 
     @Test
     fun proTipResponseTest() {
-        assertFalse(
-            akismet.executeMethod(
-                "https://postman-echo.com/response-headers?x-akismet-pro-tip=discard".toHttpUrlOrNull(),
-                emptyFormBody
+        with(akismet) {
+            assertFalse(
+                executeMethod(
+                    "https://postman-echo.com/response-headers?x-akismet-pro-tip=discard".toHttpUrlOrNull(),
+                    emptyFormBody
+                )
             )
-        )
-        assertEquals(akismet.proTip, "discard")
-        assertTrue(akismet.isDiscard, "isDiscard")
+            assertEquals(proTip, "discard")
+            assertTrue(isDiscard, "isDiscard")
 
-        akismet.reset()
-        assertTrue(!akismet.isDiscard && akismet.response.isEmpty() && akismet.httpStatusCode == 0)
+            reset()
+            assertTrue(!isDiscard && response.isEmpty() && httpStatusCode == 0)
+        }
     }
 
     @Test
     fun checkCommentTest() {
-        assertFalse(akismet.checkComment(comment), "check_comment(admin) -> false")
-        assertEquals(akismet.response, "false", "response -> false")
-        comment.userRole = ""
-        assertTrue(akismet.checkComment(comment), "check_comment -> true")
-        assertEquals(akismet.response, "true", "response -> true")
+        with(akismet) {
+            assertFalse(checkComment(comment), "check_comment(admin) -> false")
+            assertEquals(response, "false", "response -> false")
+            comment.userRole = ""
+            assertTrue(checkComment(comment), "check_comment -> true")
+            assertEquals(response, "true", "response -> true")
 
-        assertFalse(akismet.checkComment(mockComment), "check_comment(request) -> false")
-        mockComment.userRole = ""
-        assertTrue(akismet.checkComment(mockComment), "check_comment(request) -> true")
+            assertFalse(checkComment(mockComment), "check_comment(request) -> false")
+            mockComment.userRole = ""
+            assertTrue(checkComment(mockComment), "check_comment(request) -> true")
 
-        assertEquals(akismet.httpStatusCode, 200, "status code")
+            assertEquals(httpStatusCode, 200, "status code")
+        }
     }
 
     @Test
     fun executeMethodTest() {
-        akismet.executeMethod(
-            "https://$apiKey.rest.akismet.com/1.1/comment-check".toHttpUrlOrNull(),
-            FormBody.Builder().apply { add("is_test", "1") }.build()
-        )
-        assertTrue(akismet.debugHelp.isNotEmpty(), "debugHelp not empty")
+        with(akismet) {
+            executeMethod(
+                "https://$apiKey.rest.akismet.com/1.1/comment-check".toHttpUrlOrNull(),
+                FormBody.Builder().apply { add("is_test", "1") }.build()
+            )
+            assertTrue(debugHelp.isNotEmpty(), "debugHelp not empty")
 
-        akismet.reset()
-        assertTrue(
-            akismet.httpStatusCode == 0 && akismet.debugHelp.isEmpty() && akismet.response.isEmpty(),
-            "reset"
-        )
+            reset()
+            assertTrue(httpStatusCode == 0 && debugHelp.isEmpty() && response.isEmpty(), "reset")
+        }
     }
 
     @Test
@@ -332,14 +340,17 @@ class AkismetTest {
 
     private fun getMockRequest(): HttpServletRequest {
         val request = Mockito.mock(HttpServletRequest::class.java)
-        Mockito.`when`(request.remoteAddr).thenReturn(comment.userIp)
-        Mockito.`when`(request.requestURI).thenReturn("/blog/post=1")
-        Mockito.`when`(request.getHeader("User-Agent")).thenReturn(comment.userAgent)
-        Mockito.`when`(request.getHeader("referer")).thenReturn(referer)
-        Mockito.`when`(request.getHeader("Cookie")).thenReturn("name=value; name2=value2; name3=value3")
-        Mockito.`when`(request.getHeader("Accept-Encoding")).thenReturn("gzip")
-        Mockito.`when`(request.headerNames)
-            .thenReturn(Collections.enumeration(listOf("User-Agent", "referer", "Cookie", "Accept-Encoding", "Null")))
+        with(request) {
+            Mockito.`when`(remoteAddr).thenReturn(comment.userIp)
+            Mockito.`when`(requestURI).thenReturn("/blog/post=1")
+            Mockito.`when`(getHeader("User-Agent")).thenReturn(comment.userAgent)
+            Mockito.`when`(getHeader("referer")).thenReturn(referer)
+            Mockito.`when`(getHeader("Cookie")).thenReturn("name=value; name2=value2; name3=value3")
+            Mockito.`when`(getHeader("Accept-Encoding")).thenReturn("gzip")
+            Mockito.`when`(headerNames).thenReturn(
+                Collections.enumeration(listOf("User-Agent", "referer", "Cookie", "Accept-Encoding", "Null"))
+            )
+        }
         return request
     }
 }

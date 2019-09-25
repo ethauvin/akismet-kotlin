@@ -5,10 +5,12 @@ import net.thauvin.erik.akismet.AkismetComment
 import java.io.IOException
 import java.util.Date
 import javax.servlet.ServletException
+import javax.servlet.annotation.WebServlet
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+@WebServlet(description = "Akismet Servlet", displayName = "Akismet", urlPatterns = ["/comment/*"])
 class AkismetServlet : HttpServlet() {
     private val akismet = Akismet("YOUR_API_KEY", "http://yourblogdomainname.com/blog/")
 
@@ -17,7 +19,7 @@ class AkismetServlet : HttpServlet() {
         val id = request.getParameter("id")
 
         akismet.appUserAgent = request.servletContext.serverInfo
-        
+
         val comment = AkismetComment(request)
         with(comment) {
             permalink = "${akismet.blog}/comment/$id"

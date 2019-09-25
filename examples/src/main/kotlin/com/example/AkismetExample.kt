@@ -6,7 +6,7 @@ import java.util.Date
 import kotlin.system.exitProcess
 
 fun main() {
-    val akismet = Akismet("YOUR_API_KEY", "http://yourblogdomainname.com/blog/")
+    val akismet = Akismet(apiKey = "YOUR_API_KEY", blog = "http://yourblogdomainname.com/blog/")
     val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0")
 
     with(comment) {

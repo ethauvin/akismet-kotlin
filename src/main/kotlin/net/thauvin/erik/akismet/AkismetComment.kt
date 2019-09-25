@@ -193,7 +193,7 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      * @see [serverEnv]
      */
     constructor(request: HttpServletRequest) : this(
-        request.remoteAddr.ifNull(),
+        request.remoteAddr,
         request.getHeader("User-Agent").ifNull()
     ) {
         referrer = request.getHeader("referer").ifNull()
@@ -266,17 +266,13 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     }
 }
 
-private fun buildServerEnv(request: HttpServletRequest): HashMap<String, String> {
+private fun buildServerEnv(request: HttpServletRequest): Map<String, String> {
     val params = HashMap<String, String>()
 
-    if (request.remoteAddr != null)
-        params["REMOTE_ADDR"] = request.remoteAddr
-    if (request.requestURI != null)
-        params["REQUEST_URI"] = request.requestURI
+    params["REMOTE_ADDR"] = request.remoteAddr
+    params["REQUEST_URI"] = request.requestURI
 
-    val names = request.headerNames
-    while (names.hasMoreElements()) {
-        val name = names.nextElement()
+    for (name in request.headerNames) {
         if (!name.equals("cookie", true)) {
             params["HTTP_${name.toUpperCase().replace('-', '_')}"] = request.getHeader(name).ifNull()
         }
