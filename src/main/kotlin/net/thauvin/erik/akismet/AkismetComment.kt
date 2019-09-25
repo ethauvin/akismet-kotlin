@@ -37,12 +37,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import javax.servlet.http.HttpServletRequest
 
-private fun String?.ifNull(): String {
-    if (this == null) {
-        return ""
-    }
-    return this
-}
+private fun String?.ifNull() = this ?: ""
 
 /**
  * A comment to send to Akismet.
