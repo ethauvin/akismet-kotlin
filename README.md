@@ -12,14 +12,16 @@ Akismet for Kotlin/Java is a pretty complete and straightforward implementation 
 ```kotlin
 val akismet = Akismet("YOUR_API_KEY", "YOUR_BLOG_URL")
 val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0")
-
-comment.setReferrer("http://www.google.com");
-comment.setType(AkismetComment.TYPE_COMMENT);
-comment.setAuthor("admin");
-comment.setAuthorEmail("test@test.com");
-comment.setAuthorUrl("http://www.CheckOutMyCoolSite.com");
-comment.setDateGmt(Akismet.dateToGmt(new Date()));
-comment.setContent("It means a lot that you would take the time to review our software.");
+              
+with(comment) {
+    referrer = "http://www.google.com"
+    type = AkismetComment.TYPE_COMMENT
+    author = "admin"
+    authorEmail = "test@test.com"
+    authorUrl = "http://www.CheckOutMyCoolSite.com"
+    dateGmt = Akismet.dateToGmt(Date())
+    content = "It means a lot that you would take the time to review our software."
+}
 // ...
 
 val isSpam = akismet.checkComment(comment)
