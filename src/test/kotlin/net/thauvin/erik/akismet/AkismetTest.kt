@@ -152,6 +152,7 @@ class AkismetTest {
         expectThrows(IllegalArgumentException::class.java) {
             akismet.blog = ""
         }
+
         assertEquals(akismet.blog, blog, "valid property")
     }
 
@@ -186,10 +187,26 @@ class AkismetTest {
         expectThrows(IllegalArgumentException::class.java) {
             akismet.checkComment(AkismetComment("", ""))
         }
+
+        val empty = AkismetComment("", "")
+        assertFalse(empty.isTest, "isTest")
+        assertEquals(empty.permalink, "", "permalink")
+        assertEquals(empty.type, "", "type")
+        assertEquals(empty.authorEmail, "", "authorEmail")
+        assertEquals(empty.author, "", "author")
+        assertEquals(empty.authorUrl, "", "authorUrl")
+        assertEquals(empty.content, "", "content")
+        assertEquals(empty.dateGmt, "", "dateGmt")
+        assertEquals(empty.postModifiedGmt, "", "postModifiedGmt")
+        assertEquals(empty.blogLang, "", "blogLang")
+        assertEquals(empty.blogCharset, "", "blogCharset")
+        assertEquals(empty.userRole, "", "userRole")
+        assertEquals(empty.recheckReason, "", "recheckReason")
+        assertEquals(empty.serverEnv.size, 0, "serverEnv")
     }
 
     @Test
-    fun testEmptyResponse() {
+    fun emptyResponseTest() {
         assertTrue(
             akismet.executeMethod(
                 "https://postman-echo.com/status/200".toHttpUrlOrNull(), emptyFormBody, true
@@ -208,7 +225,7 @@ class AkismetTest {
     }
 
     @Test
-    fun testProTipResponse() {
+    fun proTipResponseTest() {
         assertFalse(
             akismet.executeMethod(
                 "https://postman-echo.com/response-headers?x-akismet-pro-tip=discard".toHttpUrlOrNull(),
@@ -278,7 +295,7 @@ class AkismetTest {
     }
 
     @Test
-    fun testJsonComment() {
+    fun jsonCommentTest() {
         val jsonComment = Akismet.jsonComment(mockComment.toString())
 
         assertEquals(jsonComment, mockComment, "equals")
@@ -287,11 +304,14 @@ class AkismetTest {
         assertNotEquals(jsonComment, comment, "json is different")
         assertNotEquals(jsonComment.hashCode(), comment.hashCode(), "json hashcode is different")
 
+        jsonComment.recheckReason = ""
+        assertNotEquals(jsonComment, mockComment, "not equals on change")
+
         assertNotEquals(this, comment, "wrong object")
     }
 
     @Test
-    fun testBuildUserAgent() {
+    fun buildUserAgentTest() {
         val libAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
         assertEquals(akismet.buildUserAgent(), libAgent, "libAgent")
 
