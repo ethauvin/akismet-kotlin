@@ -37,6 +37,13 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import javax.servlet.http.HttpServletRequest
 
+private fun String?.ifNull(): String {
+    if (this == null) {
+        return ""
+    }
+    return this
+}
+
 /**
  * A comment to send to Akismet.
  *
@@ -185,7 +192,10 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      *
      * @see [serverEnv]
      */
-    constructor(request: HttpServletRequest) : this(request.remoteAddr.ifNull(), request.getHeader("User-Agent").ifNull()) {
+    constructor(request: HttpServletRequest) : this(
+        request.remoteAddr.ifNull(),
+        request.getHeader("User-Agent").ifNull()
+    ) {
         referrer = request.getHeader("referer").ifNull()
         serverEnv = buildServerEnv(request)
     }
@@ -273,11 +283,4 @@ private fun buildServerEnv(request: HttpServletRequest): HashMap<String, String>
     }
 
     return params
-}
-
-private fun String.ifNull(): String {
-    if (this == null) {
-       return ""
-    }
-    return this
 }
