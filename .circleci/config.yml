@@ -1,3 +1,4 @@
+version: 2
 defaults: &defaults
   working_directory: ~/repo
   environment:
@@ -10,7 +11,7 @@ defaults_gradle: &defaults_gradle
     - checkout
     - restore_cache:
         keys:
-          - gradle-dependencies-{{ checksum "build.gradle" }}
+          - gradle-dependencies-{{ checksum "build.gradle.kts" }}
           # fallback to using the latest cache if no exact match is found
           - gradle-dependencies-
     - run:
@@ -18,7 +19,7 @@ defaults_gradle: &defaults_gradle
         command: ./gradlew dependencies
     - save_cache:
         paths: ~/.m2
-        key: gradle-dependencies-{{ checksum "build.gradle" }}
+        key: gradle-dependencies-{{ checksum "build.gradle.kts" }}
     - run:
         name: Run All Checks
         command: ./gradlew check
@@ -28,7 +29,6 @@ defaults_gradle: &defaults_gradle
     - store_test_results:
         path: build/reports/
 
-version: 2
 jobs:
   build_gradle_jdk12:
     <<: *defaults
