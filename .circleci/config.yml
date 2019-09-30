@@ -1,3 +1,5 @@
+version: 2
+
 defaults: &defaults
   working_directory: ~/repo
   environment:
@@ -9,7 +11,7 @@ defaults_gradle: &defaults_gradle
   steps:
     - checkout
     - restore_cache:
-        keys:
+        key:
           - gradle-dependencies-{{ checksum "build.gradle" }}
           # fallback to using the latest cache if no exact match is found
           - gradle-dependencies-
@@ -27,8 +29,6 @@ defaults_gradle: &defaults_gradle
         destination: reports
     - store_test_results:
         path: build/reports/
-
-version: 2.0
 
 jobs:
   build_gradle_jdk12:
