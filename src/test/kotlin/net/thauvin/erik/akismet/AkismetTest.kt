@@ -35,6 +35,7 @@ package net.thauvin.erik.akismet
 import okhttp3.FormBody
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.testng.Assert.assertEquals
 import org.testng.Assert.assertFalse
 import org.testng.Assert.assertNotEquals
@@ -182,8 +183,12 @@ class AkismetTest {
             assertEquals(userIp, comment.userIp, "userIp")
             assertEquals(userAgent, comment.userAgent, "userAgent")
             assertEquals(referrer, comment.referrer, "referrer")
-            assertTrue(serverEnv.containsKey("HTTP_ACCEPT_ENCODING"), "HTTP_ACCEPT_ENCODING")
+            assertEquals(serverEnv["HTTP_ACCEPT_ENCODING"], "gzip", "HTTP_ACCEPT_ENCODING")
             assertTrue(serverEnv.containsKey("REQUEST_URI"), "REQUEST_URI")
+            assertEquals(serverEnv["REMOTE_ADDR"], comment.userIp, "REMOTE_ADDR")
+            assertTrue(serverEnv["HTTP_NULL"].toString().isEmpty(), "HTTP_NULL")
+            assertFalse(serverEnv.containsKey("HTTP_COOKIE"), "HTTP_COOKIE")
+            assertEquals(serverEnv.size, 6, "serverEnv size")
         }
     }
 
@@ -341,13 +346,13 @@ class AkismetTest {
     private fun getMockRequest(): HttpServletRequest {
         val request = Mockito.mock(HttpServletRequest::class.java)
         with(request) {
-            Mockito.`when`(remoteAddr).thenReturn(comment.userIp)
-            Mockito.`when`(requestURI).thenReturn("/blog/post=1")
-            Mockito.`when`(getHeader("User-Agent")).thenReturn(comment.userAgent)
-            Mockito.`when`(getHeader("referer")).thenReturn(referer)
-            Mockito.`when`(getHeader("Cookie")).thenReturn("name=value; name2=value2; name3=value3")
-            Mockito.`when`(getHeader("Accept-Encoding")).thenReturn("gzip")
-            Mockito.`when`(headerNames).thenReturn(
+            `when`(remoteAddr).thenReturn(comment.userIp)
+            `when`(requestURI).thenReturn("/blog/post=1")
+            `when`(getHeader("referer")).thenReturn(referer)
+            `when`(getHeader("Cookie")).thenReturn("name=value; name2=value2; name3=value3")
+            `when`(getHeader("User-Agent")).thenReturn(comment.userAgent)
+            `when`(getHeader("Accept-Encoding")).thenReturn("gzip")
+            `when`(headerNames).thenReturn(
                 Collections.enumeration(listOf("User-Agent", "referer", "Cookie", "Accept-Encoding", "Null"))
             )
         }
