@@ -1,4 +1,3 @@
-version: 2
 defaults: &defaults
   working_directory: ~/repo
   environment:
@@ -29,6 +28,7 @@ defaults_gradle: &defaults_gradle
     - store_test_results:
         path: build/reports/
 
+version: 2
 jobs:
   build_gradle_jdk12:
     <<: *defaults
