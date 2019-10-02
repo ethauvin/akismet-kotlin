@@ -178,7 +178,7 @@ class AkismetTest {
     }
 
     @Test
-    fun checkMockComment() {
+    fun mockCommentTest() {
         with(mockComment) {
             assertEquals(userIp, comment.userIp, "userIp")
             assertEquals(userAgent, comment.userAgent, "userAgent")
@@ -214,36 +214,40 @@ class AkismetTest {
             assertEquals(blogCharset, "", "blogCharset")
             assertEquals(userRole, "", "userRole")
             assertEquals(recheckReason, "", "recheckReason")
-            assertEquals(serverEnv.size, 0, "serverEnv")
+            assertEquals(serverEnv.size, 0, "serverEnv size")
 
-            referrer = null
-            permalink = null
-            type = null
-            authorEmail = null
-            author = null
-            authorUrl = null
-            content = null
-            dateGmt = null
-            postModifiedGmt = null
-            blogLang = null
-            blogCharset = null
-            userRole = null
-            recheckReason = null
+            for (s in listOf("test", "", null)) {
+                referrer = s
+                permalink = s
+                type = s
+                authorEmail = s
+                author = s
+                authorUrl = s
+                content = s
+                dateGmt = s
+                postModifiedGmt = s
+                blogLang = s
+                blogCharset = s
+                userRole = s
+                recheckReason = s
 
-            assertEquals(referrer, "", "referrer null")
-            assertEquals(permalink, "", "permalink null")
-            assertEquals(type, "", "type null")
-            assertEquals(authorEmail, "", "authorEmail null")
-            assertEquals(author, "", "author null")
-            assertEquals(authorUrl, "", "authorUrl null")
-            assertEquals(content, "", "content null")
-            assertEquals(dateGmt, "", "dateGmt null")
-            assertEquals(postModifiedGmt, "", "postModifiedGmt null")
-            assertEquals(blogLang, "", "blogLang null")
-            assertEquals(blogCharset, "", "blogCharset null")
-            assertEquals(userRole, "", "userRole null")
-            assertEquals(recheckReason, "", "recheckReason null")
-            assertEquals(serverEnv.size, 0, "serverEnv null")
+                val expected = if (s.isNullOrEmpty()) "" else s
+
+                assertEquals(referrer, expected, "referrer: [$s]")
+                assertEquals(permalink, expected, "permalink: [$s]")
+                assertEquals(type, expected, "type: [$s]")
+                assertEquals(authorEmail, expected, "authorEmail: [$s]")
+                assertEquals(author, expected, "author: [$s]")
+                assertEquals(authorUrl, expected, "authorUrl: [$s]")
+                assertEquals(content, expected, "content: [$s]")
+                assertEquals(dateGmt, expected, "dateGmt: [$s]")
+                assertEquals(postModifiedGmt, expected, "postModifiedGmt: [$s]")
+                assertEquals(blogLang, expected, "blogLang: [$s]")
+                assertEquals(blogCharset, expected, "blogCharset: [$s]")
+                assertEquals(userRole, expected, "userRole: [$s]")
+                assertEquals(recheckReason, expected, "recheckReason: [$s]")
+                assertEquals(serverEnv.size, 0, "serverEnv size: [$s]")
+            }
         }
     }
 
@@ -290,9 +294,11 @@ class AkismetTest {
             assertTrue(checkComment(comment), "check_comment -> true")
             assertEquals(response, "true", "response -> true")
 
-            assertFalse(checkComment(mockComment), "check_comment(request) -> false")
+            assertFalse(checkComment(mockComment), "check_comment(mock) -> false")
+            assertEquals(response, "false", "mock response -> false")
             mockComment.userRole = ""
-            assertTrue(checkComment(mockComment), "check_comment(request) -> true")
+            assertTrue(checkComment(mockComment), "check_comment(mock) -> true")
+            assertEquals(response, "true", "mock response -> true")
 
             assertEquals(httpStatusCode, 200, "status code")
         }
