@@ -401,47 +401,47 @@ open class Akismet(apiKey: String) {
                 add("user_ip", userIp)
                 add("user_agent", userAgent)
 
-                if (referrer.isNotBlank()) {
-                    add("referrer", referrer)
+                if (referrer!!.isNotBlank()) {
+                    add("referrer", referrer.toString())
                 }
-                if (permalink.isNotBlank()) {
-                    add("permalink", permalink)
+                if (permalink!!.isNotBlank()) {
+                    add("permalink", permalink.toString())
                 }
-                if (type.isNotBlank()) {
-                    add("comment_type", type)
+                if (type!!.isNotBlank()) {
+                    add("comment_type", type.toString())
                 }
-                if (author.isNotBlank()) {
-                    add("comment_author", author)
+                if (author!!.isNotBlank()) {
+                    add("comment_author", author.toString())
                 }
-                if (authorEmail.isNotBlank()) {
-                    add("comment_author_email", authorEmail)
+                if (authorEmail!!.isNotBlank()) {
+                    add("comment_author_email", authorEmail.toString())
                 }
-                if (authorUrl.isNotBlank()) {
-                    add("comment_author_url", authorUrl)
+                if (authorUrl!!.isNotBlank()) {
+                    add("comment_author_url", authorUrl.toString())
                 }
-                if (content.isNotBlank()) {
-                    add("comment_content", content)
+                if (content!!.isNotBlank()) {
+                    add("comment_content", content.toString())
                 }
-                if (dateGmt.isNotBlank()) {
-                    add("comment_date_gmt", dateGmt)
+                if (dateGmt!!.isNotBlank()) {
+                    add("comment_date_gmt", dateGmt.toString())
                 }
-                if (postModifiedGmt.isNotBlank()) {
-                    add("comment_post_modified_gmt", postModifiedGmt)
+                if (postModifiedGmt!!.isNotBlank()) {
+                    add("comment_post_modified_gmt", postModifiedGmt.toString())
                 }
-                if (blogLang.isNotBlank()) {
-                    add("blog_lang", blogLang)
+                if (blogLang!!.isNotBlank()) {
+                    add("blog_lang", blogLang.toString())
                 }
-                if (blogCharset.isNotBlank()) {
-                    add("blog_charset", blogCharset)
+                if (blogCharset!!.isNotBlank()) {
+                    add("blog_charset", blogCharset.toString())
                 }
-                if (userRole.isNotBlank()) {
-                    add("user_role", userRole)
+                if (userRole!!.isNotBlank()) {
+                    add("user_role", userRole.toString())
                 }
                 if (isTest) {
                     add("is_test", "1")
                 }
-                if (recheckReason.isNotBlank()) {
-                    add("recheck_reason", recheckReason)
+                if (recheckReason!!.isNotBlank()) {
+                    add("recheck_reason", recheckReason.toString())
                 }
 
                 serverEnv.forEach { (k, v) -> add(k, v) }

@@ -84,10 +84,16 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     }
 
     /** The content of the referer header should be set here. */
-    var referrer: String = ""
+    var referrer: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /** The full permanent URL of the entry the comment was submitted to. */
-    var permalink: String = ""
+    var permalink: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /**
      * A string that describes the type of content being sent, such as:
@@ -107,19 +113,34 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      *
      * This is further explained [here](http://blog.akismet.com/2012/06/19/pro-tip-tell-us-your-comment_type/).
      */
-    var type: String = ""
+    var type: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /** Name submitted with the comment. */
-    var author: String = ""
+    var author: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /** Email address submitted with the comment. */
-    var authorEmail: String = ""
+    var authorEmail: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /** URL submitted with comment. */
-    var authorUrl: String = ""
+    var authorUrl: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /** The content that was submitted. */
-    var content: String = ""
+    var content: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /**
      * The UTC timestamp of the creation of the comment, in ISO 8601 format.
@@ -128,33 +149,48 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      *
      * @see [Akismet.dateToGmt]
      */
-    var dateGmt: String = ""
+    var dateGmt: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /**
      * The UTC timestamp of the publication time for the post, page or thread on which the comment was posted.
      *
      * @see [Akismet.dateToGmt]
      */
-    var postModifiedGmt: String = ""
+    var postModifiedGmt: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /**
      * Indicates the language(s) in use on the blog or site, in ISO 639-1 format, comma-separated.
      *
      * A site with articles in English and French might use: `en, fr_ca`
      */
-    var blogLang: String = ""
+    var blogLang: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /**
      * The character encoding for the form values included in comment parameters, such as UTF-8 or ISO-8859-1
      */
-    var blogCharset: String = ""
+    var blogCharset: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /**
      * The user role of the user who submitted the comment. This is an optional parameter.
      *
      * If you set it to [ADMIN_ROLE], Akismet will always return false.
      */
-    var userRole: String = ""
+    var userRole: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /** This is an optional parameter. You can use it when submitting test queries to Akismet. */
     var isTest: Boolean = false
@@ -166,7 +202,10 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      *
      * For example: `edit`
      */
-    var recheckReason: String = ""
+    var recheckReason: String? = ""
+        set(value) {
+            field = value.ifNull()
+        }
 
     /**
      * In PHP, there is an array of environmental variables called `$_SERVER` that contains information about the Web
