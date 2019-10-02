@@ -10,7 +10,7 @@ Akismet for Kotlin/Java is a pretty complete and straightforward implementation 
 #### Kotlin
 
 ```kotlin
-val akismet = Akismet("YOUR_API_KEY", "YOUR_BLOG_URL")
+val akismet = Akismet(apiKey = "YOUR_API_KEY", blog = "YOUR_BLOG_URL")
 val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0")
               
 with(comment) {
