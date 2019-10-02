@@ -201,6 +201,7 @@ class AkismetTest {
         val empty = AkismetComment("", "")
         with(empty) {
             assertFalse(isTest, "isTest")
+            assertEquals(referrer, "", "referrer")
             assertEquals(permalink, "", "permalink")
             assertEquals(type, "", "type")
             assertEquals(authorEmail, "", "authorEmail")
@@ -214,6 +215,35 @@ class AkismetTest {
             assertEquals(userRole, "", "userRole")
             assertEquals(recheckReason, "", "recheckReason")
             assertEquals(serverEnv.size, 0, "serverEnv")
+
+            referrer = null
+            permalink = null
+            type = null
+            authorEmail = null
+            author = null
+            authorUrl = null
+            content = null
+            dateGmt = null
+            postModifiedGmt = null
+            blogLang = null
+            blogCharset = null
+            userRole = null
+            recheckReason = null
+
+            assertEquals(referrer, "", "referrer null")
+            assertEquals(permalink, "", "permalink null")
+            assertEquals(type, "", "type null")
+            assertEquals(authorEmail, "", "authorEmail null")
+            assertEquals(author, "", "author null")
+            assertEquals(authorUrl, "", "authorUrl null")
+            assertEquals(content, "", "content null")
+            assertEquals(dateGmt, "", "dateGmt null")
+            assertEquals(postModifiedGmt, "", "postModifiedGmt null")
+            assertEquals(blogLang, "", "blogLang null")
+            assertEquals(blogCharset, "", "blogCharset null")
+            assertEquals(userRole, "", "userRole null")
+            assertEquals(recheckReason, "", "recheckReason null")
+            assertEquals(serverEnv.size, 0, "serverEnv null")
         }
     }
 
