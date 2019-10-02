@@ -259,12 +259,21 @@ class AkismetTest {
                     "https://postman-echo.com/status/200".toHttpUrlOrNull(), emptyFormBody, true
                 )
             )
-            val expected = "{\"status\":200}"
-            assertEquals(response, expected, expected)
+            var expected = "{\"status\":200}"
+            assertEquals(response, expected, "response: $expected")
             assertTrue(errorMessage.contains(expected), "errorMessage contains $expected")
 
             reset()
             assertTrue(httpStatusCode == 0 && errorMessage.isEmpty(), "reset")
+
+            assertTrue(
+                executeMethod(
+                    "https://erik.thauvin.net/blank.html".toHttpUrlOrNull(), emptyFormBody, true
+                )
+            )
+            expected = ""
+            assertEquals(response, expected, "response: $expected")
+            assertTrue(errorMessage.contains("blank"), "errorMessage blank")
         }
     }
 
