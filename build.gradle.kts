@@ -7,18 +7,17 @@ import java.util.Properties
 plugins {
     jacoco
     java
-    kotlin("jvm") version "1.3.50"
+    kotlin("jvm") version "1.3.61"
     `maven-publish`
-    id("com.github.ben-manes.versions") version "0.25.0"
-    id("com.gradle.build-scan") version "2.4.2"
+    id("com.github.ben-manes.versions") version "0.27.0"
     id("com.jfrog.bintray") version "1.8.4"
-    id("io.gitlab.arturbosch.detekt") version "1.0.1"
+    id("io.gitlab.arturbosch.detekt") version "1.2.2"
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
-    id("org.jetbrains.dokka") version "0.9.18"
-    id("org.jetbrains.kotlin.kapt").version("1.3.50")
-    id("org.jetbrains.kotlin.plugin.serialization").version("1.3.50")
-    id("org.jmailen.kotlinter") version "2.1.1"
-    id("org.sonarqube") version "2.7.1"
+    id("org.jetbrains.dokka") version "0.10.0"
+    id("org.jetbrains.kotlin.kapt").version("1.3.61")
+    id("org.jetbrains.kotlin.plugin.serialization").version("1.3.61")
+    id("org.jmailen.kotlinter") version "2.2.0"
+    id("org.sonarqube") version "2.8"
 }
 
 group = "net.thauvin.erik"
@@ -56,14 +55,14 @@ dependencies {
     compileOnly(semverProcessor)
 
     compile("javax.servlet:javax.servlet-api:4.0.1")
-    compile("com.squareup.okhttp3:okhttp:4.2.0")
-    compile("com.squareup.okhttp3:logging-interceptor:4.2.0")
+    compile("com.squareup.okhttp3:okhttp:4.2.2")
+    compile("com.squareup.okhttp3:logging-interceptor:4.2.2")
 
     compile(kotlin("stdlib"))
     compile("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.13.0")
 
-    testImplementation("org.mockito:mockito-core:3.0.0")
-    testImplementation("org.testng:testng:7.0.0")
+    testImplementation("org.mockito:mockito-core:3.2.0")
+    testImplementation("org.testng:testng:7.1.0")
 }
 
 kapt {
@@ -142,26 +141,24 @@ tasks {
     dokka {
         outputFormat = "html"
         outputDirectory = "$buildDir/javadoc"
-        jdkVersion = 8
 
-        linkMapping {
-            // See https://github.com/Kotlin/dokka/issues/289
-            val f = if (System.getProperty("os.name").contains("windows", true))  {
-                file("${projectDir}/src/main/kotlin").toURI().toString().replace("file:", "")
-            }  else {
-                "src/main/kotlin"
+        configuration {
+            sourceLink {
+                path = "src/main/kotlin"
+                url = "https://github.com/ethauvin/${project.name}/tree/master/src/main/kotlin"
+                lineSuffix = "#L"
             }
-            dir = f
-            url = "https://github.com/ethauvin/${project.name}/tree/master/src/main/kotlin"
-            suffix = "#L"
-        }
 
-        externalDocumentationLink {
-            url = URL("https://javaee.github.io/javaee-spec/javadocs/")
-        }
+            jdkVersion = 8
 
-        includes = listOf("config/dokka/packages.md")
-        includeNonPublic = false
+            externalDocumentationLink {
+                url = URL("https://javaee.github.io/javaee-spec/javadocs/")
+                packageListUrl = URL("https://javaee.github.io/javaee-spec/javadocs/package-list")
+            }
+
+            includes = listOf("config/dokka/packages.md")
+            includeNonPublic = false
+        }
     }
 
     val copyToDeploy by registering(Copy::class) {
@@ -198,11 +195,6 @@ tasks {
 
     val bintrayUpload by existing(BintrayUploadTask::class) {
         dependsOn(publishToMavenLocal, gitTag)
-    }
-
-    buildScan {
-        termsOfServiceUrl = "https://gradle.com/terms-of-service"
-        termsOfServiceAgree = "yes"
     }
 
     register("release") {
