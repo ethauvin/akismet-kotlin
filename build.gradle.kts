@@ -11,12 +11,12 @@ plugins {
     `maven-publish`
     id("com.github.ben-manes.versions") version "0.27.0"
     id("com.jfrog.bintray") version "1.8.4"
-    id("io.gitlab.arturbosch.detekt") version "1.2.2"
+    id("io.gitlab.arturbosch.detekt") version "1.5.1"
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
-    id("org.jetbrains.dokka") version "0.10.0"
+    id("org.jetbrains.dokka") version "0.10.1"
     id("org.jetbrains.kotlin.kapt").version("1.3.61")
     id("org.jetbrains.kotlin.plugin.serialization").version("1.3.61")
-    id("org.jmailen.kotlinter") version "2.2.0"
+    id("org.jmailen.kotlinter") version "2.3.0"
     id("org.sonarqube") version "2.8"
 }
 
@@ -31,6 +31,12 @@ var isRelease = "release" in gradle.startParameter.taskNames
 var semverProcessor = "net.thauvin.erik:semver:1.2.0"
 
 val publicationName = "mavenJava"
+
+object VersionInfo {
+    const val okhttp = "4.3.1"
+}
+
+val versions: VersionInfo by extra { VersionInfo }
 
 // Load local.properties
 File("local.properties").apply {
@@ -55,14 +61,15 @@ dependencies {
     compileOnly(semverProcessor)
 
     compile("javax.servlet:javax.servlet-api:4.0.1")
-    compile("com.squareup.okhttp3:okhttp:4.2.2")
-    compile("com.squareup.okhttp3:logging-interceptor:4.2.2")
+
+    compile("com.squareup.okhttp3:okhttp:${versions.okhttp}")
+    compile("com.squareup.okhttp3:logging-interceptor:${versions.okhttp}")
 
     compile(kotlin("stdlib"))
     compile("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.13.0")
 
-    testImplementation("org.mockito:mockito-core:3.2.0")
-    testImplementation("org.testng:testng:7.1.0")
+    testImplementation("org.mockito:mockito-core:3.2.4")
+    testImplementation("org.testng:testng:7.1.1")
 }
 
 kapt {
@@ -72,8 +79,8 @@ kapt {
 }
 
 detekt {
-    input = files("src/main/kotlin", "src/test/kotlin")
-    filters = ".*/resources/.*,.*/build/.*"
+    //input = files("src/main/kotlin", "src/test/kotlin")
+    //filters = ".*/resources/.*,.*/build/.*"
     baseline = project.rootDir.resolve("detekt-baseline.xml")
 }
 
