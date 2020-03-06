@@ -61,24 +61,34 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     companion object {
         /** A blog comment. */
         const val TYPE_COMMENT = "comment"
+
         /** A top-level forum post. */
         const val TYPE_FORUM_POST = "forum-post"
+
         /** A reply to a top-level forum post. */
         const val TYPE_REPLY = "reply"
+
         /** A blog post. */
         const val TYPE_BLOG_POST = "blog-post"
+
         /** A contact form or feedback form submission. */
         const val TYPE_CONTACT_FORM = "contact-form"
+
         /**  A new user account. */
         const val TYPE_SIGNUP = "signup"
+
         /**  A message sent between just a few users. */
         const val TYPE_MESSAGE = "message"
+
         /** A pingback. */
         const val TYPE_PINGBACK = "pingback"
+
         /** A trackback. */
         const val TYPE_TRACKBACK = "trackback"
+
         /** A Twitter message. */
         const val TYPE_TWEET = "tweet"
+
         /** Administrator role. If used, Akismet will always return false. */
         const val ADMIN_ROLE = "administrator"
     }

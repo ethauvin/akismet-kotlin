@@ -33,8 +33,8 @@ public class AkismetSample {
             if (isSpam) {
                 System.out.println("The comment is SPAM according to Akismet.");
 
-                final boolean hasBenSubmitted = akismet.submitSpam(comment);
-                if (hasBenSubmitted) {
+                final boolean hasBeenSubmitted = akismet.submitSpam(comment);
+                if (hasBeenSubmitted) {
                     System.out.println("The comment has been submitted as SPAM to Akismet");
                 } else {
                     System.err.println(akismet.getErrorMessage());
