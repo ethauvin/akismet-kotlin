@@ -251,7 +251,7 @@ open class Akismet(apiKey: String) {
             add("key", apiKey)
             add("blog", blog)
         }.build()
-        isVerifiedKey = executeMethod(buildApiUrl(verifyMethod), body)
+        isVerifiedKey = executeMethod(verifyMethod.toApiUrl(), body)
         return isVerifiedKey
     }
 
@@ -273,7 +273,7 @@ open class Akismet(apiKey: String) {
      */
     @JvmOverloads
     fun checkComment(comment: AkismetComment, trueOnError: Boolean = false): Boolean {
-        return executeMethod(buildApiUrl("comment-check"), buildFormBody(comment), trueOnError)
+        return executeMethod("comment-check".toApiUrl(), buildFormBody(comment), trueOnError)
     }
 
     /**
@@ -293,7 +293,7 @@ open class Akismet(apiKey: String) {
      * @return `true` if the comment was submitted, `false` otherwise.
      */
     fun submitSpam(comment: AkismetComment): Boolean {
-        return executeMethod(buildApiUrl("submit-spam"), buildFormBody(comment))
+        return executeMethod("submit-spam".toApiUrl(), buildFormBody(comment))
     }
 
     /**
@@ -315,7 +315,7 @@ open class Akismet(apiKey: String) {
      * @return `true` if the comment was submitted, `false` otherwise.
      */
     fun submitHam(comment: AkismetComment): Boolean {
-        return executeMethod(buildApiUrl("submit-ham"), buildFormBody(comment))
+        return executeMethod("submit-ham".toApiUrl(), buildFormBody(comment))
     }
 
     /**
@@ -385,11 +385,12 @@ open class Akismet(apiKey: String) {
         response = ""
     }
 
-    private fun buildApiUrl(method: String): HttpUrl? {
-        if (method == verifyMethod) {
-            return String.format(apiEndPoint, "", method).toHttpUrlOrNull()
+    private fun String.toApiUrl(): HttpUrl? {
+        return if (this == verifyMethod) {
+            String.format(apiEndPoint, "", this).toHttpUrlOrNull()
+        } else {
+            String.format(apiEndPoint, "$apiKey.", this).toHttpUrlOrNull()
         }
-        return String.format(apiEndPoint, "$apiKey.", method).toHttpUrlOrNull()
     }
 
     private fun buildFormBody(comment: AkismetComment): FormBody {
