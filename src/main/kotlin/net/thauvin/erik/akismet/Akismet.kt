@@ -51,9 +51,9 @@ import java.util.logging.Level
 import java.util.logging.Logger
 
 /**
- * A Kotlin/Java library for accessing the Akismet service.
+ * Provides access to the [Akismet API](https://akismet.com/development/api/).
  *
- * @constructor Create new instance using the provided [Akismet](https://www.askimet.com/) API key.
+ * @constructor Creates new instance using the provided [Akismet](https://www.askimet.com/) API key.
  */
 @Version(properties = "version.properties", type = "kt")
 open class Akismet(apiKey: String) {
