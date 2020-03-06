@@ -1,4 +1,5 @@
 import com.jfrog.bintray.gradle.tasks.BintrayUploadTask
+import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
 import java.net.URL
@@ -113,6 +114,30 @@ val javadocJar by tasks.creating(Jar::class) {
     archiveClassifier.set("javadoc")
     description = "Assembles a JAR of the generated Javadoc."
     group = JavaBasePlugin.DOCUMENTATION_GROUP
+}
+
+val dokkaDocs by tasks.creating(DokkaTask::class) {
+    outputFormat = "gfm"
+    outputDirectory = "$projectDir"
+
+    configuration {
+        moduleName = "docs"
+        sourceLink {
+            path = file("$projectDir/src/main/kotlin").toURI().toString().replace("file:", "")
+            url = "https://github.com/ethauvin/${project.name}/tree/master/src/main/kotlin"
+            lineSuffix = "#L"
+        }
+
+        jdkVersion = 8
+
+        externalDocumentationLink {
+            url = URL("https://javaee.github.io/javaee-spec/javadocs/")
+            packageListUrl = URL("https://javaee.github.io/javaee-spec/javadocs/package-list")
+        }
+
+        includes = listOf("config/dokka/packages.md")
+        includeNonPublic = false
+    }
 }
 
 tasks {
