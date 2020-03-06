@@ -130,7 +130,7 @@ class AkismetTest {
             isTest = true
         }
 
-        akismet.logger.info(mockComment.toString())
+        akismet.logger.info(mockComment.toJson())
     }
 
     @Test

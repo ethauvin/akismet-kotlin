@@ -239,6 +239,15 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      *
      * @see [Akismet.jsonComment]
      */
+    fun toJson(): String {
+        return toString()
+    }
+
+    /**
+     * Returns a JSON representation of the comment.
+     *
+     * @see [Akismet.jsonComment]
+     */
     override fun toString(): String {
         return Json(JsonConfiguration.Stable).stringify(serializer(), this)
     }

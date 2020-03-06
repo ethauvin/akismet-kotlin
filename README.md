@@ -72,7 +72,7 @@ This will ensure that the user's IP, agent, referrer and various environment var
 Since comments mis-identified as spam or ham can be submitted to Askimet to improve the service. A comment can be saved as a JSON object to be stored in a database, etc.
 
 ```kotlin
-var json = comment.toString()
+var json = comment.toJson()
 ```
 
 At a latter time, the comment can the be submitted:

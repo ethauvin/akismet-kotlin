@@ -38,7 +38,7 @@ class AkismetServlet : HttpServlet() {
             email = comment.authorEmail,
             date = comment.dateGmt,
             comment = comment.content,
-            json = comment.toString(),
+            json = comment.toJson(),
             isSpam = isSpam
         )
 
