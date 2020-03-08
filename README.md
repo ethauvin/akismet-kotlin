@@ -81,3 +81,6 @@ At a latter time, the comment can the be submitted:
 akismet.submitSpam(Akismet.jsonComment(json))
 ```
 
+### More...
+If all else fails, there's always more [Documentation](https://ethauvin.github.io/akismet-kotlin/).
+
