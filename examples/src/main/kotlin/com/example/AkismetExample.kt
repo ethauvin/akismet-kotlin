@@ -20,7 +20,7 @@ fun main() {
         authorUrl = "http://www.CheckOutMyCoolSite.com"
         dateGmt = Akismet.dateToGmt(Date())
 //        userRole = AkismetComment.ADMIN_ROLE
-        content = "It means a lot that you would take the time to review our software.  Thanks again."
+        content = "It means a lot that you would take the time to review our software. Thanks again."
     }
 
 //    with(akismet.logger) {

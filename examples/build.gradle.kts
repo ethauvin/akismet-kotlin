@@ -13,7 +13,13 @@ repositories {
 }
 
 dependencies {
-    implementation("net.thauvin.erik:akismet-kotlin:0.9.0-beta")
+    // Align versions of all Kotlin components
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+    implementation(kotlin("stdlib"))
+
+    implementation("javax.servlet:javax.servlet-api:4.0.1")
+
+    implementation("net.thauvin.erik:akismet-kotlin:0.9.1-beta")
 }
 
 application {

@@ -20,7 +20,7 @@ public class AkismetSample {
         comment.setAuthorUrl("http://www.CheckOutMyCoolSite.com");
         comment.setDateGmt(Akismet.dateToGmt(new Date()));
         // comment.setUserRole(AkismetComment.ADMIN_ROLE);
-        comment.setContent("It means a lot that you would take the time to review our software.  Thanks again.");
+        comment.setContent("It means a lot that you would take the time to review our software. Thanks again.");
 
         // final ConsoleHandler consoleHandler = new ConsoleHandler();
         // consoleHandler.setLevel(Level.FINE);

@@ -48,10 +48,10 @@ class AkismetServlet : HttpServlet() {
     @Suppress("UNUSED_PARAMETER")
     private fun saveComment(
         id: String,
-        name: String,
-        email: String,
-        date: String,
-        comment: String,
+        name: String?,
+        email: String?,
+        date: String?,
+        comment: String?,
         json: String,
         isSpam: Boolean
     ) {
