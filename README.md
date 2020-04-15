@@ -1,5 +1,5 @@
 [![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](http://opensource.org/licenses/BSD-3-Clause)  
-[![Known Vulnerabilities](https://snyk.io/test/github/ethauvin/akismet-kotlin/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/ethauvin/akismet-kotlin?targetFile=pom.xml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_akismet-kotlin&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_akismet-kotlin) [![Build Status](https://travis-ci.org/ethauvin/akismet-kotlin.svg?branch=master)](https://travis-ci.org/ethauvin/akismet-kotlin) [![CircleCI](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master)
+[![Known Vulnerabilities](https://snyk.io/test/github/ethauvin/akismet-kotlin/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/ethauvin/akismet-kotlin?targetFile=pom.xml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_akismet-kotlin&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_akismet-kotlin) [![Build Status](https://travis-ci.com/ethauvin/akismet-kotlin.svg?branch=master)](https://travis-ci.com/ethauvin/akismet-kotlin) [![CircleCI](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master)
 
 # [Akismet](https://www.akismet.com) for Kotlin/Java
 
@@ -12,7 +12,7 @@ Akismet for Kotlin/Java is a pretty complete and straightforward implementation 
 ```kotlin
 val akismet = Akismet(apiKey = "YOUR_API_KEY", blog = "YOUR_BLOG_URL")
 val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0")
-              
+
 with(comment) {
     referrer = "http://www.google.com"
     type = AkismetComment.TYPE_COMMENT
@@ -83,4 +83,3 @@ akismet.submitSpam(Akismet.jsonComment(json))
 
 ### More...
 If all else fails, there's always more [Documentation](https://ethauvin.github.io/akismet-kotlin/).
-

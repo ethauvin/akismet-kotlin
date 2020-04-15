@@ -10,14 +10,13 @@ plugins {
     java
     `maven-publish`
     id("com.github.ben-manes.versions") version "0.28.0"
-    id("com.jfrog.bintray") version "1.8.4"
-    id("io.gitlab.arturbosch.detekt") version "1.6.0"
+    id("com.jfrog.bintray") version "1.8.5"
+    id("io.gitlab.arturbosch.detekt") version "1.7.4"
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
     id("org.jetbrains.dokka") version "0.10.1"
-    id("org.jetbrains.kotlin.jvm") version "1.3.70"
-    id("org.jetbrains.kotlin.kapt") version "1.3.70"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.3.70"
-    id("org.jmailen.kotlinter") version "2.3.2"
+    id("org.jetbrains.kotlin.jvm") version "1.3.72"
+    id("org.jetbrains.kotlin.kapt") version "1.3.72"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.3.72"
     id("org.sonarqube") version "2.8"
 }
 
@@ -34,7 +33,7 @@ var semverProcessor = "net.thauvin.erik:semver:1.2.0"
 val publicationName = "mavenJava"
 
 object VersionInfo {
-    const val okhttp = "4.4.0"
+    const val okhttp = "4.5.0"
 }
 
 val versions: VersionInfo by extra { VersionInfo }
@@ -71,8 +70,8 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0-1.3.70-eap-274-2")
 
-    testImplementation("org.mockito:mockito-core:3.3.1")
-    testImplementation("org.testng:testng:7.1.1")
+    testImplementation("org.mockito:mockito-core:3.3.3")
+    testImplementation("org.testng:testng:7.2.0")
 }
 
 kapt {
@@ -87,15 +86,8 @@ detekt {
     baseline = project.rootDir.resolve("detekt-baseline.xml")
 }
 
-kotlinter {
-    ignoreFailures = false
-    reporters = arrayOf("html")
-    experimentalRules = false
-    disabledRules = arrayOf("import-ordering")
-}
-
 jacoco {
-    toolVersion = "0.8.3"
+    toolVersion = "0.8.5"
 }
 
 java {
