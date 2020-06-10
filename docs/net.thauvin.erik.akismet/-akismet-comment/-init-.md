@@ -32,6 +32,5 @@ Create an Akismet comment instance.
 
 
 
-
 See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
 

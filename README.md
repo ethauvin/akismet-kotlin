@@ -1,9 +1,9 @@
-[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](http://opensource.org/licenses/BSD-3-Clause)  
+[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](http://opensource.org/licenses/BSD-3-Clause) [![release](https://img.shields.io/github/release/ethauvin/akismet-kotlin.svg)](https://github.com/ethauvin/akismet-kotlin/releases/latest) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/akismet-kotlin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/akismet-kotlin) [![Download](https://api.bintray.com/packages/ethauvin/maven/akismet-kotlin/images/download.svg)](https://bintray.com/ethauvin/maven/akismet-kotlin/_latestVersion) \
 [![Known Vulnerabilities](https://snyk.io/test/github/ethauvin/akismet-kotlin/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/ethauvin/akismet-kotlin?targetFile=pom.xml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_akismet-kotlin&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_akismet-kotlin) [![Build Status](https://travis-ci.com/ethauvin/akismet-kotlin.svg?branch=master)](https://travis-ci.com/ethauvin/akismet-kotlin) [![CircleCI](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master)
 
 # [Akismet](https://www.akismet.com) for Kotlin/Java
 
-Akismet for Kotlin/Java is a pretty complete and straightforward implementation of the [Automattic's Akismet](https://akismet.com/development/api/) API, a free service that can be used to actively stop comments spam.
+Akismet for Kotlin/Java is a pretty complete and straightforward implementation of the [Automattic's Akismet](https://akismet.com/development/api/) API, a free service which can be used to actively stop comments spam.
 
 ## Examples (TL;DR)
 
@@ -55,17 +55,32 @@ if (isSpam) {
 
 [View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/src/main/java/com/example/AkismetSample.java)
 
+
+### Gradle
+
+To use with [Gradle](https://gradle.org/), include the following dependency in your [build](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/build.gradle.kts) file:
+
+```gradle
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation("net.thauvin.erik:akismet-kotlin:0.9.2")
+}
+```
+
 ### HttpServletRequest
 
-The more information is sent to Akismet, the more accurate the response is. An [HttpServletRequest](https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html) can be used as a parameter so that all of the relevant information is automatically included.
+The more information is sent to Akismet, the more accurate the response is. An [HttpServletRequest](https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html) can be used as a parameter so that all the relevant information is automatically included.
 
 ```kotlin
 AkismetComment(request = context.getRequest())
 ```
 
-[View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/src/main/kotlin/com/example/AkismetServlet.kt)
-
 This will ensure that the user's IP, agent, referrer and various environment variables are automatically extracted from the request.
+
+[View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/src/main/kotlin/com/example/AkismetServlet.kt)
 
 ### JSON
 
@@ -75,7 +90,7 @@ Since comments mis-identified as spam or ham can be submitted to Askimet to impr
 var json = comment.toJson()
 ```
 
-At a latter time, the comment can the be submitted:
+At a latter time, the comment can then be submitted:
 
 ```kotlin
 akismet.submitSpam(Akismet.jsonComment(json))
