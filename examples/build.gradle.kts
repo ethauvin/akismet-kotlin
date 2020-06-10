@@ -1,5 +1,6 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.3.71"
+    id("org.jetbrains.kotlin.jvm") version "1.3.72"
+    id("com.github.ben-manes.versions") version "0.28.0"
     application
 }
 
@@ -19,7 +20,7 @@ dependencies {
 
     implementation("javax.servlet:javax.servlet-api:4.0.1")
 
-    implementation("net.thauvin.erik:akismet-kotlin:0.9.1-beta")
+    implementation("net.thauvin.erik:akismet-kotlin:0.9.2")
 }
 
 application {

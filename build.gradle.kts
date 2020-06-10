@@ -3,6 +3,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
 import java.net.URL
+import java.util.Date
 import java.util.Properties
 
 plugins {
@@ -11,13 +12,13 @@ plugins {
     `maven-publish`
     id("com.github.ben-manes.versions") version "0.28.0"
     id("com.jfrog.bintray") version "1.8.5"
-    id("io.gitlab.arturbosch.detekt") version "1.7.4"
+    id("io.gitlab.arturbosch.detekt") version "1.9.1"
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
     id("org.jetbrains.dokka") version "0.10.1"
     id("org.jetbrains.kotlin.jvm") version "1.3.72"
     id("org.jetbrains.kotlin.kapt") version "1.3.72"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.3.72"
-    id("org.sonarqube") version "2.8"
+    id("org.sonarqube") version "3.0"
 }
 
 group = "net.thauvin.erik"
@@ -33,7 +34,7 @@ var semverProcessor = "net.thauvin.erik:semver:1.2.0"
 val publicationName = "mavenJava"
 
 object VersionInfo {
-    const val okhttp = "4.5.0"
+    const val okhttp = "4.7.2"
 }
 
 val versions: VersionInfo by extra { VersionInfo }
@@ -69,7 +70,6 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0-1.3.70-eap-274-2")
-
     testImplementation("org.mockito:mockito-core:3.3.3")
     testImplementation("org.testng:testng:7.2.0")
 }
@@ -227,6 +227,12 @@ tasks {
 
     val bintrayUpload by existing(BintrayUploadTask::class) {
         dependsOn(publishToMavenLocal, gitTag)
+        doFirst {
+            versionName = "${project.version}"
+            versionDesc = "${project.name} ${project.version}"
+            versionVcsTag = "${project.version}"
+            versionReleased = Date().toString()
+        }
     }
 
     register("release") {
@@ -256,6 +262,7 @@ bintray {
         githubReleaseNotesFile = "README.md"
         vcsUrl = "$mavenUrl.git"
         setLabels("kotlin", "java", "akismet", "comments", "spam", "blog", "automattic", "kismet")
+        setLicenses("BSD 3-Clause")
         publicDownloadNumbers = true
         version.apply {
             name = project.version as String
