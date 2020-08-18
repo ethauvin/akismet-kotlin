@@ -1,6 +1,6 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.3.72"
-    id("com.github.ben-manes.versions") version "0.28.0"
+    id("org.jetbrains.kotlin.jvm") version "1.4.0"
+    id("com.github.ben-manes.versions") version "0.29.0"
     application
 }
 
@@ -14,10 +14,6 @@ repositories {
 }
 
 dependencies {
-    // Align versions of all Kotlin components
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(kotlin("stdlib"))
-
     implementation("javax.servlet:javax.servlet-api:4.0.1")
 
     implementation("net.thauvin.erik:akismet-kotlin:0.9.2")

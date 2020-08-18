@@ -354,7 +354,7 @@ class AkismetTest {
 
     @Test
     fun jsonCommentTest() {
-        val jsonComment = Akismet.jsonComment(mockComment.toString())
+        val jsonComment = Akismet.jsonComment(mockComment.toJson())
 
         assertEquals(jsonComment, mockComment, "equals")
         assertEquals(jsonComment.hashCode(), mockComment.hashCode(), "hashcode")

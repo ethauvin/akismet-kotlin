@@ -1,23 +1,21 @@
 import com.jfrog.bintray.gradle.tasks.BintrayUploadTask
-import org.jetbrains.dokka.gradle.DokkaTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
 import java.net.URL
-import java.util.Date
-import java.util.Properties
+import java.util.*
 
 plugins {
     jacoco
     java
     `maven-publish`
-    id("com.github.ben-manes.versions") version "0.28.0"
+    id("com.github.ben-manes.versions") version "0.29.0"
     id("com.jfrog.bintray") version "1.8.5"
-    id("io.gitlab.arturbosch.detekt") version "1.9.1"
+    id("io.gitlab.arturbosch.detekt") version "1.11.0"
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
-    id("org.jetbrains.dokka") version "0.10.1"
-    id("org.jetbrains.kotlin.jvm") version "1.3.72"
-    id("org.jetbrains.kotlin.kapt") version "1.3.72"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.3.72"
+    id("org.jetbrains.dokka") version "1.4.0-rc"
+    id("org.jetbrains.kotlin.jvm") version "1.4.0"
+    id("org.jetbrains.kotlin.kapt") version "1.4.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.4.0"
     id("org.sonarqube") version "3.0"
 }
 
@@ -34,7 +32,7 @@ var semverProcessor = "net.thauvin.erik:semver:1.2.0"
 val publicationName = "mavenJava"
 
 object VersionInfo {
-    const val okhttp = "4.7.2"
+    const val okhttp = "4.8.1"
 }
 
 val versions: VersionInfo by extra { VersionInfo }
@@ -66,12 +64,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:${versions.okhttp}")
     implementation("com.squareup.okhttp3:logging-interceptor:${versions.okhttp}")
 
-    // Align versions of all Kotlin components
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0-1.3.70-eap-274-2")
-    testImplementation("org.mockito:mockito-core:3.3.3")
-    testImplementation("org.testng:testng:7.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0-M1-1.4.0-rc-218")
+    testImplementation("org.mockito:mockito-core:3.5.0")
+    testImplementation("org.testng:testng:7.3.0")
 }
 
 kapt {
@@ -81,9 +76,7 @@ kapt {
 }
 
 detekt {
-    //input = files("src/main/kotlin", "src/test/kotlin")
-    //filters = ".*/resources/.*,.*/build/.*"
-    baseline = project.rootDir.resolve("detekt-baseline.xml")
+    baseline = project.rootDir.resolve("config/detekt/baseline.xml")
 }
 
 jacoco {
@@ -108,35 +101,11 @@ val sourcesJar by tasks.creating(Jar::class) {
 }
 
 val javadocJar by tasks.creating(Jar::class) {
-    dependsOn(tasks.dokka)
-    from(tasks.dokka)
+    dependsOn(tasks.dokkaJavadoc)
+    from(tasks.dokkaJavadoc)
     archiveClassifier.set("javadoc")
     description = "Assembles a JAR of the generated Javadoc."
     group = JavaBasePlugin.DOCUMENTATION_GROUP
-}
-
-val dokkaDocs by tasks.creating(DokkaTask::class) {
-    outputFormat = "gfm"
-    outputDirectory = "$projectDir"
-
-    configuration {
-        moduleName = "docs"
-        sourceLink {
-            path = file("$projectDir/src/main/kotlin").toURI().toString().replace("file:", "")
-            url = "https://github.com/ethauvin/${project.name}/tree/master/src/main/kotlin"
-            lineSuffix = "#L"
-        }
-
-        jdkVersion = 8
-
-        externalDocumentationLink {
-            url = URL("https://javaee.github.io/javaee-spec/javadocs/")
-            packageListUrl = URL("https://javaee.github.io/javaee-spec/javadocs/package-list")
-        }
-
-        includes = listOf("config/dokka/packages.md")
-        includeNonPublic = false
-    }
 }
 
 tasks {
@@ -169,32 +138,42 @@ tasks {
         }
     }
 
-    dokka {
-        outputFormat = "html"
-        outputDirectory = "$buildDir/javadoc"
+    dokkaHtml {
+        outputDirectory = "$projectDir/docs"
 
-        configuration {
-            sourceLink {
-                path = file("$projectDir/src/main/kotlin").toURI().toString().replace("file:", "")
-                url = "https://github.com/ethauvin/${project.name}/tree/master/src/main/kotlin"
-                lineSuffix = "#L"
+        dokkaSourceSets {
+            configureEach {
+                jdkVersion = 8
+                includes = listOf("config/dokka/packages.md")
+                sourceLink {
+                    path = "/src/main/kotlin/"
+                    url = "https://github.com/ethauvin/${project.name}/tree/master/src/main/kotlin/"
+                    lineSuffix = "#L"
+                }
+                externalDocumentationLink {
+                    url = URL("https://javaee.github.io/javaee-spec/javadocs/")
+                    packageListUrl = URL("https://javaee.github.io/javaee-spec/javadocs/package-list")
+                }
             }
-
-            jdkVersion = 8
-
-            externalDocumentationLink {
-                url = URL("https://javaee.github.io/javaee-spec/javadocs/")
-                packageListUrl = URL("https://javaee.github.io/javaee-spec/javadocs/package-list")
-            }
-
-            includes = listOf("config/dokka/packages.md")
-            includeNonPublic = false
         }
-        dependsOn(dokkaDocs)
+    }
+
+    dokkaJavadoc {
+        dokkaSourceSets {
+            configureEach {
+                jdkVersion = 8
+                includes = listOf("config/dokka/packages.md")
+                externalDocumentationLink {
+                    url = URL("https://javaee.github.io/javaee-spec/javadocs/")
+                    packageListUrl = URL("https://javaee.github.io/javaee-spec/javadocs/package-list")
+                }
+            }
+        }
+        dependsOn(dokkaHtml)
     }
 
     val copyToDeploy by registering(Copy::class) {
-        from(configurations.runtime) {
+        from(configurations.runtimeClasspath) {
             exclude("annotations-*.jar")
         }
         from(jar)
@@ -261,7 +240,7 @@ bintray {
         githubRepo = gitHub
         githubReleaseNotesFile = "README.md"
         vcsUrl = "$mavenUrl.git"
-        setLabels("kotlin", "java", "akismet", "comments", "spam", "blog", "automattic", "kismet")
+        setLabels("akismet", "android", "automattic", "blog", "comments", "java", "kismet", "kotlin", "spam")
         setLicenses("BSD 3-Clause")
         publicDownloadNumbers = true
         version.apply {

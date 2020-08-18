@@ -4,7 +4,7 @@
 
 # [Akismet](https://www.akismet.com) for Kotlin/Java
 
-Akismet for Kotlin/Java is a pretty complete and straightforward implementation of the [Automattic's Akismet](https://akismet.com/development/api/) API, a free service which can be used to actively stop comments spam.
+Akismet for Kotlin/Java/Android is a pretty complete and straightforward implementation of the [Automattic's Akismet](https://akismet.com/development/api/) API, a free service which can be used to actively stop comments spam.
 
 ## Examples (TL;DR)
 

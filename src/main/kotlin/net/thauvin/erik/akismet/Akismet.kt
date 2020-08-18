@@ -32,7 +32,6 @@
 package net.thauvin.erik.akismet
 
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import net.thauvin.erik.semver.Version
 import okhttp3.FormBody
 import okhttp3.HttpUrl
@@ -46,7 +45,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
-import java.util.Date
+import java.util.*
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -65,7 +64,7 @@ open class Akismet(apiKey: String) {
          */
         @JvmStatic
         fun jsonComment(json: String): AkismetComment {
-            return Json(JsonConfiguration.Stable).parse(AkismetComment.serializer(), json)
+            return Json.decodeFromString(AkismetComment.serializer(), json)
         }
 
         /**

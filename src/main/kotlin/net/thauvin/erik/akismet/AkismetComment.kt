@@ -33,9 +33,14 @@
 package net.thauvin.erik.akismet
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import javax.servlet.http.HttpServletRequest
+import kotlin.collections.HashMap
+import kotlin.collections.Map
+import kotlin.collections.emptyMap
+import kotlin.collections.iterator
+import kotlin.collections.set
 
 private fun String?.ifNull() = this ?: ""
 
@@ -259,7 +264,7 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      * @see [Akismet.jsonComment]
      */
     override fun toString(): String {
-        return Json(JsonConfiguration.Stable).stringify(serializer(), this)
+        return Json.encodeToString(this)
     }
 
     /**
