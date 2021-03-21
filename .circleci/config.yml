@@ -30,7 +30,7 @@ defaults_gradle: &defaults_gradle
         path: build/reports/
 
 jobs:
-  build_gradle_jdk13:
+  build_gradle_jdk14:
     <<: *defaults
 
     docker:
