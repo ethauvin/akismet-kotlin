@@ -1,6 +1,6 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.4.0"
-    id("com.github.ben-manes.versions") version "0.29.0"
+    id("org.jetbrains.kotlin.jvm") version "1.4.31"
+    id("com.github.ben-manes.versions") version "0.38.0"
     application
 }
 
@@ -10,13 +10,13 @@ defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
 
 repositories {
     mavenLocal()
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     implementation("javax.servlet:javax.servlet-api:4.0.1")
 
-    implementation("net.thauvin.erik:akismet-kotlin:0.9.2")
+    implementation("net.thauvin.erik:akismet-kotlin:0.9.3")
 }
 
 application {

@@ -1,4 +1,4 @@
-[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](http://opensource.org/licenses/BSD-3-Clause) [![release](https://img.shields.io/github/release/ethauvin/akismet-kotlin.svg)](https://github.com/ethauvin/akismet-kotlin/releases/latest) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/akismet-kotlin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/akismet-kotlin) [![Download](https://api.bintray.com/packages/ethauvin/maven/akismet-kotlin/images/download.svg)](https://bintray.com/ethauvin/maven/akismet-kotlin/_latestVersion)
+[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](http://opensource.org/licenses/BSD-3-Clause) [![Release](https://img.shields.io/github/release/ethauvin/akismet-kotlin.svg)](https://github.com/ethauvin/akismet-kotlin/releases/latest) [![Maven Central](https://img.shields.io/maven-central/v/net.thauvin.erik/akismet-kotlin.svg?label=maven%20central)](https://search.maven.org/search?q=g:%22net.thauvin.erik%22%20AND%20a:%22akismet-kotlin%22)
 
 [![Known Vulnerabilities](https://snyk.io/test/github/ethauvin/akismet-kotlin/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/ethauvin/akismet-kotlin?targetFile=pom.xml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_akismet-kotlin&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_akismet-kotlin) [![Build Status](https://travis-ci.com/ethauvin/akismet-kotlin.svg?branch=master)](https://travis-ci.com/ethauvin/akismet-kotlin) [![CircleCI](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master)
 
@@ -56,20 +56,17 @@ if (isSpam) {
 
 [View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/src/main/java/com/example/AkismetSample.java)
 
-
 ### Gradle
 
 To use with [Gradle](https://gradle.org/), include the following dependency in your [build](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/build.gradle.kts) file:
 
 ```gradle
-repositories {
-    jcenter()
-}
-
 dependencies {
-    implementation("net.thauvin.erik:akismet-kotlin:0.9.2")
+    implementation("net.thauvin.erik:akismet-kotlin:0.9.3")
 }
 ```
+
+Instructions for using with Maven, Ivy, etc. can be found on [Maven Central](https://search.maven.org/artifact/net.thauvin.erik/akismet-kotlin/0.9.3/jar).
 
 ### HttpServletRequest
 
