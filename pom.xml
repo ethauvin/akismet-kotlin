@@ -63,7 +63,7 @@
     <dependency>
       <groupId>org.jetbrains.kotlinx</groupId>
       <artifactId>kotlinx-serialization-runtime-jvm</artifactId>
-      <version>1.0-M1-1.4.0-rc-218</version>
+      <version>1.0-M1-1.4.0-rc</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>

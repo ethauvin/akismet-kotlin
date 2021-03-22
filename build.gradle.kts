@@ -48,7 +48,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:${versions.okhttp}")
     implementation("com.squareup.okhttp3:logging-interceptor:${versions.okhttp}")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0-M1-1.4.0-rc-218")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0-M1-1.4.0-rc")
     testImplementation("org.mockito:mockito-core:3.8.0")
     testImplementation("org.testng:testng:7.4.0")
 }
