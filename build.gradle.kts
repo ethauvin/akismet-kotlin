@@ -9,10 +9,10 @@ plugins {
     id("com.github.ben-manes.versions") version "0.38.0"
     id("io.gitlab.arturbosch.detekt") version "1.16.0"
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
-    id("org.jetbrains.dokka") version "1.4.30"
-    id("org.jetbrains.kotlin.jvm") version "1.4.31"
-    id("org.jetbrains.kotlin.kapt") version "1.4.31"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.4.31"
+    id("org.jetbrains.dokka") version "1.4.32"
+    id("org.jetbrains.kotlin.jvm") version "1.5.0"
+    id("org.jetbrains.kotlin.kapt") version "1.5.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.0"
     id("org.sonarqube") version "3.1.1"
 }
 
@@ -48,8 +48,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:${versions.okhttp}")
     implementation("com.squareup.okhttp3:logging-interceptor:${versions.okhttp}")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0-M1-1.4.0-rc")
-    testImplementation("org.mockito:mockito-core:3.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0-M1-1.4.0-rc-218")
+    testImplementation("org.mockito:mockito-core:3.9.0")
     testImplementation("org.testng:testng:7.4.0")
 }
 

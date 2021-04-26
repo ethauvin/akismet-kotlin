@@ -332,7 +332,7 @@ private fun buildServerEnv(request: HttpServletRequest): Map<String, String> {
 
     for (name in request.headerNames) {
         if (!name.equals("cookie", true)) {
-            params["HTTP_${name.toUpperCase().replace('-', '_')}"] = request.getHeader(name).ifNull()
+            params["HTTP_${name.uppercase().replace('-', '_')}"] = request.getHeader(name).ifNull()
         }
     }
 
