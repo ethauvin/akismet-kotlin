@@ -37,6 +37,7 @@ val versions: VersionInfo by extra { VersionInfo }
 repositories {
     mavenCentral()
     jcenter() // needed for Dokka
+    maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
 }
 
 dependencies {
@@ -89,19 +90,24 @@ tasks {
         useTestNG()
     }
 
-    withType<JacocoReport> {
-        reports {
-            xml.isEnabled = true
-            html.isEnabled = true
-        }
-    }
-
     withType<KotlinCompile>().configureEach {
         kotlinOptions.jvmTarget = "1.8"
     }
 
     withType<GenerateMavenPom> {
         destination = file("$projectDir/pom.xml")
+    }
+
+    jacoco {
+        toolVersion = "0.8.7-SNAPSHOT"
+    }
+
+    jacocoTestReport {
+        dependsOn(test)
+        reports {
+            xml.isEnabled = true
+            html.isEnabled = true
+        }
     }
 
     assemble {
