@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.thauvin.erik</groupId>
   <artifactId>akismet-kotlin</artifactId>
-  <version>0.9.3</version>
+  <version>0.9.3-SNAPSHOT</version>
   <name>akismet-kotlin</name>
   <description>Akismet for Kotlin/Java, a client library for accessing the Automattic Kismet (Akismet) spam comments filtering service.</description>
   <url>https://github.com/ethauvin/akismet-kotlin</url>
@@ -63,7 +63,7 @@
     <dependency>
       <groupId>org.jetbrains.kotlinx</groupId>
       <artifactId>kotlinx-serialization-runtime-jvm</artifactId>
-      <version>1.0-M1-1.4.0-rc-218</version>
+      <version>1.0-M1-1.4.0-rc</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>

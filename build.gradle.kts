@@ -7,13 +7,13 @@ plugins {
     `maven-publish`
     signing
     id("com.github.ben-manes.versions") version "0.38.0"
-    id("io.gitlab.arturbosch.detekt") version "1.16.0"
+    id("io.gitlab.arturbosch.detekt") version "1.17.0-RC1"
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
     id("org.jetbrains.dokka") version "1.4.32"
     id("org.jetbrains.kotlin.jvm") version "1.5.0"
     id("org.jetbrains.kotlin.kapt") version "1.5.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.5.0"
-    id("org.sonarqube") version "3.1.1"
+    id("org.sonarqube") version "3.2.0"
 }
 
 group = "net.thauvin.erik"
@@ -36,7 +36,6 @@ val versions: VersionInfo by extra { VersionInfo }
 
 repositories {
     mavenCentral()
-    jcenter() // needed for Dokka
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
 }
 
@@ -49,7 +48,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:${versions.okhttp}")
     implementation("com.squareup.okhttp3:logging-interceptor:${versions.okhttp}")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0-M1-1.4.0-rc-218")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0-M1-1.4.0-rc")
     testImplementation("org.mockito:mockito-core:3.9.0")
     testImplementation("org.testng:testng:7.4.0")
 }
@@ -61,6 +60,7 @@ kapt {
 }
 
 detekt {
+    toolVersion = "main-SNAPSHOT"
     baseline = project.rootDir.resolve("config/detekt/baseline.xml")
 }
 
@@ -235,7 +235,11 @@ publishing {
     repositories {
         maven {
             name = "ossrh"
-            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+            project.afterEvaluate {
+                url = if (project.version.toString().contains("SNAPSHOT"))
+                    uri("https://oss.sonatype.org/content/repositories/snapshots/") else
+                    uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+            }
             credentials(PasswordCredentials::class)
         }
     }

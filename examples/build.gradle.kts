@@ -16,7 +16,7 @@ repositories {
 dependencies {
     implementation("javax.servlet:javax.servlet-api:4.0.1")
 
-    implementation("net.thauvin.erik:akismet-kotlin:0.9.3")
+    implementation("net.thauvin.erik:akismet-kotlin:0.9.3-SNAPSHOT")
 }
 
 application {
