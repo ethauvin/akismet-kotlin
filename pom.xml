@@ -35,18 +35,29 @@
     <system>GitHub</system>
     <url>https://github.com/ethauvin/akismet-kotlin/issues</url>
   </issueManagement>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-bom</artifactId>
+        <version>1.5.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>compile</scope>
+    </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib-jdk8</artifactId>
       <version>1.5.0</version>
       <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-      <version>4.0.1</version>
-      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>com.squareup.okhttp3</groupId>
@@ -62,8 +73,8 @@
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlinx</groupId>
-      <artifactId>kotlinx-serialization-runtime-jvm</artifactId>
-      <version>1.0-M1-1.4.0-rc</version>
+      <artifactId>kotlinx-serialization-json-jvm</artifactId>
+      <version>1.2.0</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>

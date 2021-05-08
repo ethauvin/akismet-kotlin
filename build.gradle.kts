@@ -43,12 +43,15 @@ dependencies {
     kapt(semverProcessor)
     compileOnly(semverProcessor)
 
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+
     implementation("javax.servlet:javax.servlet-api:4.0.1")
 
     implementation("com.squareup.okhttp3:okhttp:${versions.okhttp}")
     implementation("com.squareup.okhttp3:logging-interceptor:${versions.okhttp}")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:1.0-M1-1.4.0-rc")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.0")
+
     testImplementation("org.mockito:mockito-core:3.9.0")
     testImplementation("org.testng:testng:7.4.0")
 }
@@ -99,7 +102,7 @@ tasks {
     }
 
     jacoco {
-        toolVersion = "0.8.7-SNAPSHOT"
+        toolVersion = "0.8.7"
     }
 
     jacocoTestReport {
