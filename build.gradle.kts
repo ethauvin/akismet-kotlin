@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.net.URL
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
     jacoco
@@ -90,6 +91,10 @@ val javadocJar by tasks.creating(Jar::class) {
 
 tasks {
     withType<Test> {
+        testLogging {
+            exceptionFormat = TestExceptionFormat.FULL
+        }
+
         useTestNG()
     }
 
@@ -226,7 +231,7 @@ publishing {
                 scm {
                     connection.set("scm:git:git://github.com/$gitHub.git")
                     developerConnection.set("scm:git:git@github.com:$gitHub.git")
-                    url.set("$mavenUrl")
+                    url.set(mavenUrl)
                 }
                 issueManagement {
                     system.set("GitHub")

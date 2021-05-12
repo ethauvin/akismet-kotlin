@@ -20,13 +20,13 @@ dependencies {
 }
 
 application {
-    mainClassName = "com.example.AkismetExampleKt"
+    mainClass.set("com.example.AkismetExampleKt")
 }
 
 tasks {
     register("runJava", JavaExec::class) {
         group = "application"
         main = "com.example.AkismetSample"
-        classpath = sourceSets["main"].runtimeClasspath
+        classpath = sourceSets.main.get().runtimeClasspath
     }
 }
