@@ -36,7 +36,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.servlet.http.HttpServletRequest
-import kotlin.collections.HashMap
 import kotlin.collections.Map
 import kotlin.collections.emptyMap
 import kotlin.collections.iterator
@@ -53,7 +52,7 @@ private fun String?.ifNull() = this ?: ""
  *
  * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
  *
- * @constructor Create an Akismet comment instance.
+ * @constructor Creates a new [AskimetComment] instance.
  *
  * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
  *
@@ -233,7 +232,7 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     var serverEnv: Map<String, String> = emptyMap()
 
     /**
-     * Create an Akismet comment extracting the [userIp], [userAgent], [referrer] and [serverEnv] environment variables
+     * Creates a new instance extracting the [userIp], [userAgent], [referrer] and [serverEnv] environment variables
      * from a Servlet request.
      *
      * See the
@@ -242,8 +241,8 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      * @see [serverEnv]
      */
     constructor(request: HttpServletRequest) : this(
-        request.remoteAddr,
-        request.getHeader("User-Agent").ifNull()
+            request.remoteAddr,
+            request.getHeader("User-Agent").ifNull()
     ) {
         referrer = request.getHeader("referer").ifNull()
         serverEnv = buildServerEnv(request)
@@ -325,7 +324,7 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
 }
 
 private fun buildServerEnv(request: HttpServletRequest): Map<String, String> {
-    val params = HashMap<String, String>()
+    val params = mutableMapOf<String, String>()
 
     params["REMOTE_ADDR"] = request.remoteAddr
     params["REQUEST_URI"] = request.requestURI

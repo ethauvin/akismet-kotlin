@@ -52,13 +52,13 @@ import java.util.logging.Logger
 /**
  * Provides access to the [Akismet API](https://akismet.com/development/api/).
  *
- * @constructor Creates new instance using the provided [Akismet](https://www.askimet.com/) API key.
+ * @constructor Creates a new instance using the provided [Akismet](https://www.askimet.com/) API key.
  */
 @Version(properties = "version.properties", type = "kt")
 open class Akismet(apiKey: String) {
     companion object {
         /**
-         * (Re)Create a [comment][AkismetComment] from a JSON string.
+         * (Re)Creates a [comment][AkismetComment] from a JSON string.
          *
          * @see [AkismetComment.toString]
          */
@@ -68,7 +68,7 @@ open class Akismet(apiKey: String) {
         }
 
         /**
-         * Convert a date to a UTC timestamp. (ISO 8601)
+         * Converts a date to a UTC timestamp. (ISO 8601)
          *
          * @see [AkismetComment.dateGmt]
          * @see [AkismetComment.postModifiedGmt]
@@ -81,7 +81,7 @@ open class Akismet(apiKey: String) {
         }
 
         /**
-         * Convert a locale date/time to a UTC timestamp. (ISO 8601)
+         * Converts a locale date/time to a UTC timestamp. (ISO 8601)
          *
          * @see [AkismetComment.dateGmt]
          * @see [AkismetComment.postModifiedGmt]
@@ -125,7 +125,7 @@ open class Akismet(apiKey: String) {
     var appUserAgent = ""
 
     /**
-     * Check if the API Key has been verified
+     * Set to `true` if the API Key has been verified.
      *
      * @see [Akismet.verifyKey]
      */
@@ -173,7 +173,7 @@ open class Akismet(apiKey: String) {
         private set
 
     /**
-     * Set to true if Akismet has determined that the last [checked comment][checkComment] is blatant spam, and you
+     * Set to `true` if Akismet has determined that the last [checked comment][checkComment] is blatant spam, and you
      * can safely discard it without saving it in any spam queue.
      *
      * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
@@ -226,7 +226,7 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Create a new instance using an [Akismet](https://www.askimet.com/) API key and URL registered with Akismet.
+     * Creates a new instance using an [Akismet](https://www.askimet.com/) API key and URL registered with Akismet.
      */
     constructor(apiKey: String, blog: String) : this(apiKey) {
         this.blog = blog
@@ -318,7 +318,7 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Execute a call to an Akismet REST API method.
+     * Executes a call to an Akismet REST API method.
      *
      * @param apiUrl The Akismet API URL endpoint. (e.g. https://rest.akismet.com/1.1/verify-key)
      * @param formBody The HTTP POST form body containing the request parameters to be submitted.
@@ -371,7 +371,7 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Reset the [debugHelp], [errorMessage], [httpStatusCode], [isDiscard], [isVerifiedKey], [proTip], and
+     * Resets the [debugHelp], [errorMessage], [httpStatusCode], [isDiscard], [isVerifiedKey], [proTip], and
      * [response] properties.
      */
     fun reset() {

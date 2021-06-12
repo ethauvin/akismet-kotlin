@@ -4,18 +4,18 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    jacoco
-    java
-    `maven-publish`
-    signing
-    id("com.github.ben-manes.versions") version "0.38.0"
+    id("com.github.ben-manes.versions") version "0.39.0"
     id("io.gitlab.arturbosch.detekt") version "1.17.1"
+    id("jacoco")
+    id("java")
+    id("maven-publish")
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
     id("org.jetbrains.dokka") version "1.4.32"
-    id("org.jetbrains.kotlin.jvm") version "1.5.0"
-    id("org.jetbrains.kotlin.kapt") version "1.5.0"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.0"
-    id("org.sonarqube") version "3.2.0"
+    id("org.sonarqube") version "3.3"
+    id("signing")
+    kotlin("jvm") version "1.5.10"
+    kotlin("kapt") version "1.5.10"
+    kotlin("plugin.serialization") version "1.5.10"
 }
 
 group = "net.thauvin.erik"
@@ -30,11 +30,9 @@ var semverProcessor = "net.thauvin.erik:semver:1.2.0"
 
 val publicationName = "mavenJava"
 
-object VersionInfo {
-    const val okhttp = "4.9.1"
+object Versions {
+    const val OKHTTP = "4.9.1"
 }
-
-val versions: VersionInfo by extra { VersionInfo }
 
 repositories {
     mavenCentral()
@@ -49,12 +47,12 @@ dependencies {
 
     implementation("javax.servlet:javax.servlet-api:4.0.1")
 
-    implementation("com.squareup.okhttp3:okhttp:${versions.okhttp}")
-    implementation("com.squareup.okhttp3:logging-interceptor:${versions.okhttp}")
+    implementation("com.squareup.okhttp3:okhttp:${Versions.OKHTTP}")
+    implementation("com.squareup.okhttp3:logging-interceptor:${Versions.OKHTTP}")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
 
-    testImplementation("org.mockito:mockito-core:3.10.0")
+    testImplementation("org.mockito:mockito-core:3.11.1")
     testImplementation("org.testng:testng:7.4.0")
 }
 
@@ -177,10 +175,10 @@ tasks {
     register("deploy") {
         description = "Copies all needed files to the $deployDir directory."
         group = PublishingPlugin.PUBLISH_TASK_GROUP
-        dependsOn("build", "jar")
+        dependsOn(build, jar)
         outputs.dir(deployDir)
         inputs.files(copyToDeploy)
-        mustRunAfter("clean")
+        mustRunAfter(clean)
     }
 
     val gitIsDirty by registering(Exec::class) {
@@ -201,11 +199,11 @@ tasks {
     register("release") {
         description = "Publishes version ${project.version} to local repository."
         group = PublishingPlugin.PUBLISH_TASK_GROUP
-        dependsOn("wrapper", "deploy", "gitTag", "publishToMavenLocal")
+        dependsOn(wrapper, "deploy", gitTag, publishToMavenLocal)
     }
 
     "sonarqube" {
-        dependsOn("jacocoTestReport")
+        dependsOn(jacocoTestReport)
     }
 }
 
