@@ -5,17 +5,17 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("com.github.ben-manes.versions") version "0.39.0"
-    id("io.gitlab.arturbosch.detekt") version "1.17.1"
+    id("io.gitlab.arturbosch.detekt") version "1.18.0-RC2"
     id("jacoco")
     id("java")
     id("maven-publish")
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
-    id("org.jetbrains.dokka") version "1.4.32"
+    id("org.jetbrains.dokka") version "1.5.0"
     id("org.sonarqube") version "3.3"
     id("signing")
-    kotlin("jvm") version "1.5.10"
-    kotlin("kapt") version "1.5.10"
-    kotlin("plugin.serialization") version "1.5.10"
+    kotlin("jvm") version "1.5.21"
+    kotlin("kapt") version "1.5.21"
+    kotlin("plugin.serialization") version "1.5.21"
 }
 
 group = "net.thauvin.erik"
@@ -50,9 +50,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:${Versions.OKHTTP}")
     implementation("com.squareup.okhttp3:logging-interceptor:${Versions.OKHTTP}")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
-    testImplementation("org.mockito:mockito-core:3.11.1")
+    testImplementation("org.mockito:mockito-core:3.11.2")
     testImplementation("org.testng:testng:7.4.0")
 }
 
@@ -115,8 +115,8 @@ tasks {
     jacocoTestReport {
         dependsOn(test)
         reports {
-            xml.isEnabled = true
-            html.isEnabled = true
+            xml.required.set(true)
+            html.required.set(true)
         }
     }
 
@@ -138,7 +138,7 @@ tasks {
                 jdkVersion.set(8)
                 includes.from("config/dokka/packages.md")
                 sourceLink {
-                    localDirectory.set(file("/src/main/kotlin/"))
+                    localDirectory.set(file("src/main/kotlin/"))
                     remoteUrl.set(URL("https://github.com/ethauvin/${project.name}/tree/master/src/main/kotlin/"))
                     remoteLineSuffix.set("#L")
                 }

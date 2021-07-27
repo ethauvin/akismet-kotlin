@@ -201,7 +201,7 @@ open class Akismet(apiKey: String) {
     /**
      * The logger instance.
      */
-    val logger: Logger by lazy { Logger.getLogger(Akismet::class.java.simpleName) }
+    val logger: Logger by lazy { Logger.getLogger(Akismet::class.java.name) }
 
     init {
         require(
@@ -363,7 +363,7 @@ open class Akismet(apiKey: String) {
         }
 
         if (errorMessage.isNotEmpty()) {
-            logger.warning(errorMessage)
+            if (logger.isLoggable(Level.WARNING)) logger.warning(errorMessage)
             return trueOnError
         }
 

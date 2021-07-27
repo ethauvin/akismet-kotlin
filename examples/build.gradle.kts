@@ -1,7 +1,7 @@
 plugins {
     id("application")
     id("com.github.ben-manes.versions") version "0.39.0"
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.5.21"
 }
 
 // ./gradlew run runJava
@@ -26,7 +26,7 @@ application {
 tasks {
     register("runJava", JavaExec::class) {
         group = "application"
-        main = "com.example.AkismetSample"
+        mainClass.set("com.example.AkismetSample")
         classpath = sourceSets.main.get().runtimeClasspath
     }
 }
