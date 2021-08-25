@@ -52,7 +52,7 @@ private fun String?.ifNull() = this ?: ""
  *
  * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
  *
- * @constructor Creates a new [AskimetComment] instance.
+ * @constructor Creates a new instance.
  *
  * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
  *
