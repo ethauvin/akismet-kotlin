@@ -33,7 +33,7 @@
 package net.thauvin.erik.akismet
 
 import okhttp3.FormBody
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.testng.Assert.assertEquals
@@ -82,8 +82,8 @@ class AkismetTest {
     private val referer = "http://www.google.com"
     private val date = Date()
     private val comment = AkismetComment(
-        userIp = "127.0.0.1",
-        userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
+            userIp = "127.0.0.1",
+            userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
     )
     private val akismet = Akismet(apiKey, blog)
     private val mockComment: AkismetComment = AkismetComment(request = getMockRequest())
@@ -255,9 +255,9 @@ class AkismetTest {
     fun emptyResponseTest() {
         with(akismet) {
             assertTrue(
-                executeMethod(
-                    "https://postman-echo.com/status/200".toHttpUrlOrNull(), emptyFormBody, true
-                )
+                    executeMethod(
+                            "https://postman-echo.com/status/200".toHttpUrl(), emptyFormBody, true
+                    )
             )
             var expected = "{\"status\":200}"
             assertEquals(response, expected, "response: $expected")
@@ -267,9 +267,9 @@ class AkismetTest {
             assertTrue(httpStatusCode == 0 && errorMessage.isEmpty(), "reset")
 
             assertTrue(
-                executeMethod(
-                    "https://erik.thauvin.net/blank.html".toHttpUrlOrNull(), emptyFormBody, true
-                )
+                    executeMethod(
+                            "https://erik.thauvin.net/blank.html".toHttpUrl(), emptyFormBody, true
+                    )
             )
             expected = ""
             assertEquals(response, expected, "response: $expected")
@@ -281,10 +281,10 @@ class AkismetTest {
     fun proTipResponseTest() {
         with(akismet) {
             assertFalse(
-                executeMethod(
-                    "https://postman-echo.com/response-headers?x-akismet-pro-tip=discard".toHttpUrlOrNull(),
-                    emptyFormBody
-                )
+                    executeMethod(
+                            "https://postman-echo.com/response-headers?x-akismet-pro-tip=discard".toHttpUrl(),
+                            emptyFormBody
+                    )
             )
             assertEquals(proTip, "discard")
             assertTrue(isDiscard, "isDiscard")
@@ -317,8 +317,8 @@ class AkismetTest {
     fun executeMethodTest() {
         with(akismet) {
             executeMethod(
-                "https://$apiKey.rest.akismet.com/1.1/comment-check".toHttpUrlOrNull(),
-                FormBody.Builder().apply { add("is_test", "1") }.build()
+                    "https://$apiKey.rest.akismet.com/1.1/comment-check".toHttpUrl(),
+                    FormBody.Builder().apply { add("is_test", "1") }.build()
             )
             assertTrue(debugHelp.isNotEmpty(), "debugHelp not empty")
 
@@ -327,15 +327,14 @@ class AkismetTest {
         }
     }
 
-    @Test
+    @Test(expectedExceptions = [IllegalArgumentException::class])
     fun invalidApiTest() {
-        akismet.executeMethod("https://.com".toHttpUrlOrNull(), emptyFormBody)
-        assertTrue(akismet.errorMessage.startsWith("Invalid API"))
+        akismet.executeMethod("https://.com".toHttpUrl(), emptyFormBody)
     }
 
     @Test
     fun ioErrorTest() {
-        akismet.executeMethod("https://www.doesnotexists.com".toHttpUrlOrNull(), emptyFormBody)
+        akismet.executeMethod("https://www.foobarxyz.com".toHttpUrl(), emptyFormBody)
         assertTrue(akismet.errorMessage.contains("IO error"))
     }
 
@@ -375,8 +374,8 @@ class AkismetTest {
 
         akismet.appUserAgent = "My App/1.0"
         assertEquals(
-            akismet.buildUserAgent(), "${akismet.appUserAgent} | $libAgent",
-            "my app"
+                akismet.buildUserAgent(), "${akismet.appUserAgent} | $libAgent",
+                "my app"
         )
     }
 
@@ -398,7 +397,7 @@ class AkismetTest {
             `when`(getHeader("User-Agent")).thenReturn(comment.userAgent)
             `when`(getHeader("Accept-Encoding")).thenReturn("gzip")
             `when`(headerNames).thenReturn(
-                Collections.enumeration(listOf("User-Agent", "referer", "Cookie", "Accept-Encoding", "Null"))
+                    Collections.enumeration(listOf("User-Agent", "referer", "Cookie", "Accept-Encoding", "Null"))
             )
         }
         return request

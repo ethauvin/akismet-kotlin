@@ -35,7 +35,7 @@ import kotlinx.serialization.json.Json
 import net.thauvin.erik.semver.Version
 import okhttp3.FormBody
 import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
@@ -45,7 +45,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
-import java.util.*
+import java.util.Date
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -206,8 +206,8 @@ open class Akismet(apiKey: String) {
     init {
         require(
             (apiKey.isNotBlank() &&
-                apiKey.length == 12 &&
-                apiKey.matches(Regex("[A-Za-z0-9\\-]+")))
+                    apiKey.length == 12 &&
+                    apiKey.matches(Regex("[A-Za-z0-9\\-]+")))
         ) {
             "An Akismet API key must be specified."
         }
@@ -325,41 +325,37 @@ open class Akismet(apiKey: String) {
      * @param trueOnError Set to return `true` on error (IO, empty response, etc.)
      */
     @JvmOverloads
-    fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody, trueOnError: Boolean = false): Boolean {
+    fun executeMethod(apiUrl: HttpUrl, formBody: FormBody, trueOnError: Boolean = false): Boolean {
         reset()
-        if (apiUrl != null) {
-            val request = if (formBody.size == 0) {
-                Request.Builder().url(apiUrl).header("User-Agent", buildUserAgent()).build()
-            } else {
-                Request.Builder().url(apiUrl).post(formBody).header("User-Agent", buildUserAgent()).build()
-            }
-            try {
-                val result = client.newCall(request).execute()
-                httpStatusCode = result.code
-                proTip = result.header("x-akismet-pro-tip", "").toString().trim()
-                isDiscard = (proTip == "discard")
-                debugHelp = result.header("x-akismet-debug-help", "").toString().trim()
-                val body = result.body?.string()
-                if (body != null) {
-                    response = body.trim()
-                    if (response == "valid" || response == "true" || response.startsWith("Thanks")) {
-                        return true
-                    } else if (response != "false" && response != "invalid") {
-                        errorMessage = "Unexpected response: " + if (body.isBlank()) "<blank>" else body
-                    }
-                } else {
-                    val message = "No response body was received from Akismet."
-                    errorMessage = if (debugHelp.isNotBlank()) {
-                        "$message: $debugHelp"
-                    } else {
-                        message
-                    }
-                }
-            } catch (e: IOException) {
-                errorMessage = "An IO error occurred while communicating with the Akismet service."
-            }
+        val request = if (formBody.size == 0) {
+            Request.Builder().url(apiUrl).header("User-Agent", buildUserAgent()).build()
         } else {
-            errorMessage = "Invalid API end point URL."
+            Request.Builder().url(apiUrl).post(formBody).header("User-Agent", buildUserAgent()).build()
+        }
+        try {
+            val result = client.newCall(request).execute()
+            httpStatusCode = result.code
+            proTip = result.header("x-akismet-pro-tip", "").toString().trim()
+            isDiscard = (proTip == "discard")
+            debugHelp = result.header("x-akismet-debug-help", "").toString().trim()
+            val body = result.body?.string()
+            if (body != null) {
+                response = body.trim()
+                if (response == "valid" || response == "true" || response.startsWith("Thanks")) {
+                    return true
+                } else if (response != "false" && response != "invalid") {
+                    errorMessage = "Unexpected response: " + if (body.isBlank()) "<blank>" else body
+                }
+            } else {
+                val message = "No response body was received from Akismet."
+                errorMessage = if (debugHelp.isNotBlank()) {
+                    "$message: $debugHelp"
+                } else {
+                    message
+                }
+            }
+        } catch (e: IOException) {
+            errorMessage = "An IO error occurred while communicating with the Akismet service: ${e.message}"
         }
 
         if (errorMessage.isNotEmpty()) {
@@ -384,11 +380,11 @@ open class Akismet(apiKey: String) {
         response = ""
     }
 
-    private fun String.toApiUrl(): HttpUrl? {
+    private fun String.toApiUrl(): HttpUrl {
         return if (this == verifyMethod) {
-            String.format(apiEndPoint, "", this).toHttpUrlOrNull()
+            String.format(apiEndPoint, "", this).toHttpUrl()
         } else {
-            String.format(apiEndPoint, "$apiKey.", this).toHttpUrlOrNull()
+            String.format(apiEndPoint, "$apiKey.", this).toHttpUrl()
         }
     }
 

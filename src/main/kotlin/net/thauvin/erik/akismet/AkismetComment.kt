@@ -36,9 +36,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import javax.servlet.http.HttpServletRequest
-import kotlin.collections.Map
-import kotlin.collections.emptyMap
-import kotlin.collections.iterator
 import kotlin.collections.set
 
 private fun String?.ifNull() = this ?: ""
@@ -241,8 +238,8 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      * @see [serverEnv]
      */
     constructor(request: HttpServletRequest) : this(
-            request.remoteAddr,
-            request.getHeader("User-Agent").ifNull()
+        request.remoteAddr,
+        request.getHeader("User-Agent").ifNull()
     ) {
         referrer = request.getHeader("referer").ifNull()
         serverEnv = buildServerEnv(request)
