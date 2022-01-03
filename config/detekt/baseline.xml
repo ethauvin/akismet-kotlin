@@ -6,9 +6,8 @@
     <ID>ComplexMethod:AkismetComment.kt$AkismetComment$ @Suppress("DuplicatedCode") override fun equals(other: Any?): Boolean</ID>
     <ID>MagicNumber:Akismet.kt$Akismet$12</ID>
     <ID>MagicNumber:Akismet.kt$Akismet.&lt;no name provided>$8</ID>
-    <ID>NestedBlockDepth:Akismet.kt$Akismet$ @JvmOverloads fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
+    <ID>NestedBlockDepth:Akismet.kt$Akismet$ @JvmOverloads fun executeMethod(apiUrl: HttpUrl, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
     <ID>NestedBlockDepth:AkismetTest.kt$fun getKey(key: String): String</ID>
-    <ID>ReturnCount:Akismet.kt$Akismet$ @JvmOverloads fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
-    <ID>SwallowedException:Akismet.kt$Akismet$catch (e: IOException) { errorMessage = "An IO error occurred while communicating with the Akismet service." }</ID>
+    <ID>ReturnCount:Akismet.kt$Akismet$ @JvmOverloads fun executeMethod(apiUrl: HttpUrl, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
   </CurrentIssues>
 </SmellBaseline>
