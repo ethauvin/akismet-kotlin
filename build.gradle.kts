@@ -5,19 +5,19 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    id("com.github.ben-manes.versions") version "0.40.0"
-    id("io.gitlab.arturbosch.detekt") version "1.19.0"
+    id("com.github.ben-manes.versions") version "0.42.0"
+    id("io.gitlab.arturbosch.detekt") version "1.20.0"
     id("java-library")
     id("java")
     id("maven-publish")
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
-    id("org.jetbrains.dokka") version "1.6.10"
-    id("org.jetbrains.kotlinx.kover") version "0.4.4"
+    id("org.jetbrains.dokka") version "1.6.21"
+    id("org.jetbrains.kotlinx.kover") version "0.5.0"
     id("org.sonarqube") version "3.3"
     id("signing")
-    kotlin("jvm") version "1.6.10"
-    kotlin("kapt") version "1.6.10"
-    kotlin("plugin.serialization") version "1.6.10"
+    kotlin("jvm") version "1.6.21"
+    kotlin("kapt") version "1.6.21"
+    kotlin("plugin.serialization") version "1.6.21"
 }
 
 group = "net.thauvin.erik"
@@ -61,8 +61,8 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
-    testImplementation("org.mockito:mockito-core:4.2.0")
-    testImplementation("org.testng:testng:7.4.0")
+    testImplementation("org.mockito:mockito-core:4.5.1")
+    testImplementation("org.testng:testng:7.5")
 }
 
 kapt {

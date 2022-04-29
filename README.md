@@ -1,4 +1,4 @@
-[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](http://opensource.org/licenses/BSD-3-Clause) [![Release](https://img.shields.io/github/release/ethauvin/akismet-kotlin.svg)](https://github.com/ethauvin/akismet-kotlin/releases/latest) [![Maven Central](https://img.shields.io/maven-central/v/net.thauvin.erik/akismet-kotlin.svg?label=maven%20central)](https://search.maven.org/search?q=g:%22net.thauvin.erik%22%20AND%20a:%22akismet-kotlin%22)
+[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://opensource.org/licenses/BSD-3-Clause) [![Release](https://img.shields.io/github/release/ethauvin/akismet-kotlin.svg)](https://github.com/ethauvin/akismet-kotlin/releases/latest) [![Maven Central](https://img.shields.io/maven-central/v/net.thauvin.erik/akismet-kotlin.svg?label=maven%20central)](https://search.maven.org/search?q=g:%22net.thauvin.erik%22%20AND%20a:%22akismet-kotlin%22)
 
 [![Known Vulnerabilities](https://snyk.io/test/github/ethauvin/akismet-kotlin/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/ethauvin/akismet-kotlin?targetFile=pom.xml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_akismet-kotlin&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_akismet-kotlin) [![GitHub CI](https://github.com/ethauvin/akismet-kotlin/actions/workflows/gradle.yml/badge.svg)](https://github.com/ethauvin/akismet-kotlin/actions/workflows/gradle.yml) [![CircleCI](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master)
 
@@ -15,11 +15,11 @@ val akismet = Akismet(apiKey = "YOUR_API_KEY", blog = "YOUR_BLOG_URL")
 val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0")
 
 with(comment) {
-    referrer = "http://www.google.com"
+    referrer = "https://www.google.com"
     type = AkismetComment.TYPE_COMMENT
     author = "admin"
     authorEmail = "test@test.com"
-    authorUrl = "http://www.CheckOutMyCoolSite.com"
+    authorUrl = "https://www.CheckOutMyCoolSite.com"
     dateGmt = Akismet.dateToGmt(Date())
     content = "It means a lot that you would take the time to review our software."
 }
@@ -39,11 +39,11 @@ if (isSpam) {
 final Akismet akismet = new Akismet("YOUR_API_KEY", "YOUR_BLOG_URL");
 final AkismetComment comment = new AkismetComment("127.0.0.1", "curl/7.29.0");
 
-comment.setReferrer("http://www.google.com");
+comment.setReferrer("https://www.google.com");
 comment.setType(AkismetComment.TYPE_COMMENT);
 comment.setAuthor("admin");
 comment.setAuthorEmail("test@test.com");
-comment.setAuthorUrl("http://www.CheckOutMyCoolSite.com");
+comment.setAuthorUrl("https://www.CheckOutMyCoolSite.com");
 comment.setDateGmt(Akismet.dateToGmt(new Date()));
 comment.setContent("It means a lot that you would take the time to review our software.");
 //...
