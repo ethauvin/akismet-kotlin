@@ -105,7 +105,7 @@ open class Akismet(apiKey: String) {
      */
     var blog = ""
         set(value) {
-            require(!value.isBlank()) { "A Blog URL must be specified." }
+            require(value.isNotBlank()) { "A Blog URL must be specified." }
             field = value
         }
 
@@ -214,13 +214,11 @@ open class Akismet(apiKey: String) {
 
         this.apiKey = apiKey
 
-        val logging = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-            override fun log(message: String) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.log(Level.FINE, message.replace(apiKey, "xxxxxxxx" + apiKey.substring(8), true))
-                }
+        val logging = HttpLoggingInterceptor { message ->
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, message.replace(apiKey, "xxxxxxxx" + apiKey.substring(8), true))
             }
-        })
+        }
         logging.level = HttpLoggingInterceptor.Level.BODY
         client = OkHttpClient.Builder().addInterceptor(logging).build()
     }
@@ -344,7 +342,7 @@ open class Akismet(apiKey: String) {
                 if (response == "valid" || response == "true" || response.startsWith("Thanks")) {
                     return true
                 } else if (response != "false" && response != "invalid") {
-                    errorMessage = "Unexpected response: " + if (body.isBlank()) "<blank>" else body
+                    errorMessage = "Unexpected response: " + body.ifBlank { "<blank>" }
                 }
             } else {
                 val message = "No response body was received from Akismet."
@@ -397,46 +395,46 @@ open class Akismet(apiKey: String) {
                 add("user_ip", userIp)
                 add("user_agent", userAgent)
 
-                if (referrer!!.isNotBlank()) {
+                if (!referrer.isNullOrBlank()) {
                     add("referrer", referrer.toString())
                 }
-                if (permalink!!.isNotBlank()) {
+                if (!permalink.isNullOrBlank()) {
                     add("permalink", permalink.toString())
                 }
-                if (type!!.isNotBlank()) {
+                if (!type.isNullOrBlank()) {
                     add("comment_type", type.toString())
                 }
-                if (author!!.isNotBlank()) {
+                if (!author.isNullOrBlank()) {
                     add("comment_author", author.toString())
                 }
-                if (authorEmail!!.isNotBlank()) {
+                if (!authorEmail.isNullOrBlank()) {
                     add("comment_author_email", authorEmail.toString())
                 }
-                if (authorUrl!!.isNotBlank()) {
+                if (!authorUrl.isNullOrBlank()) {
                     add("comment_author_url", authorUrl.toString())
                 }
-                if (content!!.isNotBlank()) {
+                if (!content.isNullOrBlank()) {
                     add("comment_content", content.toString())
                 }
-                if (dateGmt!!.isNotBlank()) {
+                if (!dateGmt.isNullOrBlank()) {
                     add("comment_date_gmt", dateGmt.toString())
                 }
-                if (postModifiedGmt!!.isNotBlank()) {
+                if (!postModifiedGmt.isNullOrBlank()) {
                     add("comment_post_modified_gmt", postModifiedGmt.toString())
                 }
-                if (blogLang!!.isNotBlank()) {
+                if (!blogLang.isNullOrBlank()) {
                     add("blog_lang", blogLang.toString())
                 }
-                if (blogCharset!!.isNotBlank()) {
+                if (!blogCharset.isNullOrBlank()) {
                     add("blog_charset", blogCharset.toString())
                 }
-                if (userRole!!.isNotBlank()) {
+                if (!userRole.isNullOrBlank()) {
                     add("user_role", userRole.toString())
                 }
                 if (isTest) {
                     add("is_test", "1")
                 }
-                if (recheckReason!!.isNotBlank()) {
+                if (!recheckReason.isNullOrBlank()) {
                     add("recheck_reason", recheckReason.toString())
                 }
 
