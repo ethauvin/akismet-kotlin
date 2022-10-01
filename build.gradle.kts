@@ -6,18 +6,18 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     id("com.github.ben-manes.versions") version "0.42.0"
-    id("io.gitlab.arturbosch.detekt") version "1.20.0"
+    id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("java-library")
     id("java")
     id("maven-publish")
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
-    id("org.jetbrains.dokka") version "1.6.21"
-    id("org.jetbrains.kotlinx.kover") version "0.5.0"
-    id("org.sonarqube") version "3.3"
+    id("org.jetbrains.dokka") version "1.7.10"
+    id("org.jetbrains.kotlinx.kover") version "0.6.0"
+    id("org.sonarqube") version "3.4.0.2513"
     id("signing")
-    kotlin("jvm") version "1.6.21"
-    kotlin("kapt") version "1.6.21"
-    kotlin("plugin.serialization") version "1.6.21"
+    kotlin("jvm") version "1.7.20"
+    kotlin("kapt") version "1.7.20"
+    kotlin("plugin.serialization") version "1.7.20"
 }
 
 group = "net.thauvin.erik"
@@ -33,7 +33,7 @@ var semverProcessor = "net.thauvin.erik:semver:1.2.0"
 val publicationName = "mavenJava"
 
 object Versions {
-    const val OKHTTP = "4.9.3"
+    const val OKHTTP = "4.10.0"
 }
 
 fun isNonStable(version: String): Boolean {
@@ -54,15 +54,17 @@ dependencies {
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
 
-    implementation("javax.servlet:javax.servlet-api:4.0.1")
+//    implementation("javax.servlet:javax.servlet-api:4.0.1")
+    implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
+
 
     implementation("com.squareup.okhttp3:okhttp:${Versions.OKHTTP}")
     implementation("com.squareup.okhttp3:logging-interceptor:${Versions.OKHTTP}")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 
-    testImplementation("org.mockito:mockito-core:4.5.1")
-    testImplementation("org.testng:testng:7.5")
+    testImplementation("org.mockito:mockito-core:4.8.0")
+    testImplementation("org.testng:testng:7.6.1")
 }
 
 kapt {
@@ -77,8 +79,8 @@ detekt {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
     withSourcesJar()
 }
 
@@ -88,7 +90,7 @@ sonarqube {
         property("sonar.organization", "ethauvin-github")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/kover/report.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/kover/xml/report.xml")
     }
 }
 
@@ -139,7 +141,6 @@ tasks {
 
         dokkaSourceSets {
             configureEach {
-                jdkVersion.set(8)
                 includes.from("config/dokka/packages.md")
                 sourceLink {
                     localDirectory.set(file("src/main/kotlin/"))
@@ -147,8 +148,7 @@ tasks {
                     remoteLineSuffix.set("#L")
                 }
                 externalDocumentationLink {
-                    url.set(URL("https://javaee.github.io/javaee-spec/javadocs/"))
-                    packageListUrl.set(URL("https://javaee.github.io/javaee-spec/javadocs/package-list"))
+                    url.set(URL("https://jakarta.ee/specifications/platform/9/apidocs/"))
                 }
             }
         }
@@ -157,20 +157,17 @@ tasks {
     dokkaJavadoc {
         dokkaSourceSets {
             configureEach {
-                jdkVersion.set(8)
                 includes.from("config/dokka/packages.md")
                 externalDocumentationLink {
-                    url.set(URL("https://javaee.github.io/javaee-spec/javadocs/"))
-                    packageListUrl.set(URL("https://javaee.github.io/javaee-spec/javadocs/package-list"))
+                    url.set(URL("https://jakarta.ee/specifications/platform/9/apidocs/"))
                 }
             }
         }
-        dependsOn(dokkaHtml)
     }
 
     val copyToDeploy by registering(Copy::class) {
         from(configurations.runtimeClasspath) {
-            exclude("annotations-*.jar")
+            exclude("annotations-*.jar", "jakarta.servlet-*.jar")
         }
         from(jar)
         into(deployDir)
@@ -179,7 +176,7 @@ tasks {
     register("deploy") {
         description = "Copies all needed files to the $deployDir directory."
         group = PublishingPlugin.PUBLISH_TASK_GROUP
-        dependsOn(build, jar)
+        dependsOn(clean, wrapper, build, jar)
         outputs.dir(deployDir)
         inputs.files(copyToDeploy)
         mustRunAfter(clean)

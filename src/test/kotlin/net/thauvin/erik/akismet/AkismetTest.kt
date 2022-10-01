@@ -32,6 +32,7 @@
 
 package net.thauvin.erik.akismet
 
+import jakarta.servlet.http.HttpServletRequest
 import okhttp3.FormBody
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.mockito.Mockito
@@ -52,7 +53,6 @@ import java.util.Date
 import java.util.Properties
 import java.util.logging.ConsoleHandler
 import java.util.logging.Level
-import javax.servlet.http.HttpServletRequest
 
 fun getKey(key: String): String {
     var value = System.getenv(key) ?: ""

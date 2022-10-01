@@ -3,10 +3,10 @@
   <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>ComplexMethod:Akismet.kt$Akismet$private fun buildFormBody(comment: AkismetComment): FormBody</ID>
-    <ID>ComplexMethod:AkismetComment.kt$AkismetComment$ @Suppress("DuplicatedCode") override fun equals(other: Any?): Boolean</ID>
+    <ID>ComplexMethod:AkismetComment.kt$AkismetComment$@Suppress("DuplicatedCode") override fun equals(other: Any?): Boolean</ID>
     <ID>MagicNumber:Akismet.kt$Akismet$12</ID>
     <ID>MagicNumber:Akismet.kt$Akismet$8</ID>
     <ID>NestedBlockDepth:AkismetTest.kt$fun getKey(key: String): String</ID>
-    <ID>ReturnCount:Akismet.kt$Akismet$ @JvmOverloads fun executeMethod(apiUrl: HttpUrl, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
+    <ID>ReturnCount:Akismet.kt$Akismet$@JvmOverloads fun executeMethod(apiUrl: HttpUrl, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -32,10 +32,10 @@
 
 package net.thauvin.erik.akismet
 
+import jakarta.servlet.http.HttpServletRequest
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import javax.servlet.http.HttpServletRequest
 import kotlin.collections.set
 
 private fun String?.ifNull() = this ?: ""

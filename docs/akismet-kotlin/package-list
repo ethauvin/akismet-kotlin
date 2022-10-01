@@ -37,7 +37,7 @@ $dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_SIGNUP/#/
 $dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_TRACKBACK/#/PointingToDeclaration/akismet-kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-t-y-p-e_-t-r-a-c-k-b-a-c-k.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_TWEET/#/PointingToDeclaration/akismet-kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-t-y-p-e_-t-w-e-e-t.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment///PointingToDeclaration/akismet-kotlin/net.thauvin.erik.akismet/-akismet-comment/index.html
-$dokka.location:net.thauvin.erik.akismet/AkismetComment/AkismetComment/#javax.servlet.http.HttpServletRequest/PointingToDeclaration/akismet-kotlin/net.thauvin.erik.akismet/-akismet-comment/-akismet-comment.html
+$dokka.location:net.thauvin.erik.akismet/AkismetComment/AkismetComment/#jakarta.servlet.http.HttpServletRequest/PointingToDeclaration/akismet-kotlin/net.thauvin.erik.akismet/-akismet-comment/-akismet-comment.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment/AkismetComment/#kotlin.String#kotlin.String/PointingToDeclaration/akismet-kotlin/net.thauvin.erik.akismet/-akismet-comment/-akismet-comment.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment/author/#/PointingToDeclaration/akismet-kotlin/net.thauvin.erik.akismet/-akismet-comment/author.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment/authorEmail/#/PointingToDeclaration/akismet-kotlin/net.thauvin.erik.akismet/-akismet-comment/author-email.html
