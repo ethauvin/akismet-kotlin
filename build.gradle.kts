@@ -65,6 +65,8 @@ dependencies {
 
     testImplementation("org.mockito:mockito-core:4.8.0")
     testImplementation("org.testng:testng:7.6.1")
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
+
 }
 
 kapt {
