@@ -2,9 +2,9 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_akismet-kotlin&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_akismet-kotlin) [![GitHub CI](https://github.com/ethauvin/akismet-kotlin/actions/workflows/gradle.yml/badge.svg)](https://github.com/ethauvin/akismet-kotlin/actions/workflows/gradle.yml) [![CircleCI](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master)
 
-# [Akismet](https://www.akismet.com) for Kotlin/Java
+# [Akismet](https://www.akismet.com) for Kotlin, Java and Android
 
-Akismet for Kotlin/Java/Android is a pretty complete and straightforward implementation of the [Automattic's Akismet](https://akismet.com/development/api/) API, a free service which can be used to actively stop comments spam.
+A pretty complete and straightforward implementation of the [Automattic's Akismet](https://akismet.com/development/api/) API, a free service which can be used to actively stop comments spam.
 
 ## Examples (TL;DR)
 

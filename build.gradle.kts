@@ -5,23 +5,23 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    id("com.github.ben-manes.versions") version "0.42.0"
+    id("com.github.ben-manes.versions") version "0.45.0"
     id("io.gitlab.arturbosch.detekt") version "1.21.0"
     id("java-library")
     id("java")
     id("maven-publish")
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
-    id("org.jetbrains.dokka") version "1.7.10"
-    id("org.jetbrains.kotlinx.kover") version "0.6.0"
-    id("org.sonarqube") version "3.4.0.2513"
+    id("org.jetbrains.dokka") version "1.7.20"
+    id("org.jetbrains.kotlinx.kover") version "0.6.1"
+    id("org.sonarqube") version "3.5.0.2730"
     id("signing")
-    kotlin("jvm") version "1.7.20"
-    kotlin("kapt") version "1.7.20"
-    kotlin("plugin.serialization") version "1.7.20"
+    kotlin("jvm") version "1.7.22"
+    kotlin("kapt") version "1.7.22"
+    kotlin("plugin.serialization") version "1.7.22"
 }
 
 group = "net.thauvin.erik"
-description = "Akismet for Kotlin/Java, a client library for accessing the Automattic Kismet (Akismet) spam comments filtering service."
+description = "A client library for accessing the Automattic Kismet (Akismet) spam comments filtering service."
 
 val gitHub = "ethauvin/$name"
 val mavenUrl = "https://github.com/$gitHub"
@@ -64,7 +64,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 
     testImplementation("org.mockito:mockito-core:4.8.0")
-    testImplementation("org.testng:testng:7.6.1")
+    testImplementation("org.testng:testng:7.7.0")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
 
 }
@@ -234,8 +234,8 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git:git://github.com/$gitHub.git")
-                    developerConnection.set("scm:git:git@github.com:$gitHub.git")
+                    connection.set("scm:git://github.com/$gitHub.git")
+                    developerConnection.set("scm:git@github.com:$gitHub.git")
                     url.set(mavenUrl)
                 }
                 issueManagement {

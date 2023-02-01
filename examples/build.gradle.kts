@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("application")
-    id("com.github.ben-manes.versions") version "0.42.0"
-    kotlin("jvm") version "1.7.20"
+    id("com.github.ben-manes.versions") version "0.45.0"
+    kotlin("jvm") version "1.7.22"
 }
 
 // ./gradlew run runJava
