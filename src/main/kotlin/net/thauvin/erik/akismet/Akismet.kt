@@ -331,25 +331,26 @@ open class Akismet(apiKey: String) {
             Request.Builder().url(apiUrl).post(formBody).header("User-Agent", buildUserAgent()).build()
         }
         try {
-            val result = client.newCall(request).execute()
-            httpStatusCode = result.code
-            proTip = result.header("x-akismet-pro-tip", "").toString().trim()
-            isDiscard = (proTip == "discard")
-            debugHelp = result.header("x-akismet-debug-help", "").toString().trim()
-            val body = result.body?.string()
-            if (body != null) {
-                response = body.trim()
-                if (response == "valid" || response == "true" || response.startsWith("Thanks")) {
-                    return true
-                } else if (response != "false" && response != "invalid") {
-                    errorMessage = "Unexpected response: " + body.ifBlank { "<blank>" }
-                }
-            } else {
-                val message = "No response body was received from Akismet."
-                errorMessage = if (debugHelp.isNotBlank()) {
-                    "$message: $debugHelp"
+            client.newCall(request).execute().use { result ->
+                httpStatusCode = result.code
+                proTip = result.header("x-akismet-pro-tip", "").toString().trim()
+                isDiscard = (proTip == "discard")
+                debugHelp = result.header("x-akismet-debug-help", "").toString().trim()
+                val body = result.body?.string()
+                if (body != null) {
+                    response = body.trim()
+                    if (response == "valid" || response == "true" || response.startsWith("Thanks")) {
+                        return true
+                    } else if (response != "false" && response != "invalid") {
+                        errorMessage = "Unexpected response: " + body.ifBlank { "<blank>" }
+                    }
                 } else {
-                    message
+                    val message = "No response body was received from Akismet."
+                    errorMessage = if (debugHelp.isNotBlank()) {
+                        "$message: $debugHelp"
+                    } else {
+                        message
+                    }
                 }
             }
         } catch (e: IOException) {
