@@ -1,10 +1,14 @@
-[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](http://opensource.org/licenses/BSD-3-Clause) [![release](https://img.shields.io/github/release/ethauvin/akismet-kotlin.svg)](https://github.com/ethauvin/akismet-kotlin/releases/latest) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/akismet-kotlin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/net.thauvin.erik/akismet-kotlin) [![Download](https://api.bintray.com/packages/ethauvin/maven/akismet-kotlin/images/download.svg)](https://bintray.com/ethauvin/maven/akismet-kotlin/_latestVersion)
+[![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://opensource.org/licenses/BSD-3-Clause)
+[![Release](https://img.shields.io/github/release/ethauvin/akismet-kotlin.svg)](https://github.com/ethauvin/akismet-kotlin/releases/latest)
+[![Maven Central](https://img.shields.io/maven-central/v/net.thauvin.erik/akismet-kotlin.svg?color=blue)](https://central.sonatype.com/artifact/net.thauvin.erik/akismet-kotlin)
 
-[![Known Vulnerabilities](https://snyk.io/test/github/ethauvin/akismet-kotlin/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/ethauvin/akismet-kotlin?targetFile=pom.xml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_akismet-kotlin&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_akismet-kotlin) [![Build Status](https://travis-ci.com/ethauvin/akismet-kotlin.svg?branch=master)](https://travis-ci.com/ethauvin/akismet-kotlin) [![CircleCI](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ethauvin_akismet-kotlin&metric=alert_status)](https://sonarcloud.io/dashboard?id=ethauvin_akismet-kotlin)
+[![GitHub CI](https://github.com/ethauvin/akismet-kotlin/actions/workflows/gradle.yml/badge.svg)](https://github.com/ethauvin/akismet-kotlin/actions/workflows/gradle.yml)
+[![CircleCI](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master.svg?style=shield)](https://circleci.com/gh/ethauvin/akismet-kotlin/tree/master)
 
-# [Akismet](https://www.akismet.com) for Kotlin/Java
+# [Akismet](https://www.akismet.com) for Kotlin, Java and Android
 
-Akismet for Kotlin/Java/Android is a pretty complete and straightforward implementation of the [Automattic's Akismet](https://akismet.com/development/api/) API, a free service which can be used to actively stop comments spam.
+A pretty complete and straightforward implementation of the [Automattic's Akismet](https://akismet.com/development/api/) API, a free service which can be used to actively stop comments spam.
 
 ## Examples (TL;DR)
 
@@ -15,11 +19,11 @@ val akismet = Akismet(apiKey = "YOUR_API_KEY", blog = "YOUR_BLOG_URL")
 val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0")
 
 with(comment) {
-    referrer = "http://www.google.com"
+    referrer = "https://www.google.com"
     type = AkismetComment.TYPE_COMMENT
     author = "admin"
     authorEmail = "test@test.com"
-    authorUrl = "http://www.CheckOutMyCoolSite.com"
+    authorUrl = "https://www.CheckOutMyCoolSite.com"
     dateGmt = Akismet.dateToGmt(Date())
     content = "It means a lot that you would take the time to review our software."
 }
@@ -39,11 +43,11 @@ if (isSpam) {
 final Akismet akismet = new Akismet("YOUR_API_KEY", "YOUR_BLOG_URL");
 final AkismetComment comment = new AkismetComment("127.0.0.1", "curl/7.29.0");
 
-comment.setReferrer("http://www.google.com");
+comment.setReferrer("https://www.google.com");
 comment.setType(AkismetComment.TYPE_COMMENT);
 comment.setAuthor("admin");
 comment.setAuthorEmail("test@test.com");
-comment.setAuthorUrl("http://www.CheckOutMyCoolSite.com");
+comment.setAuthorUrl("https://www.CheckOutMyCoolSite.com");
 comment.setDateGmt(Akismet.dateToGmt(new Date()));
 comment.setContent("It means a lot that you would take the time to review our software.");
 //...
@@ -56,20 +60,21 @@ if (isSpam) {
 
 [View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/src/main/java/com/example/AkismetSample.java)
 
-
 ### Gradle
 
 To use with [Gradle](https://gradle.org/), include the following dependency in your [build](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/build.gradle.kts) file:
 
 ```gradle
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    implementation("net.thauvin.erik:akismet-kotlin:0.9.2")
+    implementation("net.thauvin.erik:akismet-kotlin:0.9.3")
 }
 ```
+
+Instructions for using with Maven, Ivy, etc. can be found on [Maven Central](https://central.sonatype.com/artifact/net.thauvin.erik/akismet-kotlin).
 
 ### HttpServletRequest
 

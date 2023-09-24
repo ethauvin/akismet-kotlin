@@ -1,7 +1,7 @@
 /*
  * AkismetComment.kt
  *
- * Copyright (c) 2019-2020, Erik C. Thauvin (erik@thauvin.net)
+ * Copyright (c) 2019-2022, Erik C. Thauvin (erik@thauvin.net)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,14 +32,10 @@
 
 package net.thauvin.erik.akismet
 
+import jakarta.servlet.http.HttpServletRequest
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import javax.servlet.http.HttpServletRequest
-import kotlin.collections.HashMap
-import kotlin.collections.Map
-import kotlin.collections.emptyMap
-import kotlin.collections.iterator
 import kotlin.collections.set
 
 private fun String?.ifNull() = this ?: ""
@@ -53,7 +49,7 @@ private fun String?.ifNull() = this ?: ""
  *
  * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
  *
- * @constructor Create an Akismet comment instance.
+ * @constructor Creates a new instance.
  *
  * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
  *
@@ -233,7 +229,7 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     var serverEnv: Map<String, String> = emptyMap()
 
     /**
-     * Create an Akismet comment extracting the [userIp], [userAgent], [referrer] and [serverEnv] environment variables
+     * Creates a new instance extracting the [userIp], [userAgent], [referrer] and [serverEnv] environment variables
      * from a Servlet request.
      *
      * See the
@@ -325,14 +321,14 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
 }
 
 private fun buildServerEnv(request: HttpServletRequest): Map<String, String> {
-    val params = HashMap<String, String>()
+    val params = mutableMapOf<String, String>()
 
     params["REMOTE_ADDR"] = request.remoteAddr
     params["REQUEST_URI"] = request.requestURI
 
     for (name in request.headerNames) {
         if (!name.equals("cookie", true)) {
-            params["HTTP_${name.toUpperCase().replace('-', '_')}"] = request.getHeader(name).ifNull()
+            params["HTTP_${name.uppercase().replace('-', '_')}"] = request.getHeader(name).ifNull()
         }
     }
 

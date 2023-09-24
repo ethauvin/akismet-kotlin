@@ -1,7 +1,7 @@
 /*
  * Akismet.kt
  *
- * Copyright (c) 2019-2020, Erik C. Thauvin (erik@thauvin.net)
+ * Copyright (c) 2019-2022, Erik C. Thauvin (erik@thauvin.net)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@ import kotlinx.serialization.json.Json
 import net.thauvin.erik.semver.Version
 import okhttp3.FormBody
 import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
@@ -45,20 +45,20 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
-import java.util.*
+import java.util.Date
 import java.util.logging.Level
 import java.util.logging.Logger
 
 /**
  * Provides access to the [Akismet API](https://akismet.com/development/api/).
  *
- * @constructor Creates new instance using the provided [Akismet](https://www.askimet.com/) API key.
+ * @constructor Creates a new instance using the provided [Akismet](https://www.askimet.com/) API key.
  */
 @Version(properties = "version.properties", type = "kt")
 open class Akismet(apiKey: String) {
     companion object {
         /**
-         * (Re)Create a [comment][AkismetComment] from a JSON string.
+         * (Re)Creates a [comment][AkismetComment] from a JSON string.
          *
          * @see [AkismetComment.toString]
          */
@@ -68,7 +68,7 @@ open class Akismet(apiKey: String) {
         }
 
         /**
-         * Convert a date to a UTC timestamp. (ISO 8601)
+         * Converts a date to a UTC timestamp. (ISO 8601)
          *
          * @see [AkismetComment.dateGmt]
          * @see [AkismetComment.postModifiedGmt]
@@ -81,7 +81,7 @@ open class Akismet(apiKey: String) {
         }
 
         /**
-         * Convert a locale date/time to a UTC timestamp. (ISO 8601)
+         * Converts a locale date/time to a UTC timestamp. (ISO 8601)
          *
          * @see [AkismetComment.dateGmt]
          * @see [AkismetComment.postModifiedGmt]
@@ -105,7 +105,7 @@ open class Akismet(apiKey: String) {
      */
     var blog = ""
         set(value) {
-            require(!value.isBlank()) { "A Blog URL must be specified." }
+            require(value.isNotBlank()) { "A Blog URL must be specified." }
             field = value
         }
 
@@ -125,7 +125,7 @@ open class Akismet(apiKey: String) {
     var appUserAgent = ""
 
     /**
-     * Check if the API Key has been verified
+     * Set to `true` if the API Key has been verified.
      *
      * @see [Akismet.verifyKey]
      */
@@ -173,7 +173,7 @@ open class Akismet(apiKey: String) {
         private set
 
     /**
-     * Set to true if Akismet has determined that the last [checked comment][checkComment] is blatant spam, and you
+     * Set to `true` if Akismet has determined that the last [checked comment][checkComment] is blatant spam, and you
      * can safely discard it without saving it in any spam queue.
      *
      * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
@@ -201,32 +201,30 @@ open class Akismet(apiKey: String) {
     /**
      * The logger instance.
      */
-    val logger: Logger by lazy { Logger.getLogger(Akismet::class.java.simpleName) }
+    val logger: Logger by lazy { Logger.getLogger(Akismet::class.java.name) }
 
     init {
         require(
             (apiKey.isNotBlank() &&
-                apiKey.length == 12 &&
-                apiKey.matches(Regex("[A-Za-z0-9\\-]+")))
+                    apiKey.length == 12 &&
+                    apiKey.matches(Regex("[A-Za-z0-9\\-]+")))
         ) {
             "An Akismet API key must be specified."
         }
 
         this.apiKey = apiKey
 
-        val logging = HttpLoggingInterceptor(object : HttpLoggingInterceptor.Logger {
-            override fun log(message: String) {
-                if (logger.isLoggable(Level.FINE)) {
-                    logger.log(Level.FINE, message.replace(apiKey, "xxxxxxxx" + apiKey.substring(8), true))
-                }
+        val logging = HttpLoggingInterceptor { message ->
+            if (logger.isLoggable(Level.FINE)) {
+                logger.log(Level.FINE, message.replace(apiKey, "xxxxxxxx" + apiKey.substring(8), true))
             }
-        })
+        }
         logging.level = HttpLoggingInterceptor.Level.BODY
         client = OkHttpClient.Builder().addInterceptor(logging).build()
     }
 
     /**
-     * Create a new instance using an [Akismet](https://www.askimet.com/) API key and URL registered with Akismet.
+     * Creates a new instance using an [Akismet](https://www.askimet.com/) API key and URL registered with Akismet.
      */
     constructor(apiKey: String, blog: String) : this(apiKey) {
         this.blog = blog
@@ -318,23 +316,22 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Execute a call to an Akismet REST API method.
+     * Executes a call to an Akismet REST API method.
      *
      * @param apiUrl The Akismet API URL endpoint. (e.g. https://rest.akismet.com/1.1/verify-key)
      * @param formBody The HTTP POST form body containing the request parameters to be submitted.
      * @param trueOnError Set to return `true` on error (IO, empty response, etc.)
      */
     @JvmOverloads
-    fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody, trueOnError: Boolean = false): Boolean {
+    fun executeMethod(apiUrl: HttpUrl, formBody: FormBody, trueOnError: Boolean = false): Boolean {
         reset()
-        if (apiUrl != null) {
-            val request = if (formBody.size == 0) {
-                Request.Builder().url(apiUrl).header("User-Agent", buildUserAgent()).build()
-            } else {
-                Request.Builder().url(apiUrl).post(formBody).header("User-Agent", buildUserAgent()).build()
-            }
-            try {
-                val result = client.newCall(request).execute()
+        val request = if (formBody.size == 0) {
+            Request.Builder().url(apiUrl).header("User-Agent", buildUserAgent()).build()
+        } else {
+            Request.Builder().url(apiUrl).post(formBody).header("User-Agent", buildUserAgent()).build()
+        }
+        try {
+            client.newCall(request).execute().use { result ->
                 httpStatusCode = result.code
                 proTip = result.header("x-akismet-pro-tip", "").toString().trim()
                 isDiscard = (proTip == "discard")
@@ -345,7 +342,7 @@ open class Akismet(apiKey: String) {
                     if (response == "valid" || response == "true" || response.startsWith("Thanks")) {
                         return true
                     } else if (response != "false" && response != "invalid") {
-                        errorMessage = "Unexpected response: " + if (body.isBlank()) "<blank>" else body
+                        errorMessage = "Unexpected response: " + body.ifBlank { "<blank>" }
                     }
                 } else {
                     val message = "No response body was received from Akismet."
@@ -355,15 +352,13 @@ open class Akismet(apiKey: String) {
                         message
                     }
                 }
-            } catch (e: IOException) {
-                errorMessage = "An IO error occurred while communicating with the Akismet service."
             }
-        } else {
-            errorMessage = "Invalid API end point URL."
+        } catch (e: IOException) {
+            errorMessage = "An IO error occurred while communicating with the Akismet service: ${e.message}"
         }
 
         if (errorMessage.isNotEmpty()) {
-            logger.warning(errorMessage)
+            if (logger.isLoggable(Level.WARNING)) logger.warning(errorMessage)
             return trueOnError
         }
 
@@ -371,7 +366,7 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Reset the [debugHelp], [errorMessage], [httpStatusCode], [isDiscard], [isVerifiedKey], [proTip], and
+     * Resets the [debugHelp], [errorMessage], [httpStatusCode], [isDiscard], [isVerifiedKey], [proTip], and
      * [response] properties.
      */
     fun reset() {
@@ -384,11 +379,11 @@ open class Akismet(apiKey: String) {
         response = ""
     }
 
-    private fun String.toApiUrl(): HttpUrl? {
+    private fun String.toApiUrl(): HttpUrl {
         return if (this == verifyMethod) {
-            String.format(apiEndPoint, "", this).toHttpUrlOrNull()
+            String.format(apiEndPoint, "", this).toHttpUrl()
         } else {
-            String.format(apiEndPoint, "$apiKey.", this).toHttpUrlOrNull()
+            String.format(apiEndPoint, "$apiKey.", this).toHttpUrl()
         }
     }
 
@@ -401,46 +396,46 @@ open class Akismet(apiKey: String) {
                 add("user_ip", userIp)
                 add("user_agent", userAgent)
 
-                if (referrer!!.isNotBlank()) {
+                if (!referrer.isNullOrBlank()) {
                     add("referrer", referrer.toString())
                 }
-                if (permalink!!.isNotBlank()) {
+                if (!permalink.isNullOrBlank()) {
                     add("permalink", permalink.toString())
                 }
-                if (type!!.isNotBlank()) {
+                if (!type.isNullOrBlank()) {
                     add("comment_type", type.toString())
                 }
-                if (author!!.isNotBlank()) {
+                if (!author.isNullOrBlank()) {
                     add("comment_author", author.toString())
                 }
-                if (authorEmail!!.isNotBlank()) {
+                if (!authorEmail.isNullOrBlank()) {
                     add("comment_author_email", authorEmail.toString())
                 }
-                if (authorUrl!!.isNotBlank()) {
+                if (!authorUrl.isNullOrBlank()) {
                     add("comment_author_url", authorUrl.toString())
                 }
-                if (content!!.isNotBlank()) {
+                if (!content.isNullOrBlank()) {
                     add("comment_content", content.toString())
                 }
-                if (dateGmt!!.isNotBlank()) {
+                if (!dateGmt.isNullOrBlank()) {
                     add("comment_date_gmt", dateGmt.toString())
                 }
-                if (postModifiedGmt!!.isNotBlank()) {
+                if (!postModifiedGmt.isNullOrBlank()) {
                     add("comment_post_modified_gmt", postModifiedGmt.toString())
                 }
-                if (blogLang!!.isNotBlank()) {
+                if (!blogLang.isNullOrBlank()) {
                     add("blog_lang", blogLang.toString())
                 }
-                if (blogCharset!!.isNotBlank()) {
+                if (!blogCharset.isNullOrBlank()) {
                     add("blog_charset", blogCharset.toString())
                 }
-                if (userRole!!.isNotBlank()) {
+                if (!userRole.isNullOrBlank()) {
                     add("user_role", userRole.toString())
                 }
                 if (isTest) {
                     add("is_test", "1")
                 }
-                if (recheckReason!!.isNotBlank()) {
+                if (!recheckReason.isNullOrBlank()) {
                     add("recheck_reason", recheckReason.toString())
                 }
 

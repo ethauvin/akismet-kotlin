@@ -1,16 +1,13 @@
-<?xml version="1.0" ?>
+<?xml version='1.0' encoding='UTF-8'?>
 <SmellBaseline>
-  <Blacklist></Blacklist>
-  <Whitelist>
-    <ID>ComplexMethod:Akismet.kt$Akismet$ @JvmOverloads fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
-    <ID>ComplexMethod:Akismet.kt$Akismet$private fun buildFormBody(comment: AkismetComment): FormBody</ID>
-    <ID>ComplexMethod:AkismetComment.kt$AkismetComment$ @Suppress("DuplicatedCode") override fun equals(other: Any?): Boolean</ID>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>CyclomaticComplexMethod:Akismet.kt$Akismet$private fun buildFormBody(comment: AkismetComment): FormBody</ID>
+    <ID>CyclomaticComplexMethod:AkismetComment.kt$AkismetComment$@Suppress("DuplicatedCode") override fun equals(other: Any?): Boolean</ID>
     <ID>MagicNumber:Akismet.kt$Akismet$12</ID>
-    <ID>MagicNumber:Akismet.kt$Akismet.&lt;no name provided&gt;$8</ID>
-    <ID>MaxLineLength:Akismet.kt$Akismet$/** * The _x-akismet-pro-tip_ header from the last operation, if any. * * If the _x-akismet-pro-tip_ header is set to discard, then Akismet has determined that the comment is blatant spam, * and you can safely discard it without saving it in any spam queue. * * Read more about this feature in this * [Akismet blog post](https://blog.akismet.com/2014/04/23/theres-a-ninja-in-your-akismet/). * * @see [Akismet.isDiscard] */ @Suppress("MemberVisibilityCanBePrivate") var proTip: String = "" private set</ID>
-    <ID>NestedBlockDepth:Akismet.kt$Akismet$ @JvmOverloads fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
+    <ID>MagicNumber:Akismet.kt$Akismet$8</ID>
+    <ID>NestedBlockDepth:Akismet.kt$Akismet$@JvmOverloads fun executeMethod(apiUrl: HttpUrl, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
     <ID>NestedBlockDepth:AkismetTest.kt$fun getKey(key: String): String</ID>
-    <ID>ReturnCount:Akismet.kt$Akismet$ @JvmOverloads fun executeMethod(apiUrl: HttpUrl?, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
-    <ID>TooManyFunctions:Akismet.kt$Akismet</ID>
-  </Whitelist>
+    <ID>ReturnCount:Akismet.kt$Akismet$@JvmOverloads fun executeMethod(apiUrl: HttpUrl, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
+  </CurrentIssues>
 </SmellBaseline>
