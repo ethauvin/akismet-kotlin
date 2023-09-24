@@ -5,19 +5,19 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    id("com.github.ben-manes.versions") version "0.45.0"
-    id("io.gitlab.arturbosch.detekt") version "1.21.0"
+    id("com.github.ben-manes.versions") version "0.48.0"
+    id("io.gitlab.arturbosch.detekt") version "1.23.1"
     id("java-library")
     id("java")
     id("maven-publish")
     id("net.thauvin.erik.gradle.semver") version "1.0.4"
-    id("org.jetbrains.dokka") version "1.7.20"
-    id("org.jetbrains.kotlinx.kover") version "0.6.1"
-    id("org.sonarqube") version "3.5.0.2730"
+    id("org.jetbrains.dokka") version "1.9.0"
+    id("org.jetbrains.kotlinx.kover") version "0.7.3"
+    id("org.sonarqube") version "4.3.1.3277"
     id("signing")
-    kotlin("jvm") version "1.7.22"
-    kotlin("kapt") version "1.7.22"
-    kotlin("plugin.serialization") version "1.7.22"
+    kotlin("jvm") version "1.9.10"
+    kotlin("kapt") version "1.9.10"
+    kotlin("plugin.serialization") version "1.9.10"
 }
 
 group = "net.thauvin.erik"
@@ -33,11 +33,11 @@ var semverProcessor = "net.thauvin.erik:semver:1.2.0"
 val publicationName = "mavenJava"
 
 object Versions {
-    const val OKHTTP = "4.10.0"
+    const val OKHTTP = "4.11.0"
 }
 
 fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
     val regex = "^[0-9,.v-]+(-r)?$".toRegex()
     val isStable = stableKeyword || regex.matches(version)
     return isStable.not()
@@ -61,12 +61,11 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:${Versions.OKHTTP}")
     implementation("com.squareup.okhttp3:logging-interceptor:${Versions.OKHTTP}")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
-    testImplementation("org.mockito:mockito-core:4.8.0")
-    testImplementation("org.testng:testng:7.7.0")
-    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
-
+    testImplementation("org.mockito:mockito-core:5.5.0")
+    testImplementation("org.testng:testng:7.8.0")
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:0.27.0")
 }
 
 kapt {
@@ -86,13 +85,24 @@ java {
     withSourcesJar()
 }
 
+koverReport {
+    defaults {
+        xml {
+            onCheck = true
+        }
+        html {
+            onCheck = true
+        }
+    }
+}
+
 sonarqube {
     properties {
         property("sonar.projectKey", "ethauvin_$name")
         property("sonar.organization", "ethauvin-github")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${project.buildDir}/reports/kover/xml/report.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get()}/reports/kover/report.xml")
     }
 }
 
@@ -157,6 +167,7 @@ tasks {
     }
 
     dokkaJavadoc {
+        dependsOn("kaptKotlin")
         dokkaSourceSets {
             configureEach {
                 includes.from("config/dokka/packages.md")
@@ -204,10 +215,6 @@ tasks {
         group = PublishingPlugin.PUBLISH_TASK_GROUP
         dependsOn(wrapper, "deploy", gitTag, publishToMavenLocal)
     }
-
-    "sonarqube" {
-        dependsOn(koverReport)
-    }
 }
 
 publishing {
@@ -234,8 +241,8 @@ publishing {
                     }
                 }
                 scm {
-                    connection.set("scm:git://github.com/$gitHub.git")
-                    developerConnection.set("scm:git@github.com:$gitHub.git")
+                    connection.set("scm:git:https://github.com/$gitHub.git")
+                    developerConnection.set("scm:git:git@github.com:$gitHub.git")
                     url.set(mavenUrl)
                 }
                 issueManagement {
