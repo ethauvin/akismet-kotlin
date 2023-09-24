@@ -2,11 +2,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("application")
-    id("com.github.ben-manes.versions") version "0.45.0"
-    kotlin("jvm") version "1.7.22"
+    id("com.github.ben-manes.versions") version "0.48.0"
+    kotlin("jvm") version "1.9.10"
 }
 
-// ./gradlew run runJava
+// ./gradlew run --args=API_KEY
+// ./gradlew runJava --args=API_KEY
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
 
