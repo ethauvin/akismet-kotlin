@@ -6,4 +6,3 @@
 
 A Kotlin/Java library for accessing the Akismet service.
 
-

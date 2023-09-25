@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.thauvin.erik</groupId>
   <artifactId>akismet-kotlin</artifactId>
-  <version>0.9.3-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>akismet-kotlin</name>
   <description>A client library for accessing the Automattic Kismet (Akismet) spam comments filtering service.</description>
   <url>https://github.com/ethauvin/akismet-kotlin</url>
@@ -63,6 +63,12 @@
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
       <version>4.11.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okio</groupId>
+      <artifactId>okio-jvm</artifactId>
+      <version>3.5.0</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>

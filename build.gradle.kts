@@ -59,6 +59,7 @@ dependencies {
 
 
     implementation("com.squareup.okhttp3:okhttp:${Versions.OKHTTP}")
+    implementation("com.squareup.okio:okio:3.5.0")
     implementation("com.squareup.okhttp3:logging-interceptor:${Versions.OKHTTP}")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
@@ -189,7 +190,7 @@ tasks {
     register("deploy") {
         description = "Copies all needed files to the $deployDir directory."
         group = PublishingPlugin.PUBLISH_TASK_GROUP
-        dependsOn(clean, wrapper, build, jar)
+        dependsOn(clean, build, jar)
         outputs.dir(deployDir)
         inputs.files(copyToDeploy)
         mustRunAfter(clean)
@@ -213,7 +214,7 @@ tasks {
     register("release") {
         description = "Publishes version ${project.version} to local repository."
         group = PublishingPlugin.PUBLISH_TASK_GROUP
-        dependsOn(wrapper, "deploy", gitTag, publishToMavenLocal)
+        dependsOn(dokkaHtml, "deploy", gitTag, publishToMavenLocal)
     }
 }
 
