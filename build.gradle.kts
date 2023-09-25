@@ -150,6 +150,7 @@ tasks {
     }
 
     dokkaHtml {
+        dependsOn("kaptKotlin")
         outputDirectory.set(file("$projectDir/docs"))
 
         dokkaSourceSets {
@@ -214,7 +215,7 @@ tasks {
     register("release") {
         description = "Publishes version ${project.version} to local repository."
         group = PublishingPlugin.PUBLISH_TASK_GROUP
-        dependsOn(dokkaHtml, "deploy", gitTag, publishToMavenLocal)
+        dependsOn("deploy", dokkaHtml, gitTag, publishToMavenLocal)
     }
 }
 
