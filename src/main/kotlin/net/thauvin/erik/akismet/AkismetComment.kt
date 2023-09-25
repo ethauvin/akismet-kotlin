@@ -1,7 +1,7 @@
 /*
  * AkismetComment.kt
  *
- * Copyright (c) 2019-2022, Erik C. Thauvin (erik@thauvin.net)
+ * Copyright (c) 2019-2023, Erik C. Thauvin (erik@thauvin.net)
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

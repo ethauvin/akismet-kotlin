@@ -169,7 +169,7 @@ tasks {
     }
 
     dokkaJavadoc {
-        dependsOn("kaptKotlin")
+        dependsOn(dokkaHtml)
         dokkaSourceSets {
             configureEach {
                 includes.from("config/dokka/packages.md")
@@ -215,7 +215,7 @@ tasks {
     register("release") {
         description = "Publishes version ${project.version} to local repository."
         group = PublishingPlugin.PUBLISH_TASK_GROUP
-        dependsOn("deploy", dokkaHtml, gitTag, publishToMavenLocal)
+        dependsOn("deploy", gitTag, publishToMavenLocal)
     }
 }
 
