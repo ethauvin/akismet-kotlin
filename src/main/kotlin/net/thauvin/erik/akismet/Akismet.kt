@@ -1,8 +1,7 @@
 /*
  * Akismet.kt
  *
- * Copyright (c) 2019-2023, Erik C. Thauvin (erik@thauvin.net)
- * All rights reserved.
+ * Copyright 2019-2023 Erik C. Thauvin (erik@thauvin.net)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -32,7 +31,6 @@
 package net.thauvin.erik.akismet
 
 import kotlinx.serialization.json.Json
-import net.thauvin.erik.semver.Version
 import okhttp3.FormBody
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -45,7 +43,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
-import java.util.Date
+import java.util.*
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -54,7 +52,6 @@ import java.util.logging.Logger
  *
  * @constructor Creates a new instance using the provided [Akismet](https://www.askimet.com/) API key.
  */
-@Version(properties = "version.properties", type = "kt")
 open class Akismet(apiKey: String) {
     companion object {
         /**
@@ -135,7 +132,6 @@ open class Akismet(apiKey: String) {
     /**
      * The [HTTP status code](https://www.restapitutorial.com/httpstatuscodes.html) of the last operation.
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     var httpStatusCode: Int = 0
         private set
 
@@ -144,7 +140,6 @@ open class Akismet(apiKey: String) {
      *
      * For example: `true`, `false`, `valid`, `invalid`, etc.
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     var response: String = ""
         private set
 
@@ -168,7 +163,6 @@ open class Akismet(apiKey: String) {
      *
      * @see [Akismet.isDiscard]
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     var proTip: String = ""
         private set
 
@@ -180,7 +174,6 @@ open class Akismet(apiKey: String) {
      *
      * @see [Akismet.proTip]
      */
-    @Suppress("MemberVisibilityCanBePrivate")
     var isDiscard: Boolean = false
         private set
 

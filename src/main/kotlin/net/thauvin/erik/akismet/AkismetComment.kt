@@ -1,8 +1,7 @@
 /*
  * AkismetComment.kt
  *
- * Copyright (c) 2019-2023, Erik C. Thauvin (erik@thauvin.net)
- * All rights reserved.
+ * Copyright 2019-2023 Erik C. Thauvin (erik@thauvin.net)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -58,7 +57,6 @@ private fun String?.ifNull() = this ?: ""
  */
 @Serializable
 open class AkismetComment(val userIp: String, val userAgent: String) {
-    @Suppress("unused")
     companion object {
         /** A blog comment. */
         const val TYPE_COMMENT = "comment"

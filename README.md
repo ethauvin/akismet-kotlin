@@ -1,5 +1,5 @@
 [![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://opensource.org/licenses/BSD-3-Clause)
-[![Kotlin](https://img.shields.io/badge/kotlin-1.9.10-7f52ff)](https://kotlinlang.org/)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.9.20-7f52ff)](https://kotlinlang.org/)
 [![Release](https://img.shields.io/github/release/ethauvin/akismet-kotlin.svg)](https://github.com/ethauvin/akismet-kotlin/releases/latest)
 [![Nexus Snapshot](https://img.shields.io/nexus/s/net.thauvin.erik/akismet-kotlin?label=snapshot&server=https%3A%2F%2Foss.sonatype.org%2F)](https://oss.sonatype.org/content/repositories/snapshots/net/thauvin/erik/akismet-kotlin/)
 [![Maven Central](https://img.shields.io/maven-central/v/net.thauvin.erik/akismet-kotlin.svg?color=blue)](https://central.sonatype.com/artifact/net.thauvin.erik/akismet-kotlin)
@@ -37,7 +37,7 @@ if (isSpam) {
 }
 ```
 
-[View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/src/main/kotlin/com/example/AkismetExample.kt)
+[View Full Examples](https://github.com/ethauvin/akismet-kotlin/blob/master/examples)
 
 #### Java
 
@@ -60,11 +60,22 @@ if (isSpam) {
 }
 ```
 
-[View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/src/main/java/com/example/AkismetSample.java)
+[View Full Examples](https://github.com/ethauvin/akismet-kotlin/blob/master/examples)
+
+### bld
+
+To use with [bld](https://rife2.com/bld), include the following dependency in your [build](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/bld/src/bld/java/com/example/ExampleBuild.java) file:
+
+```java
+repositories = List.of(MAVEN_CENTRAL, SONATYPE_SNAPSHOTS_LEGACY);
+
+scope(compile)
+    .include(dependency("net.thauvin.erik:akismet-kotlin:1.0.0"));
+```
 
 ### Gradle
 
-To use with [Gradle](https://gradle.org/), include the following dependency in your [build](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/build.gradle.kts) file:
+To use with [Gradle](https://gradle.org/), include the following dependency in your [build](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/gradle/build.gradle.kts) file:
 
 ```gradle
 repositories {
@@ -104,5 +115,6 @@ At a latter time, the comment can then be submitted:
 akismet.submitSpam(Akismet.jsonComment(json))
 ```
 
-### More...
+### More…
+
 If all else fails, there's always more [Documentation](https://ethauvin.github.io/akismet-kotlin/).

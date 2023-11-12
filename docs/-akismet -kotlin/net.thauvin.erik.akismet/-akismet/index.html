@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Akismet</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
+</head>
+<body>
+    <div class="root">
+<nav class="navigation" id="navigation-wrapper">
+    <div class="navigation--inner">
+        <div class="navigation-title">
+            <button class="menu-toggle" id="menu-toggle" type="button">toggle menu</button>
+            <div class="library-name">
+                    <a class="library-name--link" href="../../../index.html">
+                            Akismet Kotlin
+                    </a>
+            </div>
+            <div class="library-version">
+1.0.1-SNAPSHOT            </div>
+        </div>
+        <div class="filter-section" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter="root/main">JVM</button>
+        </div>
+    </div>
+    <div class="navigation-controls">
+        <button class="navigation-controls--btn navigation-controls--theme" id="theme-toggle-button" type="button">switch theme</button>
+        <div class="navigation-controls--btn navigation-controls--search" id="searchBar" role="button">search in API</div>
+    </div>
+</nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="sidebar--inner" id="sideMenu"></div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="Akismet Kotlin::net.thauvin.erik.akismet/Akismet///PointingToDeclaration//-1617659094">
+  <div class="breadcrumbs"><a href="../../../index.html">Akismet Kotlin</a><span class="delimiter">/</span><a href="../index.html">net.thauvin.erik.akismet</a><span class="delimiter">/</span><span class="current">Akismet</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Akismet</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">class </span><a href="index.html">Akismet</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">apiKey<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="clearfix"><span class="floating-right">(<a href="https://github.com/ethauvin/akismet-kotlin/tree/master/src/main/kotlin//net/thauvin/erik/akismet/Akismet.kt#L55">source</a>)</span></span></div><p class="paragraph">Provides access to the <a href="https://akismet.com/development/api/">Akismet API</a>.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="">Constructors</h2>
+        <div class="table"><a data-name="708515701%2FConstructors%2F-1617659094" anchor-label="Akismet" id="708515701%2FConstructors%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-togglable="CONSTRUCTOR" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-akismet.html"><span><span>Akismet</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="708515701%2FConstructors%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">apiKey<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">blog<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Creates a new instance using an <a href="https://www.askimet.com/">Akismet</a> API key and URL registered with Akismet.</p></div><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">apiKey<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Creates a new instance using the provided <a href="https://www.askimet.com/">Akismet</a> API key.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-619578907%2FClasslikes%2F-1617659094" anchor-label="Companion" id="-619578907%2FClasslikes%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-619578907%2FClasslikes%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="">Properties</h2>
+        <div class="table"><a data-name="140563587%2FProperties%2F-1617659094" anchor-label="appUserAgent" id="140563587%2FProperties%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="app-user-agent.html"><span>app</span><wbr></wbr><span>User</span><wbr></wbr><span><span>Agent</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="140563587%2FProperties%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="app-user-agent.html">appUserAgent</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The application user agent to be sent to Akismet.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1491328806%2FProperties%2F-1617659094" anchor-label="blog" id="-1491328806%2FProperties%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="blog.html"><span><span>blog</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1491328806%2FProperties%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="blog.html">blog</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The URL registered with Akismet.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1839698666%2FProperties%2F-1617659094" anchor-label="debugHelp" id="1839698666%2FProperties%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="debug-help.html"><span>debug</span><wbr></wbr><span><span>Help</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1839698666%2FProperties%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="debug-help.html">debugHelp</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The <code class="lang-kotlin">x-akismet-debug-help</code> header from the last operation, if any.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1854217411%2FProperties%2F-1617659094" anchor-label="errorMessage" id="-1854217411%2FProperties%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="error-message.html"><span>error</span><wbr></wbr><span><span>Message</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1854217411%2FProperties%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="error-message.html">errorMessage</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The error message.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1217730997%2FProperties%2F-1617659094" anchor-label="httpStatusCode" id="1217730997%2FProperties%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="http-status-code.html"><span>http</span><wbr></wbr><span>Status</span><wbr></wbr><span><span>Code</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1217730997%2FProperties%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="http-status-code.html">httpStatusCode</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html">Int</a></div><div class="brief "><p class="paragraph">The <a href="https://www.restapitutorial.com/httpstatuscodes.html">HTTP status code</a> of the last operation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1920554762%2FProperties%2F-1617659094" anchor-label="isDiscard" id="1920554762%2FProperties%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-discard.html"><span>is</span><wbr></wbr><span><span>Discard</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1920554762%2FProperties%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="is-discard.html">isDiscard</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Set to <code class="lang-kotlin">true</code> if Akismet has determined that the last <a href="check-comment.html">checked comment</a> is blatant spam, and you can safely discard it without saving it in any spam queue.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2050471377%2FProperties%2F-1617659094" anchor-label="isVerifiedKey" id="2050471377%2FProperties%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-verified-key.html"><span>is</span><wbr></wbr><span>Verified</span><wbr></wbr><span><span>Key</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2050471377%2FProperties%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="is-verified-key.html">isVerifiedKey</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Set to <code class="lang-kotlin">true</code> if the API Key has been verified.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1616027372%2FProperties%2F-1617659094" anchor-label="logger" id="1616027372%2FProperties%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="logger.html"><span><span>logger</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1616027372%2FProperties%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">val </span><a href="logger.html">logger</a><span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.logging/java/util/logging/Logger.html">Logger</a></div><div class="brief "><p class="paragraph">The logger instance.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="42530702%2FProperties%2F-1617659094" anchor-label="proTip" id="42530702%2FProperties%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="pro-tip.html"><span>pro</span><wbr></wbr><span><span>Tip</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="42530702%2FProperties%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="pro-tip.html">proTip</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The <code class="lang-kotlin">x-akismet-pro-tip</code> header from the last operation, if any.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1549072997%2FProperties%2F-1617659094" anchor-label="response" id="-1549072997%2FProperties%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="response.html"><span><span>response</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1549072997%2FProperties%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">var </span><a href="response.html">response</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The actual response sent by Akismet from the last operation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="158460567%2FFunctions%2F-1617659094" anchor-label="checkComment" id="158460567%2FFunctions%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="check-comment.html"><span>check</span><wbr></wbr><span><span>Comment</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="158460567%2FFunctions%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="check-comment.html"><span class="token function">checkComment</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">comment<span class="token operator">: </span><a href="../-akismet-comment/index.html">AkismetComment</a><span class="token punctuation">, </span></span><span class="parameter ">trueOnError<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Comment Check.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-385392482%2FFunctions%2F-1617659094" anchor-label="executeMethod" id="-385392482%2FFunctions%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="execute-method.html"><span>execute</span><wbr></wbr><span><span>Method</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-385392482%2FFunctions%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="execute-method.html"><span class="token function">executeMethod</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">apiUrl<span class="token operator">: </span><span data-unresolved-link="/&amp;lt;Error class: unknown class&amp;gt;///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">formBody<span class="token operator">: </span><span data-unresolved-link="/&amp;lt;Error class: unknown class&amp;gt;///PointingToDeclaration/">&lt;Error class: unknown class&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">trueOnError<span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Executes a call to an Akismet REST API method.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-707138897%2FFunctions%2F-1617659094" anchor-label="reset" id="-707138897%2FFunctions%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="reset.html"><span><span>reset</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-707138897%2FFunctions%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="reset.html"><span class="token function">reset</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Resets the <a href="debug-help.html">debugHelp</a>, <a href="error-message.html">errorMessage</a>, <a href="http-status-code.html">httpStatusCode</a>, <a href="is-discard.html">isDiscard</a>, <a href="is-verified-key.html">isVerifiedKey</a>, <a href="pro-tip.html">proTip</a>, and <a href="response.html">response</a> properties.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1211675440%2FFunctions%2F-1617659094" anchor-label="submitHam" id="-1211675440%2FFunctions%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="submit-ham.html"><span>submit</span><wbr></wbr><span><span>Ham</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1211675440%2FFunctions%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="submit-ham.html"><span class="token function">submitHam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">comment<span class="token operator">: </span><a href="../-akismet-comment/index.html">AkismetComment</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Submit Ham. (False Positives)</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-578133801%2FFunctions%2F-1617659094" anchor-label="submitSpam" id="-578133801%2FFunctions%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="submit-spam.html"><span>submit</span><wbr></wbr><span><span>Spam</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-578133801%2FFunctions%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="submit-spam.html"><span class="token function">submitSpam</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">comment<span class="token operator">: </span><a href="../-akismet-comment/index.html">AkismetComment</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Submit Spam. (Missed Spam)</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="869122104%2FFunctions%2F-1617659094" anchor-label="verifyKey" id="869122104%2FFunctions%2F-1617659094" data-filterable-set="root/main"></a>
+          <div class="table-row" data-filterable-current="root/main" data-filterable-set="root/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="verify-key.html"><span>verify</span><wbr></wbr><span><span>Key</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="869122104%2FFunctions%2F-1617659094"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable="root/main"><div class="symbol monospace"><span class="token keyword"></span><span class="token keyword">fun </span><a href="verify-key.html"><span class="token function">verifyKey</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html">Boolean</a></div><div class="brief "><p class="paragraph">Key Verification.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="footer">
+        <span class="go-to-top-icon"><a href="#content" id="go-to-top-link"></a></span><span>© 2023 Copyright</span><span
+                class="pull-right"><span>Generated by </span><a
+                href="https://github.com/Kotlin/dokka"><span>dokka</span><span class="padded-icon"></span></a></span>
+      </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
