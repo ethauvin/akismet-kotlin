@@ -33,10 +33,7 @@ package net.thauvin.erik;
 
 import rife.bld.BuildCommand;
 import rife.bld.Project;
-import rife.bld.extension.CompileKotlinOperation;
-import rife.bld.extension.CompileKotlinOptions;
-import rife.bld.extension.GeneratedVersionOperation;
-import rife.bld.extension.JacocoReportOperation;
+import rife.bld.extension.*;
 import rife.bld.extension.dokka.DokkaOperation;
 import rife.bld.extension.dokka.LoggingLevel;
 import rife.bld.extension.dokka.OutputFormat;
@@ -120,8 +117,7 @@ public class AkismetBuild extends Project {
         genver();
         new CompileKotlinOperation()
                 .fromProject(this)
-                .plugins(CompileKotlinOperation.getJarList(libCompileDirectory(),
-                        "^.*kotlin-serialization-compiler-plugin-.*$"))
+                .plugins(libCompileDirectory(), CompileKotlinPlugin.KOTLIN_SERIALIZATION)
                 .compileOptions(
                         new CompileKotlinOptions()
                                 .jdkRelease(javaRelease)
