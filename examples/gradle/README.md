@@ -1,7 +1,7 @@
 ## Kotlin Example
 To compile & run the Kotlin example:
 
-```text
+```console
 ./gradlew run --args=API_KEY
 ```
 
@@ -9,6 +9,6 @@ To compile & run the Kotlin example:
 
 To compile & run the Java example:
 
-```text
+```console
 ./gradlew runJava --args=API_KEY
 ```

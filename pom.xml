@@ -18,7 +18,7 @@
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-stdlib</artifactId>
-      <version>1.9.20</version>
+      <version>1.9.21</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -42,7 +42,7 @@
     <dependency>
       <groupId>org.jetbrains.kotlinx</groupId>
       <artifactId>kotlinx-serialization-json-jvm</artifactId>
-      <version>1.6.0</version>
+      <version>1.6.1</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
@@ -55,7 +55,7 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:git:https://github.com/ethauvin/akismet-kotlin</connection>
+    <connection>scm:git:https://github.com/ethauvin/akismet-kotlin.git</connection>
     <developerConnection>scm:git:git@github.com:ethauvin/akismet-kotlin.git</developerConnection>
     <url>https://github.com/ethauvin/akismet-kotlin</url>
   </scm>

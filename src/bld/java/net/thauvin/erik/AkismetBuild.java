@@ -65,16 +65,16 @@ public class AkismetBuild extends Project {
 
         var okHttp = version(4, 12, 0);
         scope(compile)
-                .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", version(1, 9, 20)))
+                .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", version(1, 9, 21)))
                 .include(dependency("com.squareup.okhttp3", "okhttp", okHttp))
                 .include(dependency("com.squareup.okhttp3", "logging-interceptor", okHttp))
                 .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 0, 0)))
-                .include(dependency("org.jetbrains.kotlinx", "kotlinx-serialization-json-jvm", version(1, 6, 0)));
+                .include(dependency("org.jetbrains.kotlinx", "kotlinx-serialization-json-jvm", version(1, 6, 1)));
         scope(provided)
-                .include(dependency("org.jetbrains.kotlin:kotlin-serialization-compiler-plugin:1.9.20"));
+                .include(dependency("org.jetbrains.kotlin", "kotlin-serialization-compiler-plugin", version(1, 9, 21)));
         scope(test)
-                .include(dependency("org.mockito", "mockito-core", version(5, 6, 0)))
-                .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", version(1, 9, 20)))
+                .include(dependency("org.mockito", "mockito-core", version(5, 7, 0)))
+                .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", version(1, 9, 21)))
                 .include(dependency("org.junit.jupiter", "junit-jupiter", version(5, 10, 1)))
                 .include(dependency("org.junit.platform", "junit-platform-console-standalone", version(1, 10, 1)))
                 .include(dependency("com.willowtreeapps.assertk", "assertk-jvm", version(0, 27, 0)));
@@ -89,18 +89,24 @@ public class AkismetBuild extends Project {
                 .artifactId(name)
                 .description("A client library for accessing the Automattic Kismet (Akismet) spam comments filtering service.")
                 .url("https://github.com/ethauvin/" + name)
-                .developer(new PublishDeveloper()
-                        .id("ethauvin")
-                        .name("Erik C. Thauvin")
-                        .email("erik@thauvin.net")
-                        .url("https://erik.thauvin.net/"))
-                .license(new PublishLicense()
-                        .name("BSD 3-Clause")
-                        .url("https://opensource.org/licenses/BSD-3-Clause"))
-                .scm(new PublishScm()
-                        .connection("scm:git:https://github.com/ethauvin/" + name)
-                        .developerConnection("scm:git:git@github.com:ethauvin/" + name + ".git")
-                        .url("https://github.com/ethauvin/" + name))
+                .developer(
+                        new PublishDeveloper()
+                                .id("ethauvin")
+                                .name("Erik C. Thauvin")
+                                .email("erik@thauvin.net")
+                                .url("https://erik.thauvin.net/")
+                )
+                .license(
+
+                        new PublishLicense()
+                                .name("BSD 3-Clause")
+                                .url("https://opensource.org/licenses/BSD-3-Clause"))
+                .scm(
+
+                        new PublishScm()
+                                .connection("scm:git:https://github.com/ethauvin/" + name + ".git")
+                                .developerConnection("scm:git:git@github.com:ethauvin/" + name + ".git")
+                                .url("https://github.com/ethauvin/" + name))
                 .signKey(property("sign.key"))
                 .signPassphrase(property("sign.passphrase"));
 
@@ -118,11 +124,6 @@ public class AkismetBuild extends Project {
         new CompileKotlinOperation()
                 .fromProject(this)
                 .plugins(libCompileDirectory(), CompileKotlinPlugin.KOTLIN_SERIALIZATION)
-                .compileOptions(
-                        new CompileKotlinOptions()
-                                .jdkRelease(javaRelease)
-                                .verbose(true)
-                )
                 .execute();
     }
 
