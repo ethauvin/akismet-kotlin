@@ -4,6 +4,8 @@
     <pattern value="net.thauvin.erik.AkismetBuild" />
     <pattern value="net.thauvin.erik.AkismetBuild" method="docs" />
     <pattern value="net.thauvin.erik.AkismetBuild" method="jacoco" />
+    <pattern value="net.thauvin.erik.AkismetBuild" method="detekt" />
+    <pattern value="net.thauvin.erik.AkismetBuild" method="detektBaseline" />
   </component>
   <component name="PDMPlugin">
     <option name="customRuleSets">
