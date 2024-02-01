@@ -119,3 +119,22 @@ akismet.submitSpam(Akismet.jsonComment(json))
 ### More…
 
 If all else fails, there's always more [Documentation](https://ethauvin.github.io/akismet-kotlin/).
+
+## Contributing
+
+If you want to contribute to this project, all you have to do is clone the GitHub
+repository:
+
+```console
+git clone git@github.com:ethauvin/akismet-kotlin.git
+```
+
+Then use [bld](https://rife2.com/bld) to build:
+
+```console
+cd akismet-kotlin
+./bld compile
+```
+
+The project has an [IntelliJ IDEA](https://www.jetbrains.com/idea/) project structure. You can just open it after all
+the dependencies were downloaded and peruse the code.
