@@ -1,6 +1,6 @@
 [![License (3-Clause BSD)](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg?style=flat-square)](https://opensource.org/licenses/BSD-3-Clause)
 [![Kotlin](https://img.shields.io/badge/kotlin-1.9.21-7f52ff)](https://kotlinlang.org/)
-[![bld](https://img.shields.io/badge/1.8.0-FA9052?label=bld&labelColor=2392FF)](https://rife2.com/bld)
+[![bld](https://img.shields.io/badge/1.9.0-FA9052?label=bld&labelColor=2392FF)](https://rife2.com/bld)
 [![Release](https://img.shields.io/github/release/ethauvin/akismet-kotlin.svg)](https://github.com/ethauvin/akismet-kotlin/releases/latest)
 [![Nexus Snapshot](https://img.shields.io/nexus/s/net.thauvin.erik/akismet-kotlin?label=snapshot&server=https%3A%2F%2Foss.sonatype.org%2F)](https://oss.sonatype.org/content/repositories/snapshots/net/thauvin/erik/akismet-kotlin/)
 [![Maven Central](https://img.shields.io/maven-central/v/net.thauvin.erik/akismet-kotlin.svg?color=blue)](https://central.sonatype.com/artifact/net.thauvin.erik/akismet-kotlin)
@@ -15,7 +15,7 @@ A pretty complete and straightforward implementation of the [Automattic's Akisme
 
 ## Examples (TL;DR)
 
-#### Kotlin
+### Kotlin
 
 ```kotlin
 val akismet = Akismet(apiKey = "YOUR_API_KEY", blog = "YOUR_BLOG_URL")
@@ -40,7 +40,7 @@ if (isSpam) {
 
 [View Full Examples](https://github.com/ethauvin/akismet-kotlin/blob/master/examples)
 
-#### Java
+### Java
 
 ```java
 final Akismet akismet = new Akismet("YOUR_API_KEY", "YOUR_BLOG_URL");
@@ -63,7 +63,7 @@ if (isSpam) {
 
 [View Full Examples](https://github.com/ethauvin/akismet-kotlin/blob/master/examples)
 
-### bld
+## bld
 
 To use with [bld](https://rife2.com/bld), include the following dependency in your [build](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/bld/src/bld/java/com/example/ExampleBuild.java) file:
 
@@ -74,7 +74,7 @@ scope(compile)
     .include(dependency("net.thauvin.erik:akismet-kotlin:1.0.0"));
 ```
 
-### Gradle
+## Gradle
 
 To use with [Gradle](https://gradle.org/), include the following dependency in your [build](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/gradle/build.gradle.kts) file:
 
@@ -90,7 +90,7 @@ dependencies {
 
 Instructions for using with Maven, Ivy, etc. can be found on [Maven Central](https://central.sonatype.com/artifact/net.thauvin.erik/akismet-kotlin).
 
-### HttpServletRequest
+## HttpServletRequest
 
 The more information is sent to Akismet, the more accurate the response is. An [HttpServletRequest](https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html) can be used as a parameter so that all the relevant information is automatically included.
 
@@ -102,7 +102,7 @@ This will ensure that the user's IP, agent, referrer and various environment var
 
 [View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/src/main/kotlin/com/example/AkismetServlet.kt)
 
-### JSON
+## JSON
 
 Since comments mis-identified as spam or ham can be submitted to Askimet to improve the service. A comment can be saved as a JSON object to be stored in a database, etc.
 
@@ -115,10 +115,6 @@ At a latter time, the comment can then be submitted:
 ```kotlin
 akismet.submitSpam(Akismet.jsonComment(json))
 ```
-
-### More…
-
-If all else fails, there's always more [Documentation](https://ethauvin.github.io/akismet-kotlin/).
 
 ## Contributing
 
@@ -136,5 +132,8 @@ cd akismet-kotlin
 ./bld compile
 ```
 
-The project has an [IntelliJ IDEA](https://www.jetbrains.com/idea/) project structure. You can just open it after all
-the dependencies were downloaded and peruse the code.
+The project has an [IntelliJ IDEA](https://www.jetbrains.com/idea/) project structure. You can just open it after all the dependencies were downloaded and peruse the code.
+
+### More…
+
+If all else fails, there's always more [Documentation](https://ethauvin.github.io/akismet-kotlin/).

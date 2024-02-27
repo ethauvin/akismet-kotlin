@@ -17,6 +17,12 @@
         <option value="$PROJECT_DIR$/../../java/bld-checkstyle/config/pmd.xml" />
         <option value="$PROJECT_DIR$/../../java/bld-exec/config/pmd.xml" />
         <option value="$PROJECT_DIR$/../../java/bld-testng/config/pmd.xml" />
+        <option value="$PROJECT_DIR$/../../java/rife2/bld-checkstyle/config/pmd.xml" />
+        <option value="$PROJECT_DIR$/../../java/rife2/bld-generated-version/config/pmd.xml" />
+        <option value="$PROJECT_DIR$/../../java/rife2/bld-jacoco-report/config/pmd.xml" />
+        <option value="$PROJECT_DIR$/../../java/rife2/bld-testng/config/pmd.xml" />
+        <option value="$PROJECT_DIR$/../../java/rife2/bld-exec/config/pmd.xml" />
+        <option value="$PROJECT_DIR$/../../java/rife2/bld-pitest/config/pmd.xml" />
       </list>
     </option>
     <option name="skipTestSources" value="false" />
