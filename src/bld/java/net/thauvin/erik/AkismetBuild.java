@@ -48,14 +48,13 @@ import rife.tools.exceptions.FileUtilsErrorException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static rife.bld.dependencies.Repository.*;
 import static rife.bld.dependencies.Scope.*;
 
 public class AkismetBuild extends Project {
+    final File srcMainKotlin = new File(srcMainDirectory(), "kotlin");
+
     public AkismetBuild() {
         pkg = "net.thauvin.erik";
         name = "akismet-kotlin";
@@ -67,7 +66,7 @@ public class AkismetBuild extends Project {
         repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL);
 
         var okHttp = version(4, 12, 0);
-        final var kotlin = version(1, 9, 22);
+        final var kotlin = version(1, 9, 24);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("com.squareup.okhttp3", "okhttp", okHttp))
@@ -75,13 +74,13 @@ public class AkismetBuild extends Project {
                 .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 0, 0)))
                 .include(dependency("org.jetbrains.kotlinx", "kotlinx-serialization-json-jvm", version(1, 6, 3)));
         scope(provided)
-                .include(dependency("org.jetbrains.kotlin", "kotlin-serialization-compiler-plugin", version(1, 9, 22)));
+                .include(dependency("org.jetbrains.kotlin", "kotlin-serialization-compiler-plugin", kotlin));
         scope(test)
                 .include(dependency("org.mockito", "mockito-core", version(5, 11, 0)))
-                .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", version(1, 9, 22)))
+                .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
                 .include(dependency("org.junit.jupiter", "junit-jupiter", version(5, 10, 2)))
                 .include(dependency("org.junit.platform", "junit-platform-console-standalone", version(1, 10, 2)))
-                .include(dependency("com.willowtreeapps.assertk", "assertk-jvm", version(0, 28, 0)));
+                .include(dependency("com.willowtreeapps.assertk", "assertk-jvm", version(0, 28, 1)));
 
         publishOperation()
                 .repository(version.isSnapshot() ? repository(SONATYPE_SNAPSHOTS_LEGACY.location())
@@ -114,7 +113,7 @@ public class AkismetBuild extends Project {
                 .signKey(property("sign.key"))
                 .signPassphrase(property("sign.passphrase"));
 
-        jarSourcesOperation().sourceDirectories(new File(srcMainDirectory(), "kotlin"));
+        jarSourcesOperation().sourceDirectories(srcMainKotlin);
     }
 
     public static void main(String[] args) {
@@ -160,7 +159,6 @@ public class AkismetBuild extends Project {
 
     @BuildCommand(summary = "Generates documentation in HTML format")
     public void docs() throws ExitStatusException, IOException, InterruptedException {
-        var kotlin = new File(srcMainDirectory(), "kotlin").getAbsolutePath();
         new DokkaOperation()
                 .fromProject(this)
                 .loggingLevel(LoggingLevel.INFO)
@@ -170,9 +168,9 @@ public class AkismetBuild extends Project {
                 .outputFormat(OutputFormat.HTML)
                 .sourceSet(
                         new SourceSet()
-                                .src(kotlin)
-                                .srcLink(kotlin, "https://github.com/ethauvin/" + name +
-                                        "/tree/master/src/main/kotlin/", "#L")
+                                .src(srcMainKotlin.getAbsolutePath())
+                                .srcLink(srcMainKotlin.getAbsolutePath(), "https://github.com/ethauvin/" + name
+                                        + "/tree/master/src/main/kotlin/", "#L")
                                 .includes("config/dokka/packages.md")
                                 .jdkVersion(javaRelease)
                 )
@@ -186,7 +184,7 @@ public class AkismetBuild extends Project {
                 .projectName("Akismet Kotlin")
                 .packageName(pkg + ".akismet")
                 .classTemplate(new File(workDirectory(), "version.txt"))
-                .directory(new File(srcMainDirectory(), "kotlin"))
+                .directory(srcMainKotlin)
                 .extension(".kt")
                 .execute();
     }
@@ -195,6 +193,7 @@ public class AkismetBuild extends Project {
     public void jacoco() throws IOException {
         new JacocoReportOperation()
                 .fromProject(this)
+                .sourceFiles(srcMainKotlin)
                 .execute();
     }
 
