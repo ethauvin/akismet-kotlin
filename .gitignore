@@ -6,6 +6,7 @@ lib/bld/**
 !lib/bld/bld-wrapper.properties
 lib/compile/
 lib/runtime/
+lib/provided/
 lib/standalone/
 lib/test/
 

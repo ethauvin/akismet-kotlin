@@ -100,7 +100,7 @@ AkismetComment(request = context.getRequest())
 
 This will ensure that the user's IP, agent, referrer and various environment variables are automatically extracted from the request.
 
-[View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/src/main/kotlin/com/example/AkismetServlet.kt)
+[View Full Example](https://github.com/ethauvin/akismet-kotlin/blob/master/examples/gradle/src/main/kotlin/com/example/AkismetServlet.kt)
 
 ## JSON
 

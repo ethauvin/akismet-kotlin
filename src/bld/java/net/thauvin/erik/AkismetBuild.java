@@ -53,6 +53,7 @@ import static rife.bld.dependencies.Repository.*;
 import static rife.bld.dependencies.Scope.*;
 
 public class AkismetBuild extends Project {
+    private static final String DETEKT_BASELINE = "config/detekt/baseline.xml";
     final File srcMainKotlin = new File(srcMainDirectory(), "kotlin");
 
     public AkismetBuild() {
@@ -144,7 +145,7 @@ public class AkismetBuild extends Project {
     public void detekt() throws ExitStatusException, IOException, InterruptedException {
         new DetektOperation()
                 .fromProject(this)
-                .baseline("config/detekt/baseline.xml")
+                .baseline(DETEKT_BASELINE)
                 .execute();
     }
 
@@ -152,7 +153,7 @@ public class AkismetBuild extends Project {
     public void detektBaseline() throws ExitStatusException, IOException, InterruptedException {
         new DetektOperation()
                 .fromProject(this)
-                .baseline("config/detekt/baseline.xml")
+                .baseline(DETEKT_BASELINE)
                 .createBaseline(true)
                 .execute();
     }
