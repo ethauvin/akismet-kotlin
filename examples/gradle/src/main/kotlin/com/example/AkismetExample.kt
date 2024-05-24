@@ -2,18 +2,14 @@ package com.example
 
 import net.thauvin.erik.akismet.Akismet
 import net.thauvin.erik.akismet.AkismetComment
-import java.util.Date
+import java.util.*
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
-
     if (args.size == 1 && args[0].isNotEmpty()) {
         val akismet = Akismet(apiKey = args[0], blog = "https://yourblogdomainname.com/blog/")
-        val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0")
-
-        with(comment) {
+        val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0").apply {
             isTest = true
-
             referrer = "https://www.google.com"
             permalink = "${akismet.blog}post=1"
             type = AkismetComment.TYPE_COMMENT
@@ -21,7 +17,7 @@ fun main(args: Array<String>) {
             authorEmail = "test@test.com"
             authorUrl = "https://www.CheckOutMyCoolSite.com"
             dateGmt = Akismet.dateToGmt(Date())
-//        userRole = AkismetComment.ADMIN_ROLE
+//            userRole = AkismetComment.ADMIN_ROLE
             content = "It means a lot that you would take the time to review our software. Thanks again."
         }
 

@@ -20,8 +20,7 @@ class AkismetServlet : HttpServlet() {
 
         akismet.appUserAgent = request.servletContext.serverInfo
 
-        val comment = AkismetComment(request)
-        with(comment) {
+        val comment = AkismetComment(request).apply {
             permalink = "${akismet.blog}/comment/$id"
             type = AkismetComment.TYPE_COMMENT
             author = request.getParameter("name")

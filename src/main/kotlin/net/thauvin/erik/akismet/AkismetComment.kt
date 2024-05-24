@@ -243,6 +243,24 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
         serverEnv = buildServerEnv(request)
     }
 
+    constructor(config: CommentConfig) : this(config.userIp, config.userAgent) {
+        referrer = config.referrer
+        permalink = config.permalink
+        type = config.type
+        author = config.author
+        authorEmail = config.authorEmail
+        authorUrl = config.authorUrl
+        content = config.content
+        dateGmt = config.dateGmt
+        postModifiedGmt = config.postModifiedGmt
+        blogLang = config.blogLang
+        blogCharset = config.blogCharset
+        userRole = config.userRole
+        isTest = config.isTest
+        recheckReason = config.recheckReason
+        serverEnv = config.serverEnv
+    }
+
     /**
      * Returns a JSON representation of the comment.
      *

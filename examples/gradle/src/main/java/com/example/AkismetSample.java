@@ -2,6 +2,7 @@ package com.example;
 
 import net.thauvin.erik.akismet.Akismet;
 import net.thauvin.erik.akismet.AkismetComment;
+import net.thauvin.erik.akismet.CommentConfig;
 
 import java.util.Date;
 
@@ -9,25 +10,26 @@ public class AkismetSample {
     public static void main(String... args) {
         if (args.length == 1 && !args[0].isBlank()) {
             final Akismet akismet = new Akismet(args[0], "https://yourblogdomainname.com/blog/");
-            final AkismetComment comment = new AkismetComment("127.0.0.1", "curl/7.29.0");
+            final AkismetComment comment = new AkismetComment(
+                    new CommentConfig.Builder("127.0.0.1", "curl/7.29.0")
+                            .isTest(true)
+                            .referrer("https://www.google.com")
+                            .permalink(akismet.getBlog() + "post=1")
+                            .type(AkismetComment.TYPE_COMMENT)
+                            .author("admin")
+                            .authorEmail("test@test.com")
+                            .authorUrl("http://www.CheckOutMyCoolSite.com")
+                            .dateGmt(Akismet.dateToGmt(new Date()))
+//                            .userRole(AkismetComment.ADMIN_ROLE)
+                            .content("It means a lot that you would take the time to review our software. Thanks again.")
+                            .build()
+            );
 
-            comment.setTest(true);
-
-            comment.setReferrer("https://www.google.com");
-            comment.setPermalink(akismet.getBlog() + "post=1");
-            comment.setType(AkismetComment.TYPE_COMMENT);
-            comment.setAuthor("admin");
-            comment.setAuthorEmail("test@test.com");
-            comment.setAuthorUrl("http://www.CheckOutMyCoolSite.com");
-            comment.setDateGmt(Akismet.dateToGmt(new Date()));
-            // comment.setUserRole(AkismetComment.ADMIN_ROLE);
-            comment.setContent("It means a lot that you would take the time to review our software. Thanks again.");
-
-            // final ConsoleHandler consoleHandler = new ConsoleHandler();
-            // consoleHandler.setLevel(Level.FINE);
-            // final Logger logger = akismet.getLogger();
-            // logger.addHandler(consoleHandler);
-            // logger.setLevel(Level.FINE);
+//             final ConsoleHandler consoleHandler = new ConsoleHandler();
+//             consoleHandler.setLevel(Level.FINE);
+//             final Logger logger = akismet.getLogger();
+//             logger.addHandler(consoleHandler);
+//             logger.setLevel(Level.FINE);
 
             if (akismet.verifyKey()) {
                 final boolean isSpam = akismet.checkComment(comment);

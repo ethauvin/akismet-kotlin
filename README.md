@@ -19,16 +19,14 @@ A pretty complete and straightforward implementation of the [Automattic's Akisme
 
 ```kotlin
 val akismet = Akismet(apiKey = "YOUR_API_KEY", blog = "YOUR_BLOG_URL")
-val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0")
-
-with(comment) {
+val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0").apply {
     referrer = "https://www.google.com"
     type = AkismetComment.TYPE_COMMENT
     author = "admin"
     authorEmail = "test@test.com"
     authorUrl = "https://www.CheckOutMyCoolSite.com"
     dateGmt = Akismet.dateToGmt(Date())
-    content = "It means a lot that you would take the time to review our software."
+    content = "Thanks for reviewing our software."
 }
 // ...
 
@@ -44,15 +42,17 @@ if (isSpam) {
 
 ```java
 final Akismet akismet = new Akismet("YOUR_API_KEY", "YOUR_BLOG_URL");
-final AkismetComment comment = new AkismetComment("127.0.0.1", "curl/7.29.0");
-
-comment.setReferrer("https://www.google.com");
-comment.setType(AkismetComment.TYPE_COMMENT);
-comment.setAuthor("admin");
-comment.setAuthorEmail("test@test.com");
-comment.setAuthorUrl("https://www.CheckOutMyCoolSite.com");
-comment.setDateGmt(Akismet.dateToGmt(new Date()));
-comment.setContent("It means a lot that you would take the time to review our software.");
+final AkismetComment comment = new AkismetComment(
+    new CommentConfig.Builder("127.0.0.1", "curl/7.29.0")
+            .referrer("https://www.google.com")
+            .type(Akismet.TYPE_COMMENT)
+            .author("admin")
+            .authorEmail("test@test.com")
+            .authorUrl("https://www.CheckOutMyCoolSite.com")
+            .dateGmt(Akismet.dateToGmt(new Date()))
+            .content("Thanks for reviewing our software.")
+            .build
+);
 //...
 
 final boolean isSpam = akismet.checkComment(comment);

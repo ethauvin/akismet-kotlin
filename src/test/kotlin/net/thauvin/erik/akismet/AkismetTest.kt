@@ -119,6 +119,11 @@ class AkismetTest {
     }
 
     @Test
+    fun validateConfigTest() {
+        assertThat(AkismetComment(config) == comment).isTrue()
+    }
+
+    @Test
     fun verifyKeyTest() {
         assertThat(akismet, "akismet").all {
             prop(Akismet::isVerifiedKey).isFalse()
@@ -367,6 +372,7 @@ class AkismetTest {
     }
 
     companion object {
+        private const val REFERER = "http://www.google.com"
         private val apiKey = getKey("AKISMET_API_KEY")
         private val blog = getKey("AKISMET_BLOG")
         private val akismet = Akismet(apiKey, blog)
@@ -375,24 +381,40 @@ class AkismetTest {
             userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
         )
         private val date = Date()
+        private val config = CommentConfig.Builder(comment.userIp, comment.userAgent)
+            .referrer(REFERER)
+            .permalink("http://yourblogdomainname.com/blog/post=1")
+            .type(AkismetComment.TYPE_COMMENT)
+            .author("admin")
+            .authorEmail("test@test.com")
+            .authorUrl("http://www.CheckOutMyCoolSite.com")
+            .content("It means a lot that you would take the time to review our software.  Thanks again.")
+            .dateGmt(Akismet.dateToGmt(date))
+            .postModifiedGmt(Akismet.dateToGmt(date))
+            .blogLang("en")
+            .blogCharset("UTF-8")
+            .userRole(AkismetComment.ADMIN_ROLE)
+            .recheckReason("edit")
+            .isTest(true)
+            .build()
         private val mockComment: AkismetComment = AkismetComment(request = getMockRequest())
-        private const val REFERER = "http://www.google.com"
 
         init {
             with(comment) {
-                referrer = REFERER
-                permalink = "http://yourblogdomainname.com/blog/post=1"
-                type = AkismetComment.TYPE_COMMENT
-                author = "admin"
-                authorEmail = "test@test.com"
-                authorUrl = "http://www.CheckOutMyCoolSite.com"
-                content = "It means a lot that you would take the time to review our software.  Thanks again."
-                dateGmt = Akismet.dateToGmt(date)
-                postModifiedGmt = dateGmt
-                blogLang = "en"
-                blogCharset = "UTF-8"
-                userRole = AkismetComment.ADMIN_ROLE
-                isTest = true
+                referrer = config.referrer
+                permalink = config.permalink
+                type = config.type
+                author = config.author
+                authorEmail = config.authorEmail
+                authorUrl = config.authorUrl
+                content = config.content
+                dateGmt = config.dateGmt
+                postModifiedGmt = config.postModifiedGmt
+                blogLang = config.blogLang
+                blogCharset = config.blogCharset
+                userRole = config.userRole
+                recheckReason = config.recheckReason
+                isTest = config.isTest
             }
 
             with(mockComment) {
@@ -407,7 +429,7 @@ class AkismetTest {
                 blogLang = comment.blogLang
                 blogCharset = comment.blogCharset
                 userRole = comment.userRole
-                recheckReason = "edit"
+                recheckReason = comment.recheckReason
                 isTest = true
             }
         }

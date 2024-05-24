@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id("application")
     id("com.github.ben-manes.versions") version "0.51.0"
@@ -15,7 +13,7 @@ repositories {
 
 dependencies {
     implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
-    implementation("net.thauvin.erik:akismet-kotlin:1.0.0")
+    implementation("net.thauvin.erik:akismet-kotlin:1.0.1-SNAPSHOT")
 }
 
 java {
@@ -27,11 +25,11 @@ application {
     mainClass.set("com.example.AkismetExampleKt")
 }
 
-tasks {
-    withType<KotlinCompile>().configureEach {
-        kotlinOptions.jvmTarget = java.targetCompatibility.toString()
-    }
+kotlin {
+    compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+}
 
+tasks {
     register("runJava", JavaExec::class) {
         group = "application"
         mainClass.set("com.example.AkismetSample")
