@@ -21,7 +21,7 @@ A pretty complete and straightforward implementation of the [Automattic's Akisme
 val akismet = Akismet(apiKey = "YOUR_API_KEY", blog = "YOUR_BLOG_URL")
 val comment = AkismetComment(userIp = "127.0.0.1", userAgent = "curl/7.29.0").apply {
     referrer = "https://www.google.com"
-    type = AkismetComment.TYPE_COMMENT
+    type = CommentType.COMMENT
     author = "admin"
     authorEmail = "test@test.com"
     authorUrl = "https://www.CheckOutMyCoolSite.com"
@@ -45,7 +45,7 @@ final Akismet akismet = new Akismet("YOUR_API_KEY", "YOUR_BLOG_URL");
 final AkismetComment comment = new AkismetComment(
     new CommentConfig.Builder("127.0.0.1", "curl/7.29.0")
             .referrer("https://www.google.com")
-            .type(Akismet.TYPE_COMMENT)
+            .type(CommentType.COMMENT)
             .author("admin")
             .authorEmail("test@test.com")
             .authorUrl("https://www.CheckOutMyCoolSite.com")
@@ -71,7 +71,7 @@ To use with [bld](https://rife2.com/bld), include the following dependency in yo
 repositories = List.of(MAVEN_CENTRAL, SONATYPE_SNAPSHOTS_LEGACY);
 
 scope(compile)
-    .include(dependency("net.thauvin.erik:akismet-kotlin:1.0.0"));
+    .include(dependency("net.thauvin.erik:akismet-kotlin:1.0.1-SNAPSHOT"));
 ```
 
 ## Gradle
@@ -84,7 +84,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.thauvin.erik:akismet-kotlin:1.0.0")
+    implementation("net.thauvin.erik:akismet-kotlin:1.0.1-SNAPSHOT")
 }
 ```
 
