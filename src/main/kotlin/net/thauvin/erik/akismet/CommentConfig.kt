@@ -32,16 +32,6 @@
 package net.thauvin.erik.akismet
 
 import net.thauvin.erik.akismet.AkismetComment.Companion.ADMIN_ROLE
-import net.thauvin.erik.akismet.AkismetComment.Companion.TYPE_BLOG_POST
-import net.thauvin.erik.akismet.AkismetComment.Companion.TYPE_COMMENT
-import net.thauvin.erik.akismet.AkismetComment.Companion.TYPE_CONTACT_FORM
-import net.thauvin.erik.akismet.AkismetComment.Companion.TYPE_FORUM_POST
-import net.thauvin.erik.akismet.AkismetComment.Companion.TYPE_MESSAGE
-import net.thauvin.erik.akismet.AkismetComment.Companion.TYPE_PINGBACK
-import net.thauvin.erik.akismet.AkismetComment.Companion.TYPE_REPLY
-import net.thauvin.erik.akismet.AkismetComment.Companion.TYPE_SIGNUP
-import net.thauvin.erik.akismet.AkismetComment.Companion.TYPE_TRACKBACK
-import net.thauvin.erik.akismet.AkismetComment.Companion.TYPE_TWEET
 
 /**
  * Provides a comment configuration.
@@ -54,7 +44,7 @@ class CommentConfig @JvmOverloads constructor(
     var userAgent: String,
     var referrer: String = "",
     var permalink: String = "",
-    var type: String = "",
+    var type: CommentType = CommentType.NONE,
     var author: String = "",
     var authorEmail: String = "",
     var authorUrl: String = "",
@@ -96,7 +86,7 @@ class CommentConfig @JvmOverloads constructor(
     data class Builder(var userIp: String, var userAgent: String) {
         var referrer = ""
         var permalink = ""
-        var type = ""
+        var type: CommentType = CommentType.NONE
         var author = ""
         var authorEmail = ""
         var authorUrl = ""
@@ -113,12 +103,12 @@ class CommentConfig @JvmOverloads constructor(
         /**
          * Sets the IP address of the comment submitter.
          */
-        fun userIp(userIp: String) : Builder = apply { this.userIp = userIp }
+        fun userIp(userIp: String): Builder = apply { this.userIp = userIp }
 
         /**
          * Sets the user agent string of the web browser submitting the comment.
          */
-        fun userAgent(userAgent: String) : Builder = apply { this.userAgent = userAgent }
+        fun userAgent(userAgent: String): Builder = apply { this.userAgent = userAgent }
 
         /**
          * Sets the content of the referrer header.
@@ -133,22 +123,22 @@ class CommentConfig @JvmOverloads constructor(
         /**
          * Sets a string that describes the type of content being sent, such as:
          *
-         * - [TYPE_COMMENT]
-         * - [TYPE_FORUM_POST]
-         * - [TYPE_REPLY]
-         * - [TYPE_BLOG_POST]
-         * - [TYPE_CONTACT_FORM]
-         * - [TYPE_SIGNUP]
-         * - [TYPE_MESSAGE]
-         * - [TYPE_PINGBACK]
-         * - [TYPE_TRACKBACK]
-         * - [TYPE_TWEET]
+         * - [CommentType.COMMENT]
+         * - [CommentType.FORUM_POST]
+         * - [CommentType.REPLY]
+         * - [CommentType.BLOG_POST]
+         * - [CommentType.CONTACT_FORM]
+         * - [CommentType.SIGNUP]
+         * - [CommentType.MESSAGE]
+         * - [CommentType.PINGBACK]
+         * - [CommentType.TRACKBACK]
+         * - [CommentType.TWEET]
          *
          * You may send a value not listed above if none of them accurately describe your content.
          *
          * This is further explained [here](http://blog.akismet.com/2012/06/19/pro-tip-tell-us-your-comment_type/).
          */
-        fun type(type: String): Builder = apply { this.type = type }
+        fun type(type: CommentType): Builder = apply { this.type = type }
 
         /**
          * Sets the mame submitted with the comment.
@@ -184,7 +174,7 @@ class CommentConfig @JvmOverloads constructor(
          *
          * @see [Akismet.dateToGmt]
          */
-        fun postModifiedGmt(postModifiedGmt: String) = apply { this.postModifiedGmt = postModifiedGmt }
+        fun postModifiedGmt(postModifiedGmt: String): Builder = apply { this.postModifiedGmt = postModifiedGmt }
 
         /**
          * Indicates the language(s) in use on the blog or site, in ISO 639-1 format, comma-separated.
@@ -201,7 +191,7 @@ class CommentConfig @JvmOverloads constructor(
         /**
          * Set the user role of the user who submitted the comment. This is an optional parameter.
          *
-         * If you set it to [ADMIN_ROLE], Akismet will always return false.
+         * If you set it to [ADMIN_ROLE], Akismet will always return `false`.
          */
         fun userRole(userRole: String): Builder = apply { this.userRole = userRole }
 

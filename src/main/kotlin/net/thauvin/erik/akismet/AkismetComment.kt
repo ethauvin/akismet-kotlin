@@ -58,47 +58,23 @@ private fun String?.ifNull() = this ?: ""
 @Serializable
 open class AkismetComment(val userIp: String, val userAgent: String) {
     companion object {
-        /** A blog comment. */
-        const val TYPE_COMMENT = "comment"
-
-        /** A top-level forum post. */
-        const val TYPE_FORUM_POST = "forum-post"
-
-        /** A reply to a top-level forum post. */
-        const val TYPE_REPLY = "reply"
-
-        /** A blog post. */
-        const val TYPE_BLOG_POST = "blog-post"
-
-        /** A contact form or feedback form submission. */
-        const val TYPE_CONTACT_FORM = "contact-form"
-
-        /**  A new user account. */
-        const val TYPE_SIGNUP = "signup"
-
-        /**  A message sent between just a few users. */
-        const val TYPE_MESSAGE = "message"
-
-        /** A pingback. */
-        const val TYPE_PINGBACK = "pingback"
-
-        /** A trackback. */
-        const val TYPE_TRACKBACK = "trackback"
-
-        /** A Twitter message. */
-        const val TYPE_TWEET = "tweet"
-
-        /** Administrator role. If used, Akismet will always return false. */
+        /**
+         * Administrator role. If used, Akismet will always return `false`.
+         */
         const val ADMIN_ROLE = "administrator"
     }
 
-    /** The content of the referer header should be set here. */
+    /**
+     * The content of the referer header should be set here.
+     */
     var referrer: String? = ""
         set(value) {
             field = value.ifNull()
         }
 
-    /** The full permanent URL of the entry the comment was submitted to. */
+    /**
+     * The full permanent URL of the entry the comment was submitted to.
+     */
     var permalink: String? = ""
         set(value) {
             field = value.ifNull()
@@ -107,45 +83,50 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     /**
      * A string that describes the type of content being sent, such as:
      *
-     * - [TYPE_COMMENT]
-     * - [TYPE_FORUM_POST]
-     * - [TYPE_REPLY]
-     * - [TYPE_BLOG_POST]
-     * - [TYPE_CONTACT_FORM]
-     * - [TYPE_SIGNUP]
-     * - [TYPE_MESSAGE]
-     * - [TYPE_PINGBACK]
-     * - [TYPE_TRACKBACK]
-     * - [TYPE_TWEET]
+     * - [CommentType.COMMENT]
+     * - [CommentType.FORUM_POST]
+     * - [CommentType.REPLY]
+     * - [CommentType.BLOG_POST]
+     * - [CommentType.CONTACT_FORM]
+     * - [CommentType.SIGNUP]
+     * - [CommentType.MESSAGE]
+     * - [CommentType.PINGBACK]
+     * - [CommentType.TRACKBACK]
+     * - [CommentType.TWEET]
      *
      * You may send a value not listed above if none of them accurately describe your content.
      *
      * This is further explained [here](http://blog.akismet.com/2012/06/19/pro-tip-tell-us-your-comment_type/).
      */
-    var type: String? = ""
-        set(value) {
-            field = value.ifNull()
-        }
+    var type: CommentType = CommentType.NONE
 
-    /** Name submitted with the comment. */
+    /**
+     * Name submitted with the comment.
+     */
     var author: String? = ""
         set(value) {
             field = value.ifNull()
         }
 
-    /** Email address submitted with the comment. */
+    /**
+     * Email address submitted with the comment.
+     */
     var authorEmail: String? = ""
         set(value) {
             field = value.ifNull()
         }
 
-    /** URL submitted with comment. */
+    /**
+     * URL submitted with comment.
+     */
     var authorUrl: String? = ""
         set(value) {
             field = value.ifNull()
         }
 
-    /** The content that was submitted. */
+    /**
+     * The content that was submitted.
+     */
     var content: String? = ""
         set(value) {
             field = value.ifNull()
@@ -194,14 +175,16 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     /**
      * The user role of the user who submitted the comment. This is an optional parameter.
      *
-     * If you set it to [ADMIN_ROLE], Akismet will always return false.
+     * If you set it to [ADMIN_ROLE], Akismet will always return `false`.
      */
     var userRole: String? = ""
         set(value) {
             field = value.ifNull()
         }
 
-    /** This is an optional parameter. You can use it when submitting test queries to Akismet. */
+    /**
+     * This is an optional parameter. You can use it when submitting test queries to Akismet.
+     */
     var isTest: Boolean = false
 
     /**
@@ -230,8 +213,7 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      * Creates a new instance extracting the [userIp], [userAgent], [referrer] and [serverEnv] environment variables
      * from a Servlet request.
      *
-     * See the
-     * [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
+     * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
      *
      * @see [serverEnv]
      */

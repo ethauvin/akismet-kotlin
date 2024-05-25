@@ -2,6 +2,7 @@ package com.example
 
 import net.thauvin.erik.akismet.Akismet
 import net.thauvin.erik.akismet.AkismetComment
+import net.thauvin.erik.akismet.CommentType
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -12,7 +13,7 @@ fun main(args: Array<String>) {
             isTest = true
             referrer = "https://www.google.com"
             permalink = "${akismet.blog}post=1"
-            type = AkismetComment.TYPE_COMMENT
+            type = CommentType.COMMENT
             author = "admin"
             authorEmail = "test@test.com"
             authorUrl = "https://www.CheckOutMyCoolSite.com"

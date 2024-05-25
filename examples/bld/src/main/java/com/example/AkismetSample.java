@@ -3,6 +3,7 @@ package com.example;
 import net.thauvin.erik.akismet.Akismet;
 import net.thauvin.erik.akismet.AkismetComment;
 import net.thauvin.erik.akismet.CommentConfig;
+import net.thauvin.erik.akismet.CommentType;
 
 import java.util.Date;
 
@@ -15,7 +16,7 @@ public class AkismetSample {
                             .isTest(true)
                             .referrer("https://www.google.com")
                             .permalink(akismet.getBlog() + "post=1")
-                            .type(AkismetComment.TYPE_COMMENT)
+                            .type(CommentType.COMMENT)
                             .author("admin")
                             .authorEmail("test@test.com")
                             .authorUrl("http://www.CheckOutMyCoolSite.com")

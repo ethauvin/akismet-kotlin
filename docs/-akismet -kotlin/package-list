@@ -26,16 +26,6 @@ $dokka.location:net.thauvin.erik.akismet/Akismet/submitSpam/#net.thauvin.erik.ak
 $dokka.location:net.thauvin.erik.akismet/Akismet/verifyKey/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet/verify-key.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion///PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/index.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/ADMIN_ROLE/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-a-d-m-i-n_-r-o-l-e.html
-$dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_BLOG_POST/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-t-y-p-e_-b-l-o-g_-p-o-s-t.html
-$dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_COMMENT/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-t-y-p-e_-c-o-m-m-e-n-t.html
-$dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_CONTACT_FORM/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-t-y-p-e_-c-o-n-t-a-c-t_-f-o-r-m.html
-$dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_FORUM_POST/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-t-y-p-e_-f-o-r-u-m_-p-o-s-t.html
-$dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_MESSAGE/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-t-y-p-e_-m-e-s-s-a-g-e.html
-$dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_PINGBACK/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-t-y-p-e_-p-i-n-g-b-a-c-k.html
-$dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_REPLY/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-t-y-p-e_-r-e-p-l-y.html
-$dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_SIGNUP/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-t-y-p-e_-s-i-g-n-u-p.html
-$dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_TRACKBACK/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-t-y-p-e_-t-r-a-c-k-b-a-c-k.html
-$dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/TYPE_TWEET/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-t-y-p-e_-t-w-e-e-t.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment///PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/index.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment/AkismetComment/#[Error type: Unresolved type for HttpServletRequest]/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-akismet-comment.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment/AkismetComment/#kotlin.String#kotlin.String/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-akismet-comment.html
@@ -91,7 +81,7 @@ $dokka.location:net.thauvin.erik.akismet/CommentConfig.Builder/referrer/#kotlin.
 $dokka.location:net.thauvin.erik.akismet/CommentConfig.Builder/serverEnv/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-builder/server-env.html
 $dokka.location:net.thauvin.erik.akismet/CommentConfig.Builder/serverEnv/#kotlin.collections.Map[kotlin.String,kotlin.String]/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-builder/server-env.html
 $dokka.location:net.thauvin.erik.akismet/CommentConfig.Builder/type/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-builder/type.html
-$dokka.location:net.thauvin.erik.akismet/CommentConfig.Builder/type/#kotlin.String/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-builder/type.html
+$dokka.location:net.thauvin.erik.akismet/CommentConfig.Builder/type/#net.thauvin.erik.akismet.CommentType/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-builder/type.html
 $dokka.location:net.thauvin.erik.akismet/CommentConfig.Builder/userAgent/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-builder/user-agent.html
 $dokka.location:net.thauvin.erik.akismet/CommentConfig.Builder/userAgent/#kotlin.String/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-builder/user-agent.html
 $dokka.location:net.thauvin.erik.akismet/CommentConfig.Builder/userIp/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-builder/user-ip.html
@@ -99,7 +89,7 @@ $dokka.location:net.thauvin.erik.akismet/CommentConfig.Builder/userIp/#kotlin.St
 $dokka.location:net.thauvin.erik.akismet/CommentConfig.Builder/userRole/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-builder/user-role.html
 $dokka.location:net.thauvin.erik.akismet/CommentConfig.Builder/userRole/#kotlin.String/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-builder/user-role.html
 $dokka.location:net.thauvin.erik.akismet/CommentConfig///PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/index.html
-$dokka.location:net.thauvin.erik.akismet/CommentConfig/CommentConfig/#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.Boolean#kotlin.String#kotlin.collections.Map[kotlin.String,kotlin.String]/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-comment-config.html
+$dokka.location:net.thauvin.erik.akismet/CommentConfig/CommentConfig/#kotlin.String#kotlin.String#kotlin.String#kotlin.String#net.thauvin.erik.akismet.CommentType#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.String#kotlin.Boolean#kotlin.String#kotlin.collections.Map[kotlin.String,kotlin.String]/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-comment-config.html
 $dokka.location:net.thauvin.erik.akismet/CommentConfig/CommentConfig/#net.thauvin.erik.akismet.CommentConfig.Builder/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/-comment-config.html
 $dokka.location:net.thauvin.erik.akismet/CommentConfig/author/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/author.html
 $dokka.location:net.thauvin.erik.akismet/CommentConfig/authorEmail/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/author-email.html
@@ -118,5 +108,20 @@ $dokka.location:net.thauvin.erik.akismet/CommentConfig/type/#/PointingToDeclarat
 $dokka.location:net.thauvin.erik.akismet/CommentConfig/userAgent/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/user-agent.html
 $dokka.location:net.thauvin.erik.akismet/CommentConfig/userIp/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/user-ip.html
 $dokka.location:net.thauvin.erik.akismet/CommentConfig/userRole/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-config/user-role.html
+$dokka.location:net.thauvin.erik.akismet/CommentType.Companion///PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-companion/index.html
+$dokka.location:net.thauvin.erik.akismet/CommentType.Companion/BLOG_POST/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-companion/-b-l-o-g_-p-o-s-t.html
+$dokka.location:net.thauvin.erik.akismet/CommentType.Companion/COMMENT/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-companion/-c-o-m-m-e-n-t.html
+$dokka.location:net.thauvin.erik.akismet/CommentType.Companion/CONTACT_FORM/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-companion/-c-o-n-t-a-c-t_-f-o-r-m.html
+$dokka.location:net.thauvin.erik.akismet/CommentType.Companion/FORUM_POST/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-companion/-f-o-r-u-m_-p-o-s-t.html
+$dokka.location:net.thauvin.erik.akismet/CommentType.Companion/MESSAGE/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-companion/-m-e-s-s-a-g-e.html
+$dokka.location:net.thauvin.erik.akismet/CommentType.Companion/NONE/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-companion/-n-o-n-e.html
+$dokka.location:net.thauvin.erik.akismet/CommentType.Companion/PINGBACK/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-companion/-p-i-n-g-b-a-c-k.html
+$dokka.location:net.thauvin.erik.akismet/CommentType.Companion/REPLY/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-companion/-r-e-p-l-y.html
+$dokka.location:net.thauvin.erik.akismet/CommentType.Companion/SIGNUP/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-companion/-s-i-g-n-u-p.html
+$dokka.location:net.thauvin.erik.akismet/CommentType.Companion/TRACKBACK/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-companion/-t-r-a-c-k-b-a-c-k.html
+$dokka.location:net.thauvin.erik.akismet/CommentType.Companion/TWEET/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-companion/-t-w-e-e-t.html
+$dokka.location:net.thauvin.erik.akismet/CommentType///PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/index.html
+$dokka.location:net.thauvin.erik.akismet/CommentType/CommentType/#kotlin.String/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/-comment-type.html
+$dokka.location:net.thauvin.erik.akismet/CommentType/value/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-comment-type/value.html
 net.thauvin.erik.akismet
 

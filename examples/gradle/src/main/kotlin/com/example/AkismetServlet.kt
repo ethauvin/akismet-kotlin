@@ -7,8 +7,9 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import net.thauvin.erik.akismet.Akismet
 import net.thauvin.erik.akismet.AkismetComment
+import net.thauvin.erik.akismet.CommentType
 import java.io.IOException
-import java.util.Date
+import java.util.*
 
 @WebServlet(description = "Akismet Servlet", displayName = "Akismet", urlPatterns = ["/comment/*"])
 class AkismetServlet : HttpServlet() {
@@ -22,7 +23,7 @@ class AkismetServlet : HttpServlet() {
 
         val comment = AkismetComment(request).apply {
             permalink = "${akismet.blog}/comment/$id"
-            type = AkismetComment.TYPE_COMMENT
+            type = CommentType.COMMENT
             author = request.getParameter("name")
             authorEmail = request.getParameter("email")
             dateGmt = Akismet.dateToGmt(Date())

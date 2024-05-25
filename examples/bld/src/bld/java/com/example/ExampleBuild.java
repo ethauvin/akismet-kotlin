@@ -1,12 +1,11 @@
 package com.example;
 
+import rife.bld.BaseProject;
 import rife.bld.BuildCommand;
 import rife.bld.extension.CompileKotlinOperation;
 import rife.bld.operations.RunOperation;
-import rife.bld.BaseProject;
 
 import java.util.List;
-
 
 import static rife.bld.dependencies.Repository.*;
 import static rife.bld.dependencies.Scope.compile;

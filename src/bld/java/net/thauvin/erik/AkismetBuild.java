@@ -174,6 +174,9 @@ public class AkismetBuild extends Project {
                                         + "/tree/master/src/main/kotlin/", "#L")
                                 .includes("config/dokka/packages.md")
                                 .jdkVersion(javaRelease)
+                                .externalDocumentationLinks("https://jakarta.ee/specifications/platform/9/apidocs/",
+                                        "https://jakarta.ee/specifications/platform/9/apidocs/package-list")
+
                 )
                 .execute();
     }
@@ -207,6 +210,8 @@ public class AkismetBuild extends Project {
                 .moduleVersion(version.toString())
                 .outputDir(new File(buildDirectory(), "javadoc"))
                 .outputFormat(OutputFormat.JAVADOC)
+                .globalLinks("https://jakarta.ee/specifications/platform/9/apidocs/",
+                        "https://jakarta.ee/specifications/platform/9/apidocs/package-list")
                 .execute();
     }
 

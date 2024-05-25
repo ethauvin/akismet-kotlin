@@ -395,8 +395,8 @@ open class Akismet(apiKey: String) {
                 if (!permalink.isNullOrBlank()) {
                     add("permalink", permalink.toString())
                 }
-                if (!type.isNullOrBlank()) {
-                    add("comment_type", type.toString())
+                if (type != CommentType.NONE) {
+                    add("comment_type", type.value)
                 }
                 if (!author.isNullOrBlank()) {
                     add("comment_author", author.toString())

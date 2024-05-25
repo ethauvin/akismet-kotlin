@@ -169,7 +169,7 @@ class AkismetTest {
             prop(AkismetComment::isTest).isFalse()
             prop(AkismetComment::referrer).isEqualTo("")
             prop(AkismetComment::permalink).isEqualTo("")
-            prop(AkismetComment::type).isEqualTo("")
+            prop(AkismetComment::type).isEqualTo(CommentType.NONE)
             prop(AkismetComment::authorEmail).isEqualTo("")
             prop(AkismetComment::author).isEqualTo("")
             prop(AkismetComment::authorUrl).isEqualTo("")
@@ -183,11 +183,11 @@ class AkismetTest {
             prop(AkismetComment::serverEnv).size().isEqualTo(0)
         }
 
-        with(empty) {
+        with(receiver = empty) {
             for (s in listOf("test", "", null)) {
                 referrer = s
                 permalink = s
-                type = s
+                if (s != null) type = CommentType(s)
                 authorEmail = s
                 author = s
                 authorUrl = s
@@ -204,7 +204,7 @@ class AkismetTest {
                 assertThat(empty, "AkismetComment($s)").all {
                     prop(AkismetComment::referrer).isEqualTo(expected)
                     prop(AkismetComment::permalink).isEqualTo(expected)
-                    prop(AkismetComment::type).isEqualTo(expected)
+                    prop(AkismetComment::type).isEqualTo(CommentType(expected))
                     prop(AkismetComment::authorEmail).isEqualTo(expected)
                     prop(AkismetComment::author).isEqualTo(expected)
                     prop(AkismetComment::authorUrl).isEqualTo(expected)
@@ -384,11 +384,11 @@ class AkismetTest {
         private val config = CommentConfig.Builder(comment.userIp, comment.userAgent)
             .referrer(REFERER)
             .permalink("http://yourblogdomainname.com/blog/post=1")
-            .type(AkismetComment.TYPE_COMMENT)
+            .type(CommentType.COMMENT)
             .author("admin")
             .authorEmail("test@test.com")
             .authorUrl("http://www.CheckOutMyCoolSite.com")
-            .content("It means a lot that you would take the time to review our software.  Thanks again.")
+            .content("It means a lot that you would take the time to review our software. Thanks again.")
             .dateGmt(Akismet.dateToGmt(date))
             .postModifiedGmt(Akismet.dateToGmt(date))
             .blogLang("en")
@@ -403,7 +403,7 @@ class AkismetTest {
             with(comment) {
                 referrer = config.referrer
                 permalink = config.permalink
-                type = config.type
+                type = CommentType("comment")
                 author = config.author
                 authorEmail = config.authorEmail
                 authorUrl = config.authorUrl
@@ -428,7 +428,7 @@ class AkismetTest {
                 postModifiedGmt = comment.dateGmt
                 blogLang = comment.blogLang
                 blogCharset = comment.blogCharset
-                userRole = comment.userRole
+                userRole = AkismetComment.ADMIN_ROLE
                 recheckReason = comment.recheckReason
                 isTest = true
             }
