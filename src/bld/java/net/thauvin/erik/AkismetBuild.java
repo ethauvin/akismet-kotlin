@@ -72,9 +72,9 @@ public class AkismetBuild extends Project {
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("com.squareup.okhttp3", "okhttp", okHttp))
                 .include(dependency("com.squareup.okhttp3", "logging-interceptor", okHttp))
-                .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 0, 0)))
                 .include(dependency("org.jetbrains.kotlinx", "kotlinx-serialization-json-jvm", version(1, 6, 3)));
         scope(provided)
+                .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 0, 0)))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-serialization-compiler-plugin", kotlin));
         scope(test)
                 .include(dependency("org.mockito", "mockito-core", version(5, 12, 0)))
@@ -170,6 +170,8 @@ public class AkismetBuild extends Project {
                 .sourceSet(
                         new SourceSet()
                                 .src(srcMainKotlin.getAbsolutePath())
+                                .classpath(compileClasspathJars())
+                                .classpath(providedClasspathJars())
                                 .srcLink(srcMainKotlin.getAbsolutePath(), "https://github.com/ethauvin/" + name
                                         + "/tree/master/src/main/kotlin/", "#L")
                                 .includes("config/dokka/packages.md")

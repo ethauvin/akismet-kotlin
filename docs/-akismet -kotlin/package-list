@@ -13,7 +13,7 @@ $dokka.location:net.thauvin.erik.akismet/Akismet/blog/#/PointingToDeclaration/-
 $dokka.location:net.thauvin.erik.akismet/Akismet/checkComment/#net.thauvin.erik.akismet.AkismetComment#kotlin.Boolean/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet/check-comment.html
 $dokka.location:net.thauvin.erik.akismet/Akismet/debugHelp/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet/debug-help.html
 $dokka.location:net.thauvin.erik.akismet/Akismet/errorMessage/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet/error-message.html
-$dokka.location:net.thauvin.erik.akismet/Akismet/executeMethod/#[Error type: Unresolved type for HttpUrl]#[Error type: Unresolved type for FormBody]#kotlin.Boolean/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet/execute-method.html
+$dokka.location:net.thauvin.erik.akismet/Akismet/executeMethod/#okhttp3.HttpUrl#okhttp3.FormBody#kotlin.Boolean/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet/execute-method.html
 $dokka.location:net.thauvin.erik.akismet/Akismet/httpStatusCode/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet/http-status-code.html
 $dokka.location:net.thauvin.erik.akismet/Akismet/isDiscard/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet/is-discard.html
 $dokka.location:net.thauvin.erik.akismet/Akismet/isVerifiedKey/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet/is-verified-key.html
@@ -27,7 +27,7 @@ $dokka.location:net.thauvin.erik.akismet/Akismet/verifyKey/#/PointingToDeclarati
 $dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion///PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/index.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment.Companion/ADMIN_ROLE/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-companion/-a-d-m-i-n_-r-o-l-e.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment///PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/index.html
-$dokka.location:net.thauvin.erik.akismet/AkismetComment/AkismetComment/#[Error type: Unresolved type for HttpServletRequest]/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-akismet-comment.html
+$dokka.location:net.thauvin.erik.akismet/AkismetComment/AkismetComment/#jakarta.servlet.http.HttpServletRequest/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-akismet-comment.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment/AkismetComment/#kotlin.String#kotlin.String/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-akismet-comment.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment/AkismetComment/#net.thauvin.erik.akismet.CommentConfig/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/-akismet-comment.html
 $dokka.location:net.thauvin.erik.akismet/AkismetComment/author/#/PointingToDeclaration/-akismet -kotlin/net.thauvin.erik.akismet/-akismet-comment/author.html
