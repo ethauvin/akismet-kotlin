@@ -59,7 +59,7 @@ public class AkismetBuild extends Project {
     public AkismetBuild() {
         pkg = "net.thauvin.erik";
         name = "akismet-kotlin";
-        version = version(1, 0, 1, "SNAPSHOT");
+        version = version(1, 1, 0, "SNAPSHOT");
 
         javaRelease = 11;
         downloadSources = true;

@@ -10,5 +10,5 @@ package net.thauvin.erik.akismet
 */
 internal object GeneratedVersion {
     const val PROJECT = "Akismet Kotlin"
-    const val VERSION = "1.0.1-SNAPSHOT"
+    const val VERSION = "1.1.0-SNAPSHOT"
 }

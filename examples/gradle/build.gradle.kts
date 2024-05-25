@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
-    implementation("net.thauvin.erik:akismet-kotlin:1.0.1-SNAPSHOT")
+    implementation("net.thauvin.erik:akismet-kotlin:1.1.0-SNAPSHOT")
 }
 
 java {

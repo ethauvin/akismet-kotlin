@@ -71,7 +71,7 @@ To use with [bld](https://rife2.com/bld), include the following dependency in yo
 repositories = List.of(MAVEN_CENTRAL, SONATYPE_SNAPSHOTS_LEGACY);
 
 scope(compile)
-    .include(dependency("net.thauvin.erik:akismet-kotlin:1.0.1-SNAPSHOT"));
+    .include(dependency("net.thauvin.erik:akismet-kotlin:1.1.0-SNAPSHOT"));
 ```
 
 ## Gradle
@@ -84,7 +84,7 @@ repositories {
 }
 
 dependencies {
-    implementation("net.thauvin.erik:akismet-kotlin:1.0.1-SNAPSHOT")
+    implementation("net.thauvin.erik:akismet-kotlin:1.1.0-SNAPSHOT")
 }
 ```
 
