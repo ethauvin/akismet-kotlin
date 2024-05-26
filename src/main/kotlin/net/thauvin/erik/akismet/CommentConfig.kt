@@ -35,47 +35,25 @@ import net.thauvin.erik.akismet.AkismetComment.Companion.ADMIN_ROLE
 
 /**
  * Provides a comment configuration.
- *
- * @param userIp IP address of the comment submitter.
- * @param userAgent User agent string of the web browser submitting the comment.
  */
-class CommentConfig @JvmOverloads constructor(
-    var userIp: String,
-    var userAgent: String,
-    var referrer: String = "",
-    var permalink: String = "",
-    var type: CommentType = CommentType.NONE,
-    var author: String = "",
-    var authorEmail: String = "",
-    var authorUrl: String = "",
-    var content: String = "",
-    var dateGmt: String = "",
-    var postModifiedGmt: String = "",
-    var blogLang: String = "",
-    var blogCharset: String = "",
-    var userRole: String = "",
-    var isTest: Boolean = false,
-    var recheckReason: String = "",
-    var serverEnv: Map<String, String> = emptyMap()
-
-) {
-    constructor(builder: Builder) : this(builder.userIp, builder.userAgent) {
-        referrer = builder.referrer
-        permalink = builder.permalink
-        type = builder.type
-        author = builder.author
-        authorEmail = builder.authorEmail
-        authorUrl = builder.authorUrl
-        content = builder.content
-        dateGmt = builder.dateGmt
-        postModifiedGmt = builder.postModifiedGmt
-        blogLang = builder.blogLang
-        blogCharset = builder.blogCharset
-        userRole = builder.userRole
-        isTest = builder.isTest
-        recheckReason = builder.recheckReason
-        serverEnv = builder.serverEnv
-    }
+class CommentConfig private constructor(builder: Builder) {
+    val userIp: String = builder.userIp
+    val userAgent: String = builder.userAgent
+    val referrer = builder.referrer
+    val permalink = builder.permalink
+    val type = builder.type
+    val author = builder.author
+    val authorEmail = builder.authorEmail
+    val authorUrl = builder.authorUrl
+    val content = builder.content
+    val dateGmt = builder.dateGmt
+    val postModifiedGmt = builder.postModifiedGmt
+    val blogLang = builder.blogLang
+    val blogCharset = builder.blogCharset
+    val userRole = builder.userRole
+    val isTest = builder.isTest
+    val recheckReason = builder.recheckReason
+    val serverEnv = builder.serverEnv
 
     /**
      * Provides a configuration builder.
