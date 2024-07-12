@@ -61,7 +61,7 @@ open class Akismet(apiKey: String) {
          */
         @JvmStatic
         fun jsonComment(json: String): AkismetComment {
-            return Json.decodeFromString(AkismetComment.serializer(), json)
+            return Json.decodeFromString<AkismetComment>(json)
         }
 
         /**

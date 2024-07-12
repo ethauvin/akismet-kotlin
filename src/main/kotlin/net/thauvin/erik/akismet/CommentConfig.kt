@@ -31,8 +31,6 @@
 
 package net.thauvin.erik.akismet
 
-import net.thauvin.erik.akismet.AkismetComment.Companion.ADMIN_ROLE
-
 /**
  * Provides a comment configuration.
  */
@@ -169,7 +167,7 @@ class CommentConfig private constructor(builder: Builder) {
         /**
          * Set the user role of the user who submitted the comment. This is an optional parameter.
          *
-         * If you set it to [ADMIN_ROLE], Akismet will always return `false`.
+         * If you set it to [AkismetComment.ADMIN_ROLE], Akismet will always return `false`.
          */
         fun userRole(userRole: String): Builder = apply { this.userRole = userRole }
 
