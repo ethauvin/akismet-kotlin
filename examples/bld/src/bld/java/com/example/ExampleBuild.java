@@ -25,7 +25,7 @@ public class ExampleBuild extends BaseProject {
 
         scope(compile)
                 .include(dependency("net.thauvin.erik:akismet-kotlin:1.1.0-SNAPSHOT"))
-                .include(dependency("jakarta.servlet:jakarta.servlet-api:6.0.0"));
+                .include(dependency("jakarta.servlet:jakarta.servlet-api:6.1.0"));
     }
 
     public static void main(String[] args) {
