@@ -33,11 +33,11 @@ package net.thauvin.erik;
 
 import rife.bld.BuildCommand;
 import rife.bld.Project;
-import rife.bld.extension.*;
-import rife.bld.extension.dokka.DokkaOperation;
-import rife.bld.extension.dokka.LoggingLevel;
-import rife.bld.extension.dokka.OutputFormat;
-import rife.bld.extension.dokka.SourceSet;
+import rife.bld.extension.CompileKotlinOperation;
+import rife.bld.extension.DetektOperation;
+import rife.bld.extension.GeneratedVersionOperation;
+import rife.bld.extension.JacocoReportOperation;
+import rife.bld.extension.kotlin.CompilerPlugin;
 import rife.bld.operations.exceptions.ExitStatusException;
 import rife.bld.publish.PomBuilder;
 import rife.bld.publish.PublishDeveloper;
@@ -48,6 +48,9 @@ import rife.tools.exceptions.FileUtilsErrorException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static rife.bld.dependencies.Repository.*;
 import static rife.bld.dependencies.Scope.*;
@@ -62,25 +65,27 @@ public class AkismetBuild extends Project {
         version = version(1, 1, 0, "SNAPSHOT");
 
         javaRelease = 11;
+
         downloadSources = true;
         autoDownloadPurge = true;
         repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL);
 
         var okHttp = version(4, 12, 0);
-        final var kotlin = version(1, 9, 24);
+        final var kotlin = version(2, 0, 0);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
+                .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib-jdk7", kotlin))
+                .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", kotlin))
                 .include(dependency("com.squareup.okhttp3", "okhttp", okHttp))
                 .include(dependency("com.squareup.okhttp3", "logging-interceptor", okHttp))
-                .include(dependency("org.jetbrains.kotlinx", "kotlinx-serialization-json-jvm", version(1, 6, 3)));
+                .include(dependency("org.jetbrains.kotlinx", "kotlinx-serialization-json", version(1, 7, 1)));
         scope(provided)
-                .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 0, 0)))
-                .include(dependency("org.jetbrains.kotlin", "kotlin-serialization-compiler-plugin", kotlin));
+                .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 1, 0)));
         scope(test)
                 .include(dependency("org.mockito", "mockito-core", version(5, 12, 0)))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
-                .include(dependency("org.junit.jupiter", "junit-jupiter", version(5, 10, 2)))
-                .include(dependency("org.junit.platform", "junit-platform-console-standalone", version(1, 10, 2)))
+                .include(dependency("org.junit.jupiter", "junit-jupiter", version(5, 10, 3)))
+                .include(dependency("org.junit.platform", "junit-platform-console-standalone", version(1, 10, 3)))
                 .include(dependency("com.willowtreeapps.assertk", "assertk-jvm", version(0, 28, 1)));
 
         publishOperation()
@@ -119,26 +124,27 @@ public class AkismetBuild extends Project {
 
     public static void main(String[] args) {
         // Enable detailed logging for the Kotlin extension
-        // var level = Level.ALL;
-        // var logger = Logger.getLogger("rife.bld.extension");
-        // var consoleHandler = new ConsoleHandler();
+        var level = Level.ALL;
+        var logger = Logger.getLogger("rife.bld.extension");
+        var consoleHandler = new ConsoleHandler();
 
-        // consoleHandler.setLevel(level);
-        // logger.addHandler(consoleHandler);
-        // logger.setLevel(level);
-        // logger.setUseParentHandlers(false);
+        consoleHandler.setLevel(level);
+        logger.addHandler(consoleHandler);
+        logger.setLevel(level);
+        logger.setUseParentHandlers(false);
 
         new AkismetBuild().start(args);
     }
 
     @BuildCommand(summary = "Compiles the Kotlin project")
     @Override
-    public void compile() throws IOException {
+    public void compile() throws Exception {
         genver();
-        new CompileKotlinOperation()
+        var op = new CompileKotlinOperation()
                 .fromProject(this)
-                .plugins(libProvidedDirectory(), CompileKotlinPlugin.KOTLIN_SERIALIZATION)
-                .execute();
+                .plugins(CompilerPlugin.KOTLIN_SERIALIZATION);
+        op.compileOptions().verbose(true);
+        op.execute();
     }
 
     @BuildCommand(summary = "Checks source with Detekt")
@@ -158,74 +164,74 @@ public class AkismetBuild extends Project {
                 .execute();
     }
 
-    @BuildCommand(summary = "Generates documentation in HTML format")
-    public void docs() throws ExitStatusException, IOException, InterruptedException {
-        new DokkaOperation()
-                .fromProject(this)
-                .loggingLevel(LoggingLevel.INFO)
-                .moduleName("Akismet Kotlin")
-                .moduleVersion(version.toString())
-                .outputDir("docs")
-                .outputFormat(OutputFormat.HTML)
-                .sourceSet(
-                        new SourceSet()
-                                .src(srcMainKotlin.getAbsolutePath())
-                                .classpath(compileClasspathJars())
-                                .classpath(providedClasspathJars())
-                                .srcLink(srcMainKotlin.getAbsolutePath(), "https://github.com/ethauvin/" + name
-                                        + "/tree/master/src/main/kotlin/", "#L")
-                                .includes("config/dokka/packages.md")
-                                .jdkVersion(javaRelease)
-                                .externalDocumentationLinks("https://jakarta.ee/specifications/platform/9/apidocs/",
-                                        "https://jakarta.ee/specifications/platform/9/apidocs/package-list")
-
-                )
-                .execute();
-    }
+//    @BuildCommand(summary = "Generates documentation in HTML format")
+//    public void docs() throws ExitStatusException, IOException, InterruptedException {
+//        new DokkaOperation()
+//                .fromProject(this)
+//                .loggingLevel(LoggingLevel.INFO)
+//                .moduleName("Akismet Kotlin")
+//                .moduleVersion(version.toString())
+//                .outputDir("docs")
+//                .outputFormat(OutputFormat.HTML)
+//                .sourceSet(
+//                        new SourceSet()
+//                                .src(srcMainKotlin)
+//                                .classpath(compileClasspathJars())
+//                                .classpath(providedClasspathJars())
+//                                .srcLink(srcMainKotlin, "https://github.com/ethauvin/" + name
+//                                        + "/tree/master/src/main/kotlin/", "#L")
+//                                .includes("config/dokka/packages.md")
+//                                .jdkVersion(javaRelease)
+//                                .externalDocumentationLinks("https://jakarta.ee/specifications/platform/9/apidocs/",
+//                                        "https://jakarta.ee/specifications/platform/9/apidocs/package-list")
+//
+//                )
+//                .execute();
+//    }
 
     @BuildCommand(summary = "Generates version class")
-    public void genver() {
+    public void genver() throws Exception {
         new GeneratedVersionOperation()
                 .fromProject(this)
                 .projectName("Akismet Kotlin")
                 .packageName(pkg + ".akismet")
-                .classTemplate(new File(workDirectory(), "version.txt"))
+                .classTemplate("version.txt")
                 .directory(srcMainKotlin)
                 .extension(".kt")
                 .execute();
     }
 
     @BuildCommand(summary = "Generates JaCoCo Reports")
-    public void jacoco() throws IOException {
+    public void jacoco() throws Exception {
         new JacocoReportOperation()
                 .fromProject(this)
                 .sourceFiles(srcMainKotlin)
                 .execute();
     }
 
-    @Override
-    public void javadoc() throws ExitStatusException, IOException, InterruptedException {
-        new DokkaOperation()
-                .fromProject(this)
-                .loggingLevel(LoggingLevel.INFO)
-                .moduleName("Bitly Shorten")
-                .moduleVersion(version.toString())
-                .outputDir(new File(buildDirectory(), "javadoc"))
-                .outputFormat(OutputFormat.JAVADOC)
-                .globalLinks("https://jakarta.ee/specifications/platform/9/apidocs/",
-                        "https://jakarta.ee/specifications/platform/9/apidocs/package-list")
-                .execute();
+//    @Override
+//    public void javadoc() throws ExitStatusException, IOException, InterruptedException {
+//        new DokkaOperation()
+//                .fromProject(this)
+//                .loggingLevel(LoggingLevel.INFO)
+//                .moduleName("Bitly Shorten")
+//                .moduleVersion(version.toString())
+//                .outputDir(new File(buildDirectory(), "javadoc"))
+//                .outputFormat(OutputFormat.JAVADOC)
+//                .globalLinks("https://jakarta.ee/specifications/platform/9/apidocs/",
+//                        "https://jakarta.ee/specifications/platform/9/apidocs/package-list")
+//                .execute();
+//    }
+
+    @BuildCommand(value = "pom-root", summary = "Generates the POM file in the root directory")
+    public void pomRoot() throws FileUtilsErrorException {
+        PomBuilder.generateInto(publishOperation().fromProject(this).info(), dependencies(),
+                new File(workDirectory, "pom.xml"));
     }
 
     @Override
     public void publish() throws Exception {
         super.publish();
         pomRoot();
-    }
-
-    @BuildCommand(value = "pom-root", summary = "Generates the POM file in the root directory")
-    public void pomRoot() throws FileUtilsErrorException {
-        PomBuilder.generateInto(publishOperation().fromProject(this).info(), dependencies(),
-                new File(workDirectory, "pom.xml"));
     }
 }
