@@ -33,10 +33,10 @@ package net.thauvin.erik;
 
 import rife.bld.BuildCommand;
 import rife.bld.Project;
-import rife.bld.extension.CompileKotlinOperation;
-import rife.bld.extension.DetektOperation;
-import rife.bld.extension.GeneratedVersionOperation;
-import rife.bld.extension.JacocoReportOperation;
+import rife.bld.extension.*;
+import rife.bld.extension.dokka.LoggingLevel;
+import rife.bld.extension.dokka.OutputFormat;
+import rife.bld.extension.dokka.SourceSet;
 import rife.bld.extension.kotlin.CompilerPlugin;
 import rife.bld.operations.exceptions.ExitStatusException;
 import rife.bld.publish.PomBuilder;
@@ -164,30 +164,30 @@ public class AkismetBuild extends Project {
                 .execute();
     }
 
-//    @BuildCommand(summary = "Generates documentation in HTML format")
-//    public void docs() throws ExitStatusException, IOException, InterruptedException {
-//        new DokkaOperation()
-//                .fromProject(this)
-//                .loggingLevel(LoggingLevel.INFO)
-//                .moduleName("Akismet Kotlin")
-//                .moduleVersion(version.toString())
-//                .outputDir("docs")
-//                .outputFormat(OutputFormat.HTML)
-//                .sourceSet(
-//                        new SourceSet()
-//                                .src(srcMainKotlin)
-//                                .classpath(compileClasspathJars())
-//                                .classpath(providedClasspathJars())
-//                                .srcLink(srcMainKotlin, "https://github.com/ethauvin/" + name
-//                                        + "/tree/master/src/main/kotlin/", "#L")
-//                                .includes("config/dokka/packages.md")
-//                                .jdkVersion(javaRelease)
-//                                .externalDocumentationLinks("https://jakarta.ee/specifications/platform/9/apidocs/",
-//                                        "https://jakarta.ee/specifications/platform/9/apidocs/package-list")
-//
-//                )
-//                .execute();
-//    }
+    @BuildCommand(summary = "Generates documentation in HTML format")
+    public void docs() throws ExitStatusException, IOException, InterruptedException {
+        new DokkaOperation()
+                .fromProject(this)
+                .loggingLevel(LoggingLevel.INFO)
+                .moduleName("Akismet Kotlin")
+                .moduleVersion(version.toString())
+                .outputDir("docs")
+                .outputFormat(OutputFormat.HTML)
+                .sourceSet(
+                        new SourceSet()
+                                .src(srcMainKotlin)
+                                .classpath(compileClasspathJars())
+                                .classpath(providedClasspathJars())
+                                .srcLink(srcMainKotlin, "https://github.com/ethauvin/" + name
+                                        + "/tree/master/src/main/kotlin/", "#L")
+                                .includes("config/dokka/packages.md")
+                                .jdkVersion(javaRelease)
+                                .externalDocumentationLinks("https://jakarta.ee/specifications/platform/9/apidocs/",
+                                        "https://jakarta.ee/specifications/platform/9/apidocs/package-list")
+
+                )
+                .execute();
+    }
 
     @BuildCommand(summary = "Generates version class")
     public void genver() throws Exception {
@@ -209,29 +209,29 @@ public class AkismetBuild extends Project {
                 .execute();
     }
 
-//    @Override
-//    public void javadoc() throws ExitStatusException, IOException, InterruptedException {
-//        new DokkaOperation()
-//                .fromProject(this)
-//                .loggingLevel(LoggingLevel.INFO)
-//                .moduleName("Bitly Shorten")
-//                .moduleVersion(version.toString())
-//                .outputDir(new File(buildDirectory(), "javadoc"))
-//                .outputFormat(OutputFormat.JAVADOC)
-//                .globalLinks("https://jakarta.ee/specifications/platform/9/apidocs/",
-//                        "https://jakarta.ee/specifications/platform/9/apidocs/package-list")
-//                .execute();
-//    }
-
-    @BuildCommand(value = "pom-root", summary = "Generates the POM file in the root directory")
-    public void pomRoot() throws FileUtilsErrorException {
-        PomBuilder.generateInto(publishOperation().fromProject(this).info(), dependencies(),
-                new File(workDirectory, "pom.xml"));
+    @Override
+    public void javadoc() throws ExitStatusException, IOException, InterruptedException {
+        new DokkaOperation()
+                .fromProject(this)
+                .loggingLevel(LoggingLevel.INFO)
+                .moduleName("Bitly Shorten")
+                .moduleVersion(version.toString())
+                .outputDir(new File(buildDirectory(), "javadoc"))
+                .outputFormat(OutputFormat.JAVADOC)
+                .globalLinks("https://jakarta.ee/specifications/platform/9/apidocs/",
+                        "https://jakarta.ee/specifications/platform/9/apidocs/package-list")
+                .execute();
     }
 
     @Override
     public void publish() throws Exception {
         super.publish();
         pomRoot();
+    }
+
+    @BuildCommand(value = "pom-root", summary = "Generates the POM file in the root directory")
+    public void pomRoot() throws FileUtilsErrorException {
+        PomBuilder.generateInto(publishOperation().fromProject(this).info(), dependencies(),
+                new File(workDirectory, "pom.xml"));
     }
 }

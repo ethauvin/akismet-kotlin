@@ -7,11 +7,14 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      COVERAGE_SDK: "17"
+      COVERAGE_JDK: "21"
+      COVERAGE_KOTLIN: "2.0.0"
+      KOTLIN_HOME: /usr/share/kotlinc
 
     strategy:
       matrix:
         java-version: [17, 21, 22]
+        kotlin-version: [1.9.24, 2.0.0]
 
     steps:
       - name: Checkout source repository
@@ -19,34 +22,30 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up JDK ${{ matrix.java-version }}
+      - name: Set up JDK ${{ matrix.java-version }} with Kotlin ${{ matrix.kotlin-version }}
         uses: actions/setup-java@v4
         with:
           distribution: "zulu"
           java-version: ${{ matrix.java-version }}
 
-      - name: Grant bld execute permission
-        run: chmod +x bld
-
-      - name: Download the bld dependencies
+      - name: Download dependencies
         run: ./bld download
 
-      - name: Compile source with bld
+      - name: Compile source
         run: ./bld compile
 
-      - name: Run tests with bld
+      - name: Run tests
         env:
           AKISMET_BLOG: ${{ secrets.AKISMET_BLOG }}
           AKISMET_API_KEY: ${{ secrets.AKISMET_API_KEY }}
         run: ./bld jacoco
 
       - name: Remove pom.xml
-        if: success() && matrix.java-version == env.COVERAGE_SDK
         run: rm -rf pom.xml
 
       - name: SonarCloud Scan
+        if: success() && matrix.java-version == env.COVERAGE_JDK && matrix.kotlin-version == env.COVERAGE_KOTLIN
         uses: sonarsource/sonarcloud-github-action@master
-        if: success() && matrix.java-version == env.COVERAGE_SDK
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
