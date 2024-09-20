@@ -82,10 +82,10 @@ public class AkismetBuild extends Project {
         scope(provided)
                 .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 1, 0)));
         scope(test)
-                .include(dependency("org.mockito", "mockito-core", version(5, 12, 0)))
+                .include(dependency("org.mockito", "mockito-core", version(5, 13, 0)))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
-                .include(dependency("org.junit.jupiter", "junit-jupiter", version(5, 10, 3)))
-                .include(dependency("org.junit.platform", "junit-platform-console-standalone", version(1, 10, 3)))
+                .include(dependency("org.junit.jupiter", "junit-jupiter", version(5, 11, 0)))
+                .include(dependency("org.junit.platform", "junit-platform-console-standalone", version(1, 11, 0)))
                 .include(dependency("com.willowtreeapps.assertk", "assertk-jvm", version(0, 28, 1)));
 
         publishOperation()
@@ -93,29 +93,25 @@ public class AkismetBuild extends Project {
                         .withCredentials(property("sonatype.user"), property("sonatype.password"))
                         : repository(SONATYPE_RELEASES_LEGACY.location())
                         .withCredentials(property("sonatype.user"), property("sonatype.password")))
+                .repository(repository("github"))
                 .info()
                 .groupId(pkg)
                 .artifactId(name)
                 .description("A client library for accessing the Automattic Kismet (Akismet) spam comments filtering service.")
                 .url("https://github.com/ethauvin/" + name)
-                .developer(
-                        new PublishDeveloper()
-                                .id("ethauvin")
-                                .name("Erik C. Thauvin")
-                                .email("erik@thauvin.net")
-                                .url("https://erik.thauvin.net/")
+                .developer(new PublishDeveloper()
+                        .id("ethauvin")
+                        .name("Erik C. Thauvin")
+                        .email("erik@thauvin.net")
+                        .url("https://erik.thauvin.net/")
                 )
-                .license(
-
-                        new PublishLicense()
-                                .name("BSD 3-Clause")
-                                .url("https://opensource.org/licenses/BSD-3-Clause"))
-                .scm(
-
-                        new PublishScm()
-                                .connection("scm:git:https://github.com/ethauvin/" + name + ".git")
-                                .developerConnection("scm:git:git@github.com:ethauvin/" + name + ".git")
-                                .url("https://github.com/ethauvin/" + name))
+                .license(new PublishLicense()
+                        .name("BSD 3-Clause")
+                        .url("https://opensource.org/licenses/BSD-3-Clause"))
+                .scm(new PublishScm()
+                        .connection("scm:git:https://github.com/ethauvin/" + name + ".git")
+                        .developerConnection("scm:git:git@github.com:ethauvin/" + name + ".git")
+                        .url("https://github.com/ethauvin/" + name))
                 .signKey(property("sign.key"))
                 .signPassphrase(property("sign.passphrase"));
 
