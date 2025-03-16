@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
     <pattern value="net.thauvin.erik.AkismetBuild" />
@@ -6,26 +5,6 @@
     <pattern value="net.thauvin.erik.AkismetBuild" method="jacoco" />
     <pattern value="net.thauvin.erik.AkismetBuild" method="detekt" />
     <pattern value="net.thauvin.erik.AkismetBuild" method="detektBaseline" />
-  </component>
-  <component name="PDMPlugin">
-    <option name="customRuleSets">
-      <list>
-        <option value="K:\java\semver\config\pmd.xml" />
-        <option value="$PROJECT_DIR$/../../java/bld-generated-version/config/pmd.xml" />
-        <option value="$PROJECT_DIR$/../../java/bld-pitest/config/pmd.xml" />
-        <option value="$PROJECT_DIR$/../../java/bld-jacoco-report/config/pmd.xml" />
-        <option value="$PROJECT_DIR$/../../java/bld-checkstyle/config/pmd.xml" />
-        <option value="$PROJECT_DIR$/../../java/bld-exec/config/pmd.xml" />
-        <option value="$PROJECT_DIR$/../../java/bld-testng/config/pmd.xml" />
-        <option value="$PROJECT_DIR$/../../java/rife2/bld-checkstyle/config/pmd.xml" />
-        <option value="$PROJECT_DIR$/../../java/rife2/bld-generated-version/config/pmd.xml" />
-        <option value="$PROJECT_DIR$/../../java/rife2/bld-jacoco-report/config/pmd.xml" />
-        <option value="$PROJECT_DIR$/../../java/rife2/bld-testng/config/pmd.xml" />
-        <option value="$PROJECT_DIR$/../../java/rife2/bld-exec/config/pmd.xml" />
-        <option value="$PROJECT_DIR$/../../java/rife2/bld-pitest/config/pmd.xml" />
-      </list>
-    </option>
-    <option name="skipTestSources" value="false" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build" />
