@@ -82,7 +82,7 @@ public class AkismetBuild extends Project {
         scope(provided)
                 .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 1, 0)));
         scope(test)
-                .include(dependency("org.mockito", "mockito-core", version(5, 13, 0)))
+                .include(dependency("org.mockito", "mockito-core", version(5, 16, 1)))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
                 .include(dependency("org.junit.jupiter", "junit-jupiter", version(5, 12, 1)))
                 .include(dependency("org.junit.platform", "junit-platform-console-standalone", version(1, 12, 1)))
@@ -116,6 +116,7 @@ public class AkismetBuild extends Project {
                 .signPassphrase(property("sign.passphrase"));
 
         jarSourcesOperation().sourceDirectories(srcMainKotlin);
+        testOperation().javaOptions(List.of("-XX:+EnableDynamicAgentLoading"));
     }
 
     public static void main(String[] args) {
