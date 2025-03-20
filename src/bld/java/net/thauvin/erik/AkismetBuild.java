@@ -37,6 +37,7 @@ import rife.bld.extension.*;
 import rife.bld.extension.dokka.LoggingLevel;
 import rife.bld.extension.dokka.OutputFormat;
 import rife.bld.extension.dokka.SourceSet;
+import rife.bld.extension.kotlin.CompileOptions;
 import rife.bld.extension.kotlin.CompilerPlugin;
 import rife.bld.operations.exceptions.ExitStatusException;
 import rife.bld.publish.PomBuilder;
@@ -138,8 +139,11 @@ public class AkismetBuild extends Project {
     @Override
     public void compile() throws Exception {
         genver();
+        final var options = new CompileOptions();
+        options.jvmOptions().add("--enable-native-access=ALL-UNNAMED");
         var op = new CompileKotlinOperation()
                 .fromProject(this)
+                .compileOptions(options)
                 .plugins(CompilerPlugin.KOTLIN_SERIALIZATION);
         op.compileOptions().verbose(true);
         op.execute();
