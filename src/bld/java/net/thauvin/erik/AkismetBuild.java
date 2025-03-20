@@ -141,11 +141,11 @@ public class AkismetBuild extends Project {
         genver();
         final var options = new CompileOptions();
         options.jvmOptions().add("--enable-native-access=ALL-UNNAMED");
+        options.verbose(true);
         var op = new CompileKotlinOperation()
                 .fromProject(this)
                 .compileOptions(options)
                 .plugins(CompilerPlugin.KOTLIN_SERIALIZATION);
-        op.compileOptions().verbose(true);
         op.execute();
     }
 
