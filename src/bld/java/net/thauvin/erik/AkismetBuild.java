@@ -140,8 +140,7 @@ public class AkismetBuild extends Project {
     public void compile() throws Exception {
         genver();
         final var options = new CompileOptions();
-        options.jvmOptions().add("--enable-native-access=ALL-UNNAMED");
-        options.verbose(true);
+        options.verbose(true).jvmOptions().add("--enable-native-access=ALL-UNNAMED");
         var op = new CompileKotlinOperation()
                 .fromProject(this)
                 .compileOptions(options)
