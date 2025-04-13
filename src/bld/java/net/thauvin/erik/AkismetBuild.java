@@ -79,7 +79,7 @@ public class AkismetBuild extends Project {
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", kotlin))
                 .include(dependency("com.squareup.okhttp3", "okhttp", okHttp))
                 .include(dependency("com.squareup.okhttp3", "logging-interceptor", okHttp))
-                .include(dependency("org.jetbrains.kotlinx", "kotlinx-serialization-json", "1.8.0"));
+                .include(dependency("org.jetbrains.kotlinx", "kotlinx-serialization-json", "1.8.1"));
         scope(provided)
                 .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 1, 0)));
         scope(test)
