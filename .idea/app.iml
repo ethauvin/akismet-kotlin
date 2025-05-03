@@ -5,8 +5,8 @@
     <output-test url="file://$MODULE_DIR$/build/test" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src/main/kotlin/net/thauvin/erik/akismet" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/kotlin/net/thauvin/erik/akismet" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/kotlin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/kotlin" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
