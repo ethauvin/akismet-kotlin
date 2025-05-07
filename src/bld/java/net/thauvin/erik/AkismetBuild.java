@@ -37,7 +37,6 @@ import rife.bld.extension.*;
 import rife.bld.extension.dokka.LoggingLevel;
 import rife.bld.extension.dokka.OutputFormat;
 import rife.bld.extension.dokka.SourceSet;
-import rife.bld.extension.kotlin.CompileOptions;
 import rife.bld.extension.kotlin.CompilerPlugin;
 import rife.bld.operations.exceptions.ExitStatusException;
 import rife.bld.publish.PomBuilder;
@@ -83,7 +82,7 @@ public class AkismetBuild extends Project {
         scope(provided)
                 .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 1, 0)));
         scope(test)
-                .include(dependency("org.mockito", "mockito-core", version(5, 17, 0)))
+                .include(dependency("org.mockito.kotlin", "mockito-kotlin", version(5, 4, 0)))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
                 .include(dependency("org.junit.jupiter", "junit-jupiter", version(5, 12, 2)))
                 .include(dependency("org.junit.platform", "junit-platform-console-standalone", version(1, 12, 2)))
@@ -139,11 +138,10 @@ public class AkismetBuild extends Project {
     @Override
     public void compile() throws Exception {
         genver();
-        var options = new CompileOptions().verbose(true).jvmOptions("--enable-native-access=ALL-UNNAMED");
         var op = new CompileKotlinOperation()
                 .fromProject(this)
-                .compileOptions(options)
                 .plugins(CompilerPlugin.KOTLIN_SERIALIZATION);
+        op.compileOptions().verbose(true);
         op.execute();
     }
 
