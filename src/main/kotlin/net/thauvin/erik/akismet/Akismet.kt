@@ -233,7 +233,7 @@ open class Akismet(apiKey: String) {
      *
      * See the [Akismet API](https://akismet.com/development/api/#verify-key) for more details.
      *
-     * @return `true` if the key is valid, `false` otherwise.
+     * @return `true` if the key is valid, `false` otherwise
      * @see [Akismet.isVerifiedKey]
      */
     fun verifyKey(): Boolean {
@@ -258,8 +258,8 @@ open class Akismet(apiKey: String) {
      *
      * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
      *
-     * @param trueOnError Set to return `true` on error.
-     * @return `true` if the comment is spam, `false` if the comment is not.
+     * @param trueOnError Set to return `true` on error
+     * @return `true` if the comment is spam, `false` if the comment is not
      */
     @JvmOverloads
     fun checkComment(comment: AkismetComment, trueOnError: Boolean = false): Boolean {
@@ -280,7 +280,7 @@ open class Akismet(apiKey: String) {
      *
      * See the [Akismet API](https://akismet.com/development/api/#submit-spam) for more details.
      *
-     * @return `true` if the comment was submitted, `false` otherwise.
+     * @return `true` if the comment was submitted, `false` otherwise
      */
     fun submitSpam(comment: AkismetComment): Boolean {
         return executeMethod("submit-spam".toApiUrl(), buildFormBody(comment))
@@ -302,7 +302,7 @@ open class Akismet(apiKey: String) {
      *
      * See the [Akismet API](https://akismet.com/development/api/#submit-ham) for more details.
      *
-     * @return `true` if the comment was submitted, `false` otherwise.
+     * @return `true` if the comment was submitted, `false` otherwise
      */
     fun submitHam(comment: AkismetComment): Boolean {
         return executeMethod("submit-ham".toApiUrl(), buildFormBody(comment))
@@ -311,8 +311,8 @@ open class Akismet(apiKey: String) {
     /**
      * Executes a call to an Akismet REST API method.
      *
-     * @param apiUrl The Akismet API URL endpoint. (e.g. https://rest.akismet.com/1.1/verify-key)
-     * @param formBody The HTTP POST form body containing the request parameters to be submitted.
+     * @param apiUrl The Akismet API URL endpoint. (e.g., https://rest.akismet.com/1.1/verify-key)
+     * @param formBody The HTTP POST form body containing the request parameters to be submitted
      * @param trueOnError Set to return `true` on error (IO, empty response, etc.)
      */
     @JvmOverloads

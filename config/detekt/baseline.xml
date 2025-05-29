@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues/>
   <CurrentIssues>
     <ID>CyclomaticComplexMethod:Akismet.kt$Akismet$private fun buildFormBody(comment: AkismetComment): FormBody</ID>
     <ID>CyclomaticComplexMethod:AkismetComment.kt$AkismetComment$@Suppress("DuplicatedCode") override fun equals(other: Any?): Boolean</ID>
@@ -9,9 +9,9 @@
     <ID>MagicNumber:Akismet.kt$Akismet$8</ID>
     <ID>NestedBlockDepth:Akismet.kt$Akismet$@JvmOverloads fun executeMethod(apiUrl: HttpUrl, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
     <ID>NestedBlockDepth:AkismetExample.kt$fun main(args: Array&lt;String&gt;)</ID>
-    <ID>NestedBlockDepth:AkismetTest.kt$fun getKey(key: String): String</ID>
     <ID>ReturnCount:Akismet.kt$Akismet$@JvmOverloads fun executeMethod(apiUrl: HttpUrl, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
+    <ID>ReturnCount:AkismetTest.kt$fun getKey(key: String): String</ID>
     <ID>TooManyFunctions:CommentConfig.kt$CommentConfig$Builder</ID>
-    <ID>WildcardImport:AkismetTest.kt$import assertk.assertions.*</ID>
+    <ID>WildcardImport:AkismetTests.kt$import assertk.assertions.*</ID>
   </CurrentIssues>
 </SmellBaseline>

@@ -51,7 +51,7 @@ final AkismetComment comment = new AkismetComment(
             .authorUrl("https://www.CheckOutMyCoolSite.com")
             .dateGmt(Akismet.dateToGmt(new Date()))
             .content("Thanks for reviewing our software.")
-            .build
+            .build()
 );
 //...
 

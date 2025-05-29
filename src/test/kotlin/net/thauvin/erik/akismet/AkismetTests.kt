@@ -144,21 +144,8 @@ class AkismetTests {
         }
 
         private fun getKey(key: String): String {
-            var value = System.getenv(key) ?: ""
-            if (value.isBlank()) {
-                val localProps = File("local.properties")
-                localProps.apply {
-                    if (exists()) {
-                        FileInputStream(this).use { fis ->
-                            Properties().apply {
-                                load(fis)
-                                value = getProperty(key, "")
-                            }
-                        }
-                    }
-                }
-            }
-            return value
+            return System.getenv(key)?.takeUnless { it.isBlank() }
+                ?: loadPropertyValue(key)
         }
 
         private fun getMockRequest(): HttpServletRequest {
@@ -175,6 +162,16 @@ class AkismetTests {
                 )
             }
             return request
+        }
+
+        private fun loadPropertyValue(key: String): String {
+            return File("local.properties")
+                .takeIf { it.exists() }
+                ?.let { file ->
+                    FileInputStream(file).use { fis ->
+                        Properties().apply { load(fis) }.getProperty(key, "")
+                    }
+                }.orEmpty()
         }
     }
 

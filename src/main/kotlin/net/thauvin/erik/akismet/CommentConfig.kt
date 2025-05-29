@@ -56,8 +56,8 @@ class CommentConfig private constructor(builder: Builder) {
     /**
      * Provides a configuration builder.
      *
-     * @param userIp IP address of the comment submitter.
-     * @param userAgent User agent string of the web browser submitting the comment.
+     * @param userIp IP address of the comment submitter
+     * @param userAgent User agent string of the web browser submitting the comment
      */
     data class Builder(var userIp: String, var userAgent: String) {
         var referrer = ""

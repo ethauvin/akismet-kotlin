@@ -33,9 +33,7 @@ package net.thauvin.erik.akismet
 
 import jakarta.servlet.http.HttpServletRequest
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlin.collections.set
 
 private fun String?.ifNull() = this ?: ""
 
@@ -52,8 +50,8 @@ private fun String?.ifNull() = this ?: ""
  *
  * See the [Akismet API](https://akismet.com/development/api/#comment-check) for more details.
  *
- * @param userIp IP address of the comment submitter.
- * @param userAgent User agent string of the web browser submitting the comment.
+ * @param userIp IP address of the comment submitter
+ * @param userAgent User agent string of the web browser submitting the comment
  */
 @Serializable
 open class AkismetComment(val userIp: String, val userAgent: String) {
