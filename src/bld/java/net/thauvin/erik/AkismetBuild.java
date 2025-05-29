@@ -71,7 +71,7 @@ public class AkismetBuild extends Project {
         repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL);
 
         var okHttp = version(4, 12, 0);
-        final var kotlin = version(2, 1, 20);
+        final var kotlin = version(2, 1, 21);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib-jdk7", kotlin))
@@ -141,7 +141,7 @@ public class AkismetBuild extends Project {
         var op = new CompileKotlinOperation()
                 .fromProject(this)
                 .plugins(CompilerPlugin.KOTLIN_SERIALIZATION);
-        op.compileOptions().verbose(true);
+        op.compileOptions().languageVersion("1.9").verbose(true);
         op.execute();
     }
 
