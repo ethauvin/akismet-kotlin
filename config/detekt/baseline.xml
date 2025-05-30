@@ -12,6 +12,7 @@
     <ID>ReturnCount:Akismet.kt$Akismet$@JvmOverloads fun executeMethod(apiUrl: HttpUrl, formBody: FormBody, trueOnError: Boolean = false): Boolean</ID>
     <ID>ReturnCount:AkismetTest.kt$fun getKey(key: String): String</ID>
     <ID>TooManyFunctions:CommentConfig.kt$CommentConfig$Builder</ID>
+    <ID>WildcardImport:AkismetCommentTest.kt$import assertk.assertions.*</ID>
     <ID>WildcardImport:AkismetTests.kt$import assertk.assertions.*</ID>
   </CurrentIssues>
 </SmellBaseline>

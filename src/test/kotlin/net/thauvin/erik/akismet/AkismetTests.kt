@@ -34,285 +34,46 @@ package net.thauvin.erik.akismet
 import assertk.all
 import assertk.assertThat
 import assertk.assertions.*
-import jakarta.servlet.http.HttpServletRequest
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.MissingFieldException
+import kotlinx.serialization.SerializationException
+import net.thauvin.erik.akismet.Akismet.Companion.jsonComment
 import okhttp3.FormBody
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import org.junit.Assert.assertThrows
-import org.junit.BeforeClass
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
-import org.mockito.kotlin.whenever
-import java.io.File
-import java.io.FileInputStream
+import org.junit.jupiter.api.extension.ExtendWith
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.*
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.logging.ConsoleHandler
-import java.util.logging.Level
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
-import kotlin.test.assertNotEquals
 import kotlin.test.assertTrue
+import kotlin.text.contains
 
 /**
  * [Akismet] Tests
  *
  * `AKISMET_API_KEY` and `AKISMET_BLOG` should be set in env vars or `local.properties`
  */
+@ExtendWith(BeforeAllTests::class)
 class AkismetTests {
     private val emptyFormBody = FormBody.Builder().build()
 
     companion object {
-        private const val REFERER = "https://www.google.com"
-        private val apiKey = getKey("AKISMET_API_KEY")
-        private val blog = getKey("AKISMET_BLOG")
-        private val akismet = Akismet(apiKey, blog)
-        private val comment = AkismetComment(
-            userIp = "127.0.0.1",
-            userAgent = "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6"
-        )
-        private val date = Date()
-        private val config = CommentConfig.Builder(comment.userIp, comment.userAgent)
-            .referrer(REFERER)
-            .permalink("https://yourblogdomainname.com/blog/post=1")
-            .type(CommentType.COMMENT)
-            .author("admin")
-            .authorEmail("test@test.com")
-            .authorUrl("https://www.CheckOutMyCoolSite.com")
-            .content("It means a lot that you would take the time to review our software. Thanks again.")
-            .dateGmt(Akismet.dateToGmt(date))
-            .postModifiedGmt(Akismet.dateToGmt(date))
-            .blogLang("en")
-            .blogCharset("UTF-8")
-            .userRole(AkismetComment.ADMIN_ROLE)
-            .recheckReason("edit")
-            .isTest(true)
-            .build()
-        private val mockComment: AkismetComment = AkismetComment(request = getMockRequest())
-        private val isFirstRun = AtomicBoolean(true)
-
-        init {
-            with(comment) {
-                referrer = config.referrer
-                permalink = config.permalink
-                type = CommentType("comment")
-                author = config.author
-                authorEmail = config.authorEmail
-                authorUrl = config.authorUrl
-                content = config.content
-                dateGmt = config.dateGmt
-                postModifiedGmt = config.postModifiedGmt
-                blogLang = config.blogLang
-                blogCharset = config.blogCharset
-                userRole = config.userRole
-                recheckReason = config.recheckReason
-                isTest = config.isTest
-            }
-
-            with(mockComment) {
-                permalink = comment.permalink
-                type = comment.type
-                authorEmail = comment.authorEmail
-                author = comment.author
-                authorUrl = comment.authorUrl
-                content = comment.content
-                dateGmt = comment.dateGmt
-                postModifiedGmt = comment.dateGmt
-                blogLang = comment.blogLang
-                blogCharset = comment.blogCharset
-                userRole = AkismetComment.ADMIN_ROLE
-                recheckReason = comment.recheckReason
-                isTest = true
-            }
-        }
-
-        @JvmStatic
-        @BeforeClass
-        fun beforeClass() {
-            if (isFirstRun.getAndSet(false)) {
-                with(akismet.logger) {
-                    addHandler(ConsoleHandler().apply { level = Level.FINE })
-                    level = Level.FINE
-                }
-            }
-
-            akismet.logger.info(comment.toString())
-            akismet.logger.info(mockComment.toJson())
-        }
-
-        private fun getKey(key: String): String {
-            return System.getenv(key)?.takeUnless { it.isBlank() }
-                ?: loadPropertyValue(key)
-        }
-
-        private fun getMockRequest(): HttpServletRequest {
-            val request = Mockito.mock(HttpServletRequest::class.java)
-            with(request) {
-                whenever(remoteAddr).thenReturn(comment.userIp)
-                whenever(requestURI).thenReturn("/blog/post=1")
-                whenever(getHeader("referer")).thenReturn(REFERER)
-                whenever(getHeader("Cookie")).thenReturn("name=value; name2=value2; name3=value3")
-                whenever(getHeader("User-Agent")).thenReturn(comment.userAgent)
-                whenever(getHeader("Accept-Encoding")).thenReturn("gzip")
-                whenever(headerNames).thenReturn(
-                    Collections.enumeration(listOf("User-Agent", "referer", "Cookie", "Accept-Encoding", "Null"))
-                )
-            }
-            return request
-        }
-
-        private fun loadPropertyValue(key: String): String {
-            return File("local.properties")
-                .takeIf { it.exists() }
-                ?.let { file ->
-                    FileInputStream(file).use { fis ->
-                        Properties().apply { load(fis) }.getProperty(key, "")
-                    }
-                }.orEmpty()
-        }
-    }
-
-    @Nested
-    @DisplayName("Comment Tests")
-    inner class CommentTests {
-        @Test
-        fun checkComment() {
-            with(akismet) {
-                assertFalse(checkComment(comment), "checkComment(admin)")
-                assertThat(akismet::response).isEqualTo("false")
-
-                comment.userRole = ""
-                assertTrue(checkComment(comment), "checkComment()")
-                assertThat(akismet::response).isEqualTo("true")
-
-                assertFalse(checkComment(mockComment), "checkComment(mock)")
-                assertThat(akismet::response).isEqualTo("false")
-
-                mockComment.userRole = ""
-                assertTrue(checkComment(mockComment), "checkComment(mock)")
-                assertThat(akismet::response).isEqualTo("true")
-
-                assertThat(akismet::httpStatusCode).isEqualTo(200)
-
-                comment.userRole = AkismetComment.ADMIN_ROLE
-            }
-        }
-
-        @Test
-        fun emptyComment() {
-            assertThrows(
-                java.lang.IllegalArgumentException::class.java
-            ) { akismet.checkComment(AkismetComment("", "")) }
-
-
-            val empty = AkismetComment("", "")
-            assertThat(empty, "AkismetComment(empty)").all {
-                prop(AkismetComment::isTest).isFalse()
-                prop(AkismetComment::referrer).isEqualTo("")
-                prop(AkismetComment::permalink).isEqualTo("")
-                prop(AkismetComment::type).isEqualTo(CommentType.NONE)
-                prop(AkismetComment::authorEmail).isEqualTo("")
-                prop(AkismetComment::author).isEqualTo("")
-                prop(AkismetComment::authorUrl).isEqualTo("")
-                prop(AkismetComment::content).isEqualTo("")
-                prop(AkismetComment::dateGmt).isEqualTo("")
-                prop(AkismetComment::postModifiedGmt).isEqualTo("")
-                prop(AkismetComment::blogLang).isEqualTo("")
-                prop(AkismetComment::blogCharset).isEqualTo("")
-                prop(AkismetComment::userRole).isEqualTo("")
-                prop(AkismetComment::recheckReason).isEqualTo("")
-                prop(AkismetComment::serverEnv).size().isEqualTo(0)
-            }
-
-            with(receiver = empty) {
-                for (s in listOf("test", "", null)) {
-                    referrer = s
-                    permalink = s
-                    if (s != null) type = CommentType(s)
-                    authorEmail = s
-                    author = s
-                    authorUrl = s
-                    content = s
-                    dateGmt = s
-                    postModifiedGmt = s
-                    blogLang = s
-                    blogCharset = s
-                    userRole = s
-                    recheckReason = s
-
-                    val expected = if (s.isNullOrEmpty()) "" else s
-
-                    assertThat(empty, "AkismetComment($s)").all {
-                        prop(AkismetComment::referrer).isEqualTo(expected)
-                        prop(AkismetComment::permalink).isEqualTo(expected)
-                        prop(AkismetComment::type).isEqualTo(CommentType(expected))
-                        prop(AkismetComment::authorEmail).isEqualTo(expected)
-                        prop(AkismetComment::author).isEqualTo(expected)
-                        prop(AkismetComment::authorUrl).isEqualTo(expected)
-                        prop(AkismetComment::content).isEqualTo(expected)
-                        prop(AkismetComment::dateGmt).isEqualTo(expected)
-                        prop(AkismetComment::postModifiedGmt).isEqualTo(expected)
-                        prop(AkismetComment::blogLang).isEqualTo(expected)
-                        prop(AkismetComment::blogCharset).isEqualTo(expected)
-                        prop(AkismetComment::userRole).isEqualTo(expected)
-                        prop(AkismetComment::recheckReason).isEqualTo(expected)
-                        prop(AkismetComment::serverEnv).size().isEqualTo(0)
-                    }
-                }
-            }
-        }
-
-        @Test
-        fun mockComment() {
-            assertThat(mockComment, "mockComment").all {
-                prop(AkismetComment::userIp).isEqualTo(comment.userIp)
-                prop(AkismetComment::userAgent).isEqualTo(comment.userAgent)
-                prop(AkismetComment::referrer).isEqualTo(comment.referrer)
-                prop(AkismetComment::serverEnv).all {
-                    key("HTTP_ACCEPT_ENCODING").isEqualTo("gzip")
-                    key("REMOTE_ADDR").isEqualTo(comment.userIp)
-                    key("HTTP_NULL").isEmpty()
-                    size().isEqualTo(6)
-                }
-            }
-        }
+        private val apiKey = TestUtils.getKey("AKISMET_API_KEY")
+        private val blog = TestUtils.getKey("AKISMET_BLOG")
     }
 
     @Nested
     @DisplayName("Constructor Tests")
     inner class ConstructorTests {
         @Test
-        fun apiKeyTooLong() {
-            assertThrows(
-                IllegalArgumentException::class.java
-            ) {
-                Akismet("123456789 12")
-            }
-        }
-
-        @Test
-        fun apiKeyTooShort() {
-            assertThrows(
-                IllegalArgumentException::class.java
-            ) {
-                Akismet("1234")
-            }
-        }
-
-        @Test
-        fun invalidKeyAndBlog() {
-            assertThrows(
-                IllegalArgumentException::class.java
-            ) {
-                Akismet("1234", "foo")
-            }
-        }
-
-        @Test
-        fun noApiKey() {
+        fun `Constructor with API key arg empty`() {
             assertThrows(
                 IllegalArgumentException::class.java
             ) {
@@ -321,64 +82,159 @@ class AkismetTests {
         }
 
         @Test
-        fun noBlog() {
+        fun `Constructor with API key arg too long`() {
+            assertThrows(
+                IllegalArgumentException::class.java
+            ) {
+                Akismet("123456789 12")
+            }
+        }
+
+        @Test
+        fun `Constructor with API key arg too short`() {
+            assertThrows(
+                IllegalArgumentException::class.java
+            ) {
+                Akismet("1234")
+            }
+        }
+
+        @Test
+        fun `Constructor with empty blog arg`() {
             assertThrows(
                 IllegalArgumentException::class.java
             ) {
                 Akismet("123456789012", "")
             }
         }
-    }
 
-    @Test
-    fun dateToGmt() {
-        val localDateTime = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault())
-        val utcDate = Akismet.dateToGmt(date)
-        assertEquals(Akismet.dateToGmt(localDateTime), utcDate, "dateGmt(localDateTime)")
-        assertThat(comment::dateGmt).isEqualTo(utcDate)
+        @Test
+        fun `Constructor with invalid key and blog args`() {
+            assertThrows(
+                IllegalArgumentException::class.java
+            ) {
+                Akismet("1234", "foo")
+            }
+        }
     }
 
     @Nested
-    @DisplayName("JSON Comment Tests")
-    inner class JsonCommentTest {
+    @DisplayName("Date Conversion Tests")
+    inner class DateConversionTests {
+        val sampleDate: ZonedDateTime = LocalDateTime.of(1997, 8, 29, 2, 0, 0)
+            .atZone(ZoneId.of("America/New_York"))
+
         @Test
-        fun jsonCommentEqualHashCode() {
-            val jsonComment = Akismet.jsonComment(mockComment.toJson())
-            assertEquals(
-                jsonComment.hashCode(),
-                mockComment.hashCode(),
-                "jsonComment.hashCode = mockComment.hashcode"
-            )
+        fun `Date should convert correctly to GMT string`() {
+            val date = Date.from(sampleDate.toInstant())
+            val result = Akismet.dateToGmt(date)
+            assertEquals("1997-08-28T23:00:00-07:00", result)
         }
 
         @Test
-        fun jsonCommentEqualsMockComment() {
-            val jsonComment = Akismet.jsonComment(mockComment.toJson())
-            assertEquals(jsonComment, mockComment, "jsonComment = mockComment")
+        fun `LocalDateTime should convert correctly to GMT string`() {
+            val result = Akismet.dateToGmt(sampleDate.toLocalDateTime())
+            assertEquals("1997-08-29T02:00:00-07:00", result)
+        }
+    }
+
+    @Nested
+    @DisplayName("JSON Deserialization Tests")
+    inner class JsonDeserializationTests {
+        @Test
+        fun `Validate JSON deserialization`() {
+            val config = CommentConfig.Builder("127.0.0.1", "Mozilla/5.0")
+                .referrer("https://example.com")
+                .type(CommentType.COMMENT)
+                .author("John Doe")
+                .authorEmail("john.doe@example.com")
+                .authorUrl("https://johndoe.com")
+                .content("This is a comment")
+                .dateGmt("2023-10-20T10:20:30Z")
+                .postModifiedGmt("2023-10-20T11:00:00Z")
+                .blogLang("en")
+                .blogCharset("UTF-8")
+                .userRole("administrator")
+                .isTest(true)
+                .recheckReason("Check the spam detection")
+                .serverEnv(mapOf("key1" to "value1", "key2" to "value2"))
+                .build()
+            val validJson = AkismetComment(config).toJson();
+
+            val comment = jsonComment(validJson)
+
+            Assertions.assertEquals("127.0.0.1", comment.userIp)
+            Assertions.assertEquals("Mozilla/5.0", comment.userAgent)
+            Assertions.assertEquals("https://example.com", comment.referrer)
+            Assertions.assertEquals("comment", comment.type.value)
+            Assertions.assertEquals("John Doe", comment.author)
+            Assertions.assertEquals("john.doe@example.com", comment.authorEmail)
+            Assertions.assertEquals("https://johndoe.com", comment.authorUrl)
+            Assertions.assertEquals("This is a comment", comment.content)
+            Assertions.assertEquals("2023-10-20T10:20:30Z", comment.dateGmt)
+            Assertions.assertEquals("2023-10-20T11:00:00Z", comment.postModifiedGmt)
+            Assertions.assertEquals("en", comment.blogLang)
+            Assertions.assertEquals("UTF-8", comment.blogCharset)
+            Assertions.assertEquals("administrator", comment.userRole)
+            Assertions.assertTrue(comment.isTest)
+            Assertions.assertEquals("Check the spam detection", comment.recheckReason)
+            Assertions.assertEquals(mapOf("key1" to "value1", "key2" to "value2"), comment.serverEnv)
         }
 
         @Test
-        fun jsonCommentNotEqualsComment() {
-            val jsonComment = Akismet.jsonComment(mockComment.toJson())
-            assertNotEquals(jsonComment, comment, "json")
-            assertNotEquals(
-                jsonComment.hashCode(),
-                comment.hashCode(),
-                "jsonComment.hashCode != mockComment.hashcode"
-            )
+        fun `Invalid JSON deserialization`() {
+            val invalidJson = """
+            {
+                "userIp": "127.0.0.1",
+                "userAgent": "Mozilla/5.0"
+                // Missing closing brace
+        """.trimIndent()
+
+            val exception = Assertions.assertThrows(SerializationException::class.java) {
+                jsonComment(invalidJson)
+            }
+
+            Assertions.assertTrue(exception.message?.contains("Unexpected JSON token") == true)
         }
 
         @Test
-        fun jsonCommentNotEqualsMockComment() {
-            val jsonComment = Akismet.jsonComment(mockComment.toJson())
-            jsonComment.recheckReason = ""
-            assertNotEquals(jsonComment, mockComment, "jsonComment != jsonComment")
+        @OptIn(ExperimentalSerializationApi::class)
+        fun `Empty JSON deserialization`() {
+            val emptyJson = "{}"
+
+            Assertions.assertThrows(MissingFieldException::class.java) {
+                jsonComment(emptyJson)
+            }
         }
 
         @Test
-        fun jsonCommentNotEqualsThis() {
-            Akismet.jsonComment(mockComment.toJson())
-            assertThat(this, "this != comment").isNotEqualTo(comment)
+        @OptIn(ExperimentalSerializationApi::class)
+        fun `JSON deserialization with missing mandatory fields`() {
+            val partialJson = """
+            {
+                "userIp": "127.0.0.1"
+            }
+        """.trimIndent()
+
+            Assertions.assertThrows(MissingFieldException::class.java) {
+                jsonComment(partialJson)
+            }
+        }
+
+        @Test
+        fun `JSON deserialization with unexpected fields`() {
+            val extraFieldJson = """
+            {
+                "userIp": "127.0.0.1",
+                "userAgent": "Mozilla/5.0",
+                "extraField": "unexpected"
+            }
+        """.trimIndent()
+
+            val comment = jsonComment(extraFieldJson)
+
+            Assertions.assertEquals("127.0.0.1", comment.userIp)
+            Assertions.assertEquals("Mozilla/5.0", comment.userAgent)
         }
     }
 
@@ -386,30 +242,14 @@ class AkismetTests {
     @DisplayName("Response Tests")
     inner class ResponseTests {
         @Test
-        fun emptyResponse() {
-            assertTrue(
-                akismet.executeMethod(
-                    "https://postman-echo.com/status/200".toHttpUrl(), emptyFormBody, true
-                )
-            )
-            var expected = "{\n  \"status\": 200\n}"
-            assertThat(akismet, "executeMethod(200)").all {
-                prop(Akismet::response).isEqualTo(expected)
-                prop(Akismet::errorMessage).contains(expected)
-            }
-
-            akismet.reset()
-            assertThat(akismet, "akismet.reset()").all {
-                prop(Akismet::httpStatusCode).isEqualTo(0)
-                prop(Akismet::errorMessage).isEmpty()
-            }
-
+        fun `Handle blank response`() {
+            val akismet = Akismet(apiKey)
             assertTrue(
                 akismet.executeMethod(
                     "https://erik.thauvin.net/blank.html".toHttpUrl(), emptyFormBody, true
                 )
             )
-            expected = ""
+            val expected = ""
             assertThat(akismet, "executeMethod(blank)").all {
                 prop(Akismet::response).isEqualTo(expected)
                 prop(Akismet::errorMessage).contains("blank")
@@ -417,12 +257,17 @@ class AkismetTests {
         }
 
         @Test
-        fun executeMethod() {
+        fun `Handle debug help header`() {
+            val akismet = Akismet(apiKey)
             akismet.executeMethod(
                 "https://$apiKey.rest.akismet.com/1.1/comment-check".toHttpUrl(),
                 FormBody.Builder().apply { add("is_test", "1") }.build()
             )
-            assertThat(akismet::debugHelp).isNotEmpty()
+
+            assertThat(akismet, "x-akismet-debug-help").all {
+                prop(Akismet::httpStatusCode).isEqualTo(200)
+                prop(Akismet::debugHelp).isEqualTo("Empty \"blog\" value")
+            }
 
             akismet.reset()
             assertThat(akismet, "akismet.reset()").all {
@@ -433,20 +278,44 @@ class AkismetTests {
         }
 
         @Test
-        fun invalidApi() {
+        fun `Handle invalid response`() {
+            val akismet = Akismet(apiKey)
+            assertTrue(
+                akismet.executeMethod(
+                    "https://postman-echo.com/status/200".toHttpUrl(), emptyFormBody, true
+                )
+            )
+            val expected = "{\n  \"status\": 200\n}"
+            assertThat(akismet, "executeMethod(200)").all {
+                prop(Akismet::response).isEqualTo(expected)
+                prop(Akismet::errorMessage).contains(expected)
+            }
+
+            akismet.reset()
+            assertThat(akismet, "akismet.reset()").all {
+                prop(Akismet::httpStatusCode).isEqualTo(0)
+                prop(Akismet::errorMessage).isEmpty()
+            }
+        }
+
+        @Test
+        fun `Handle IO error`() {
+            val akismet = Akismet(apiKey)
+            akismet.executeMethod("https://www.foobarxyz.com".toHttpUrl(), emptyFormBody)
+            assertThat(akismet).prop(Akismet::errorMessage).contains("IO error")
+        }
+
+        @Test
+        fun `Handle invalid API URL`() {
+            val akismet = Akismet(apiKey)
             assertThrows(
                 java.lang.IllegalArgumentException::class.java
             ) { akismet.executeMethod("https://.com".toHttpUrl(), emptyFormBody) }
         }
 
         @Test
-        fun ioError() {
-            akismet.executeMethod("https://www.foobarxyz.com".toHttpUrl(), emptyFormBody)
-            assertThat(akismet::errorMessage).contains("IO error")
-        }
-
-        @Test
-        fun proTip() {
+        fun `Handle pro tip header`() {
+            val akismet = Akismet(apiKey)
             assertFalse(
                 akismet.executeMethod(
                     "https://postman-echo.com/response-headers?x-akismet-pro-tip=discard".toHttpUrl(),
@@ -465,90 +334,70 @@ class AkismetTests {
                 prop(Akismet::httpStatusCode).isEqualTo(0)
             }
         }
-    }
 
-    @Nested
-    @DisplayName("Submit Test")
-    inner class SubmitTests {
-        @Test
-        fun submitHam() {
-            assertTrue(akismet.submitHam(comment), "submitHam")
-        }
 
-        @Test
-        fun submitHamMocked() {
-            assertTrue(akismet.submitHam(mockComment), "submitHam(mock)")
-        }
+        @Nested
+        @DisplayName("Validation Tests")
+        inner class ValidationTests {
+            @Test
+            fun `Validate api key`() {
+                val akismet = Akismet(apiKey, blog)
+                assertThat(akismet, "akismet").all {
+                    prop(Akismet::isVerifiedKey).isFalse()
+                    prop(Akismet::verifyKey).isTrue()
+                    prop(Akismet::response).isEqualTo("valid")
+                    prop(Akismet::isVerifiedKey).isTrue()
+                }
 
-        @Test
-        fun submitSpam() {
-            assertTrue(akismet.submitSpam(comment), "submitHam")
-        }
+                akismet.reset()
+                assertThat(akismet, "akismet.reset()").all {
+                    prop(Akismet::isVerifiedKey).isFalse()
+                    prop(Akismet::response).isEmpty()
+                    prop(Akismet::httpStatusCode).isEqualTo(0)
+                }
 
-        @Test
-        fun submitSpamMocked() {
-            assertTrue(akismet.submitSpam(mockComment), "submitHam(mock)")
-        }
-    }
-
-    @Nested
-    @DisplayName("User Agent Tests")
-    inner class UserAgentTests {
-        val libAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
-
-        @Test
-        fun userAgentCustom() {
-            akismet.appUserAgent = "My App/1.0"
-
-            assertEquals(
-                akismet.buildUserAgent(),
-                "${akismet.appUserAgent} | $libAgent",
-                "buildUserAgent(My App/1.0)"
-            )
-        }
-
-        @Test
-        fun userAgentDefault() {
-            assertEquals(akismet.buildUserAgent(), libAgent, "buildUserAgent($libAgent)")
-        }
-    }
-
-    @Nested
-    @DisplayName("Validation Tests")
-    inner class ValidationTests {
-        @Test
-        fun blogProperty() {
-            assertThrows(IllegalArgumentException::class.java) {
-                akismet.blog = ""
+                assertThat(Akismet("123456789012"), "akismet(123456789012)")
+                    .prop(Akismet::verifyKey)
+                    .isFalse()
             }
 
-            assertThat(akismet::blog).isEqualTo(blog)
-        }
+            @Test
+            fun `Validate blog property`() {
+                val akismet = Akismet(apiKey, blog)
+                assertThrows(IllegalArgumentException::class.java) {
+                    akismet.blog = ""
+                }
 
-        @Test
-        fun validateConfig() {
-            assertThat(AkismetComment(config)).isEqualTo(comment)
-        }
-
-        @Test
-        fun verifyKey() {
-            assertThat(akismet, "akismet").all {
-                prop(Akismet::isVerifiedKey).isFalse()
-                prop(Akismet::verifyKey).isTrue()
-                prop(Akismet::response).isEqualTo("valid")
-                prop(Akismet::isVerifiedKey).isTrue()
+                assertThat(akismet).prop(Akismet::blog).isEqualTo(blog)
             }
 
-            akismet.reset()
-            assertThat(akismet, "akismet.reset()").all {
-                prop(Akismet::isVerifiedKey).isFalse()
-                prop(Akismet::response).isEmpty()
-                prop(Akismet::httpStatusCode).isEqualTo(0)
-            }
 
-            assertThat(Akismet("123456789012"), "akismet(123456789012)")
-                .prop(Akismet::verifyKey)
-                .isFalse()
+            @Nested
+            @DisplayName("User Agent Validation Tests")
+            inner class UserAgentValidationTests {
+                val libAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
+
+                @Test
+                fun `Validate custom user agent`() {
+                    val akismet = Akismet(apiKey)
+                    akismet.appUserAgent = "My App/1.0"
+
+                    assertEquals(
+                        "${akismet.appUserAgent} | $libAgent",
+                        akismet.buildUserAgent(),
+                        "buildUserAgent(My App/1.0)"
+                    )
+                }
+
+                @Test
+                fun `Validate default user agent`() {
+                    val akismet = Akismet(apiKey)
+                    assertEquals(
+                        libAgent, akismet.buildUserAgent(),
+                        "buildUserAgent($libAgent)"
+                    )
+                }
+            }
         }
     }
 }

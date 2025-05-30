@@ -36,67 +36,67 @@ import org.junit.jupiter.api.Test
 
 class CommentTypeTest {
     @Test
-    fun `verify BLOG_POST value`() {
+    fun `Verify BLOG_POST value`() {
         val commentType = CommentType.BLOG_POST
         assertEquals("blog-post", commentType.value)
     }
 
     @Test
-    fun `verify COMMENT value`() {
+    fun `Verify COMMENT value`() {
         val commentType = CommentType.COMMENT
         assertEquals("comment", commentType.value)
     }
 
     @Test
-    fun `verify CONTACT_FORM value`() {
+    fun `Verify CONTACT_FORM value`() {
         val commentType = CommentType.CONTACT_FORM
         assertEquals("contact-form", commentType.value)
     }
 
     @Test
-    fun `verify FORUM_POST value`() {
+    fun `Verify FORUM_POST value`() {
         val commentType = CommentType.FORUM_POST
         assertEquals("forum-post", commentType.value)
     }
 
     @Test
-    fun `verify MESSAGE value`() {
+    fun `Verify MESSAGE value`() {
         val commentType = CommentType.MESSAGE
         assertEquals("message", commentType.value)
     }
 
     @Test
-    fun `verify NONE value`() {
+    fun `Verify NONE value`() {
         val commentType = CommentType.NONE
         assertEquals("", commentType.value)
     }
 
     @Test
-    fun `verify PINGBACK value`() {
+    fun `Verify PINGBACK value`() {
         val commentType = CommentType.PINGBACK
         assertEquals("pingback", commentType.value)
     }
 
     @Test
-    fun `verify REPLY value`() {
+    fun `Verify REPLY value`() {
         val commentType = CommentType.REPLY
         assertEquals("reply", commentType.value)
     }
 
     @Test
-    fun `verify SIGNUP value`() {
+    fun `Verify SIGNUP value`() {
         val commentType = CommentType.SIGNUP
         assertEquals("signup", commentType.value)
     }
 
     @Test
-    fun `verify TRACKBACK value`() {
+    fun `Verify TRACKBACK value`() {
         val commentType = CommentType.TRACKBACK
         assertEquals("trackback", commentType.value)
     }
 
     @Test
-    fun `verify TWEET value`() {
+    fun `Verify TWEET value`() {
         val commentType = CommentType.TWEET
         assertEquals("tweet", commentType.value)
     }

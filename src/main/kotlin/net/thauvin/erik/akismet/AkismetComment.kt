@@ -32,8 +32,10 @@
 package net.thauvin.erik.akismet
 
 import jakarta.servlet.http.HttpServletRequest
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 
 private fun String?.ifNull() = this ?: ""
 
@@ -54,6 +56,8 @@ private fun String?.ifNull() = this ?: ""
  * @param userAgent User agent string of the web browser submitting the comment
  */
 @Serializable
+@OptIn(ExperimentalSerializationApi::class)
+@JsonIgnoreUnknownKeys
 open class AkismetComment(val userIp: String, val userAgent: String) {
     companion object {
         /**

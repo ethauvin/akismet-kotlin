@@ -39,7 +39,7 @@ import kotlin.test.assertTrue
 
 class CommentConfigTests {
     @Test
-    fun `test default optional fields`() {
+    fun `Default optional fields`() {
         val commentConfig = CommentConfig.Builder("192.168.0.1", "DefaultAgent").build()
 
         assertEquals("", commentConfig.referrer)
@@ -60,7 +60,7 @@ class CommentConfigTests {
     }
 
     @Test
-    fun `test empty server environment`() {
+    fun `Empty server environment`() {
         val commentConfig = CommentConfig.Builder("127.0.0.1", "TestUserAgent")
             .serverEnv(emptyMap())
             .build()
@@ -69,7 +69,7 @@ class CommentConfigTests {
 
 
     @Test
-    fun `test invalid inputs for mandatory fields`() {
+    fun `Invalid inputs for mandatory fields`() {
         try {
             CommentConfig.Builder("", "UserAgent").build()
         } catch (e: IllegalArgumentException) {
@@ -88,7 +88,7 @@ class CommentConfigTests {
     @DisplayName("Builder Tests")
     inner class BuilderTests {
         @Test
-        fun `test builder with all optional fields`() {
+        fun `Builder with all optional fields`() {
             val builder = CommentConfig.Builder("127.0.0.1", "TestUserAgent")
                 .referrer("http://example.com")
                 .permalink("http://example.com/post")
@@ -128,7 +128,7 @@ class CommentConfigTests {
         }
 
         @Test
-        fun `test builder with mandatory fields only`() {
+        fun `Builder with mandatory fields only`() {
             val builder = CommentConfig.Builder("127.0.0.1", "TestUserAgent")
             val commentConfig = builder.build()
 
@@ -152,7 +152,7 @@ class CommentConfigTests {
         }
 
         @Test
-        fun `test builder with modified mandatory fields`() {
+        fun `Builder with modified mandatory fields`() {
             val builder = CommentConfig.Builder("127.0.0.1", "TestUserAgent")
                 .userIp("192.168.1.1")
                 .userAgent("ModifiedUserAgent")
