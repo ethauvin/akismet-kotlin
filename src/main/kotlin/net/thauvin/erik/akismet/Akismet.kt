@@ -55,6 +55,12 @@ import java.util.logging.Logger
 open class Akismet(apiKey: String) {
     companion object {
         /**
+         * The logger instance.
+         */
+        @JvmStatic
+        val logger: Logger by lazy { Logger.getLogger(Akismet::class.java.name) }
+
+        /**
          * (Re)Creates a [comment][AkismetComment] from a JSON string.
          *
          * @see [AkismetComment.toString]
@@ -191,10 +197,6 @@ open class Akismet(apiKey: String) {
     var debugHelp: String = ""
         private set
 
-    /**
-     * The logger instance.
-     */
-    val logger: Logger by lazy { Logger.getLogger(Akismet::class.java.name) }
 
     init {
         require(
