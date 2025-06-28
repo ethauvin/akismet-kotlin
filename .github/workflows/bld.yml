@@ -5,18 +5,20 @@ on: [push, pull_request, workflow_dispatch]
 env:
   AKISMET_API_KEY: ${{ secrets.AKISMET_API_KEY }}
   AKISMET_BLOG: ${{ secrets.AKISMET_BLOG }}
-  COVERAGE_JDK: "21"
-  COVERAGE_KOTLIN: "2.0.0"
+  COVERAGE_JDK: 24
+  COVERAGE_KOTLIN: "2.2.0"
+  COVERAGE_OS: "ubuntu-latest"
   KOTLIN_HOME: /usr/share/kotlinc
 
 jobs:
   build-bld-project:
-    runs-on: ubuntu-latest
-
     strategy:
       matrix:
         java-version: [ 17, 21, 24 ]
-        kotlin-version: [ 1.9.25, 2.2.0 ]
+        kotlin-version: [ 1.9.25, 2.0.21, 2.2.0 ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout source repository
@@ -41,10 +43,12 @@ jobs:
 
       - name: Remove pom.xml
         if: success() && matrix.java-version == env.COVERAGE_JDK && matrix.kotlin-version == env.COVERAGE_KOTLIN
+                && matrix.os == env.COVERAGE_OS
         run: rm -rf pom.xml
 
       - name: SonarCloud Scan
         if: success() && matrix.java-version == env.COVERAGE_JDK && matrix.kotlin-version == env.COVERAGE_KOTLIN
+                && matrix.os == env.COVERAGE_OS
         uses: sonarsource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
