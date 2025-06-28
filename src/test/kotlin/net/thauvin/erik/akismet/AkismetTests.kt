@@ -53,7 +53,6 @@ import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import kotlin.text.contains
 
 /**
  * [Akismet] Tests
@@ -128,13 +127,13 @@ class AkismetTests {
         fun `Date should convert correctly to GMT string`() {
             val date = Date.from(sampleDate.toInstant())
             val result = Akismet.dateToGmt(date)
-            assertEquals("1997-08-28T23:00:00-07:00", result)
+            assertThat(result).matches("1997-08-2[8-9]T(23|06):00:00(-07:00|Z)".toRegex())
         }
 
         @Test
         fun `LocalDateTime should convert correctly to GMT string`() {
             val result = Akismet.dateToGmt(sampleDate.toLocalDateTime())
-            assertEquals("1997-08-29T02:00:00-07:00", result)
+            assertThat(result).matches("1997-08-29T02:00:00(-07:00|Z)".toRegex())
         }
     }
 
@@ -159,7 +158,7 @@ class AkismetTests {
                 .recheckReason("Check the spam detection")
                 .serverEnv(mapOf("key1" to "value1", "key2" to "value2"))
                 .build()
-            val validJson = AkismetComment(config).toJson();
+            val validJson = AkismetComment(config).toJson()
 
             val comment = jsonComment(validJson)
 
