@@ -285,7 +285,7 @@ class AkismetTests {
                     "https://postman-echo.com/status/200".toHttpUrl(), emptyFormBody, true
                 )
             )
-            val expected = "{\n  \"status\": 200\n}"
+            val expected = "{\"status\":200}"
             assertThat(akismet, "executeMethod(200)").all {
                 prop(Akismet::response).isEqualTo(expected)
                 prop(Akismet::errorMessage).contains(expected)
