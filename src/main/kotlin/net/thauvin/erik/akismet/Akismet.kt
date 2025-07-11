@@ -331,8 +331,8 @@ open class Akismet(apiKey: String) {
                 proTip = result.header("x-akismet-pro-tip", "").toString().trim()
                 isDiscard = (proTip == "discard")
                 debugHelp = result.header("x-akismet-debug-help", "").toString().trim()
-                val body = result.body?.string()
-                if (body != null) {
+                val body = result.body.string()
+                if (body.isNotBlank()) {
                     response = body.trim()
                     if (response == "valid" || response == "true" || response.startsWith("Thanks")) {
                         return true

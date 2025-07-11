@@ -241,7 +241,7 @@ class AkismetTests {
     @DisplayName("Response Tests")
     inner class ResponseTests {
         @Test
-        fun `Handle blank response`() {
+        fun `Handle blank page response`() {
             val akismet = Akismet(apiKey)
             assertTrue(
                 akismet.executeMethod(
@@ -251,7 +251,7 @@ class AkismetTests {
             val expected = ""
             assertThat(akismet, "executeMethod(blank)").all {
                 prop(Akismet::response).isEqualTo(expected)
-                prop(Akismet::errorMessage).contains("blank")
+                prop(Akismet::errorMessage).startsWith("No response body")
             }
         }
 
@@ -294,6 +294,22 @@ class AkismetTests {
             assertThat(akismet, "akismet.reset()").all {
                 prop(Akismet::httpStatusCode).isEqualTo(0)
                 prop(Akismet::errorMessage).isEmpty()
+            }
+        }
+
+        @Test
+        fun `Handle invalid response with debug help`() {
+            val akismet = Akismet(apiKey)
+            assertTrue(
+                akismet.executeMethod(
+                    "https://postman-echo.com/response-headers?x-akismet-debug-help=foo".toHttpUrl(),
+                    emptyFormBody,
+                    true
+                )
+            )
+            assertThat(akismet, "executeMethod(blank)").all {
+                prop(Akismet::errorMessage).startsWith("Unexpected response: ")
+                prop(Akismet::debugHelp).isEqualTo("foo")
             }
         }
 

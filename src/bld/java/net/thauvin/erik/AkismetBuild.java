@@ -73,13 +73,13 @@ public class AkismetBuild extends Project {
         downloadSources = true;
         repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL);
 
-        var okHttp = version(4, 12, 0);
+        var okHttp = version(5, 1, 0);
         final var kotlin = version(2, 2, 0);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib-jdk7", kotlin))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", kotlin))
-                .include(dependency("com.squareup.okhttp3", "okhttp", okHttp))
+                .include(dependency("com.squareup.okhttp3", "okhttp-jvm", okHttp))
                 .include(dependency("com.squareup.okhttp3", "logging-interceptor", okHttp))
                 .include(dependency("org.jetbrains.kotlinx", "kotlinx-serialization-json", "1.9.0"));
         scope(provided)
