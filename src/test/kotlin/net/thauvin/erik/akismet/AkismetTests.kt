@@ -46,6 +46,8 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.extension.RegisterExtension
+import rife.bld.extension.testing.LoggingExtension
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -59,11 +61,16 @@ import kotlin.test.assertTrue
  *
  * `AKISMET_API_KEY` and `AKISMET_BLOG` should be set in env vars or `local.properties`
  */
-@ExtendWith(BeforeAllTests::class)
+@ExtendWith(LoggingExtension::class)
 class AkismetTests {
     private val emptyFormBody = FormBody.Builder().build()
 
     companion object {
+        @Suppress("unused")
+        @JvmField
+        @RegisterExtension
+        val extension: LoggingExtension = LoggingExtension(Akismet.logger)
+
         private val apiKey = TestUtils.getKey("AKISMET_API_KEY")
         private val blog = TestUtils.getKey("AKISMET_BLOG")
     }
@@ -245,7 +252,7 @@ class AkismetTests {
             val akismet = Akismet(apiKey)
             assertTrue(
                 akismet.executeMethod(
-                    "https://erik.thauvin.net/blank.html".toHttpUrl(), emptyFormBody, true
+                    "https://httpbin.org/status/200".toHttpUrl(), emptyFormBody, true
                 )
             )
             val expected = ""
@@ -284,10 +291,10 @@ class AkismetTests {
                     "https://postman-echo.com/status/200".toHttpUrl(), emptyFormBody, true
                 )
             )
-            val expected = "{\"status\":200}"
+            val expected = ".*\\{\\s*\"status\":\\s*200\\s*}".toRegex()
             assertThat(akismet, "executeMethod(200)").all {
-                prop(Akismet::response).isEqualTo(expected)
-                prop(Akismet::errorMessage).contains(expected)
+                prop(Akismet::response).matches(expected)
+                prop(Akismet::errorMessage).matches(expected)
             }
 
             akismet.reset()

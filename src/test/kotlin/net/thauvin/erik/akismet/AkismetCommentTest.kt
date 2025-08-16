@@ -43,14 +43,23 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.api.extension.RegisterExtension
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import rife.bld.extension.testing.LoggingExtension
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.test.assertTrue
 
-@ExtendWith(BeforeAllTests::class)
+@ExtendWith(LoggingExtension::class)
 class AkismetCommentTest {
+    companion object {
+        @Suppress("unused")
+        @JvmField
+        @RegisterExtension
+        val extension: LoggingExtension = LoggingExtension(Akismet.logger)
+    }
+
     private val apiKey = TestUtils.getKey("AKISMET_API_KEY")
     private val blog = TestUtils.getKey("AKISMET_BLOG")
     private val config = CommentConfig.Builder(
