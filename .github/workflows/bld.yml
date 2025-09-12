@@ -7,7 +7,7 @@ env:
   AKISMET_BLOG: ${{ secrets.AKISMET_BLOG }}
   COVERAGE_JDK: 24
   COVERAGE_OS: "ubuntu-latest"
-  KOTLIN_VERSION: "2.2.0"
+  KOTLIN_VERSION: "2.2.20"
 
 jobs:
   build-bld-project:
