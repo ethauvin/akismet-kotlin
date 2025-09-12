@@ -57,7 +57,7 @@ class AkismetCommentTest {
         @Suppress("unused")
         @JvmField
         @RegisterExtension
-        val extension: LoggingExtension = LoggingExtension(Akismet.logger)
+        val loggingExtension = LoggingExtension(Akismet.logger)
     }
 
     private val apiKey = TestUtils.getKey("AKISMET_API_KEY")

@@ -86,7 +86,7 @@ public class AkismetBuild extends Project {
                 .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 1, 0)));
         scope(test)
                 .include(dependency("com.uwyn.rife2", "bld-extensions-testing-helpers",
-                        version(0, 9, 0, "SNAPSHOT")))
+                        version(0, 9, 3, "SNAPSHOT")))
                 .include(dependency("org.mockito.kotlin", "mockito-kotlin",
                         version(6, 0, 0)))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
