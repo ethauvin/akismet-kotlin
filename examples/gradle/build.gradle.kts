@@ -1,7 +1,7 @@
 plugins {
     id("application")
-    id("com.github.ben-manes.versions") version "0.51.0"
-    kotlin("jvm") version "2.2.20"
+    id("com.github.ben-manes.versions") version "0.53.0"
+    kotlin("jvm") version "2.2.21"
 }
 
 defaultTasks(ApplicationPlugin.TASK_RUN_NAME)
@@ -23,10 +23,6 @@ java {
 
 application {
     mainClass.set("com.example.AkismetExampleKt")
-}
-
-kotlin {
-    compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
 }
 
 tasks {
