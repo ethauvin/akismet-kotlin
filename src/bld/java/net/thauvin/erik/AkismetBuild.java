@@ -65,7 +65,7 @@ public class AkismetBuild extends Project {
         name = "akismet-kotlin";
         version = version(1, 1, 0, "SNAPSHOT");
 
-        javaRelease = 11;
+        javaRelease = 17;
 
         autoDownloadPurge = true;
         downloadSources = true;
