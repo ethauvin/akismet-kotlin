@@ -73,6 +73,7 @@ public class AkismetBuild extends Project {
 
         var okHttp = version(5, 3, 0);
         var kotlin = version(2, 2, 21);
+        var junit = version(6, 0, 1);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib-jdk7", kotlin))
@@ -88,12 +89,9 @@ public class AkismetBuild extends Project {
                 .include(dependency("org.mockito.kotlin", "mockito-kotlin",
                         version(6, 0, 0)))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
-                .include(dependency("org.junit.jupiter", "junit-jupiter",
-                        version(5, 13, 4)))
-                .include(dependency("org.junit.platform", "junit-platform-console-standalone",
-                        version(1, 13, 4)))
-                .include(dependency("org.junit.platform", "junit-platform-launcher",
-                        version(1, 13, 4)))
+                .include(dependency("org.junit.jupiter", "junit-jupiter", junit))
+                .include(dependency("org.junit.platform", "junit-platform-console-standalone", junit))
+                .include(dependency("org.junit.platform", "junit-platform-launcher", junit))
                 .include(dependency("com.willowtreeapps.assertk", "assertk-jvm",
                         version(0, 28, 1)));
 
