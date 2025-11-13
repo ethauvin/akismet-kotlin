@@ -62,7 +62,8 @@ public class AkismetBuild extends Project {
 
     public AkismetBuild() {
         pkg = "net.thauvin.erik";
-        name = "akismet-kotlin";
+        name = "Akismet Kotlin";
+        archiveBaseName = "akismet-kotlin";
         version = version(1, 1, 0, "SNAPSHOT");
 
         javaRelease = 17;
@@ -103,9 +104,9 @@ public class AkismetBuild extends Project {
                 .repository(repository("github"))
                 .info()
                 .groupId(pkg)
-                .artifactId(name)
+                .artifactId(archiveBaseName)
                 .description("A client library for accessing the Automattic Kismet (Akismet) spam comments filtering service.")
-                .url("https://github.com/ethauvin/" + name)
+                .url("https://github.com/ethauvin/" + archiveBaseName)
                 .developer(new PublishDeveloper()
                         .id("ethauvin")
                         .name("Erik C. Thauvin")
@@ -116,9 +117,9 @@ public class AkismetBuild extends Project {
                         .name("BSD 3-Clause")
                         .url("https://opensource.org/licenses/BSD-3-Clause"))
                 .scm(new PublishScm()
-                        .connection("scm:git:https://github.com/ethauvin/" + name + ".git")
-                        .developerConnection("scm:git:git@github.com:ethauvin/" + name + ".git")
-                        .url("https://github.com/ethauvin/" + name))
+                        .connection("scm:git:https://github.com/ethauvin/" + archiveBaseName + ".git")
+                        .developerConnection("scm:git:git@github.com:ethauvin/" + archiveBaseName + ".git")
+                        .url("https://github.com/ethauvin/" + archiveBaseName))
                 .signKey(property("sign.key"))
                 .signPassphrase(property("sign.passphrase"));
 
