@@ -70,7 +70,7 @@ public class AkismetBuild extends Project {
 
         autoDownloadPurge = true;
         downloadSources = true;
-        repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL);
+        repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL, RIFE2_RELEASES);
 
         var okHttp = version(5, 3, 0);
         var kotlin = version(2, 2, 21);
@@ -83,7 +83,9 @@ public class AkismetBuild extends Project {
                 .include(dependency("com.squareup.okhttp3", "logging-interceptor", okHttp))
                 .include(dependency("org.jetbrains.kotlinx", "kotlinx-serialization-json", "1.9.0"));
         scope(provided)
-                .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 1, 0)));
+                .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 1, 0)))
+                .include(dependency("com.github.spotbugs", "spotbugs-annotations",
+                        version(4, 9, 8)));
         scope(test)
                 .include(dependency("com.uwyn.rife2", "bld-extensions-testing-helpers",
                         version(0, 9, 4)))
@@ -127,6 +129,50 @@ public class AkismetBuild extends Project {
         testOperation().javaOptions(List.of("-XX:+EnableDynamicAgentLoading"));
     }
 
+    @BuildCommand(summary = "Compiles the Kotlin project")
+    @Override
+    public void compile() throws Exception {
+        genver();
+        var op = new CompileKotlinOperation()
+                .fromProject(this)
+                .plugins(CompilerPlugin.KOTLIN_SERIALIZATION);
+        op.compileOptions().languageVersion("1.9").verbose(true);
+        op.execute();
+    }
+
+    @Override
+    public void test() throws Exception {
+        var op = testOperation().fromProject(this);
+        op.testToolOptions().reportsDir(new File(TEST_RESULTS_DIR));
+        op.execute();
+    }
+
+    @Override
+    public void javadoc() throws ExitStatusException, IOException, InterruptedException {
+        new DokkaOperation()
+                .fromProject(this)
+                .loggingLevel(LoggingLevel.INFO)
+                .moduleName("Bitly Shorten")
+                .moduleVersion(version.toString())
+                .outputDir(new File(buildDirectory(), "javadoc"))
+                .outputFormat(OutputFormat.JAVADOC)
+                .globalLinks("https://jakarta.ee/specifications/platform/9/apidocs/",
+                        "https://jakarta.ee/specifications/platform/9/apidocs/package-list")
+                .execute();
+    }
+
+    @Override
+    public void publish() throws Exception {
+        super.publish();
+        pomRoot();
+    }
+
+    @Override
+    public void publishLocal() throws Exception {
+        super.publishLocal();
+        pomRoot();
+    }
+
     public static void main(String[] args) {
         // Enable detailed logging for the Kotlin extension
         var level = Level.ALL;
@@ -139,17 +185,6 @@ public class AkismetBuild extends Project {
         logger.setUseParentHandlers(false);
 
         new AkismetBuild().start(args);
-    }
-
-    @BuildCommand(summary = "Compiles the Kotlin project")
-    @Override
-    public void compile() throws Exception {
-        genver();
-        var op = new CompileKotlinOperation()
-                .fromProject(this)
-                .plugins(CompilerPlugin.KOTLIN_SERIALIZATION);
-        op.compileOptions().languageVersion("1.9").verbose(true);
-        op.execute();
     }
 
     @BuildCommand(summary = "Checks source with Detekt")
@@ -227,36 +262,12 @@ public class AkismetBuild extends Project {
                 .execute();
     }
 
-    @Override
-    public void test() throws Exception {
-        var op = testOperation().fromProject(this);
-        op.testToolOptions().reportsDir(new File(TEST_RESULTS_DIR));
-        op.execute();
-    }
-
-    @Override
-    public void javadoc() throws ExitStatusException, IOException, InterruptedException {
-        new DokkaOperation()
+    @BuildCommand(summary = "Runs SpotBugs on this project")
+    public void spotbugs() throws Exception {
+        new SpotBugsOperation()
                 .fromProject(this)
-                .loggingLevel(LoggingLevel.INFO)
-                .moduleName("Bitly Shorten")
-                .moduleVersion(version.toString())
-                .outputDir(new File(buildDirectory(), "javadoc"))
-                .outputFormat(OutputFormat.JAVADOC)
-                .globalLinks("https://jakarta.ee/specifications/platform/9/apidocs/",
-                        "https://jakarta.ee/specifications/platform/9/apidocs/package-list")
+                .home("/opt/spotbugs")
+                .sourcePath(new File(srcMainDirectory(), "kotlin"))
                 .execute();
-    }
-
-    @Override
-    public void publish() throws Exception {
-        super.publish();
-        pomRoot();
-    }
-
-    @Override
-    public void publishLocal() throws Exception {
-        super.publishLocal();
-        pomRoot();
     }
 }
