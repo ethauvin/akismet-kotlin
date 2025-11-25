@@ -72,7 +72,7 @@ public class AkismetBuild extends Project {
         downloadSources = true;
         repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL, RIFE2_RELEASES);
 
-        var okHttp = version(5, 3, 0);
+        var okHttp = version(5, 3, 2);
         var kotlin = version(2, 2, 21);
         var junit = version(6, 0, 1);
         scope(compile)
