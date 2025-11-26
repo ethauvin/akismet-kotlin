@@ -40,7 +40,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
-import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -79,7 +79,7 @@ open class Akismet(apiKey: String) {
         @JvmStatic
         fun dateToGmt(date: Date): String {
             return DateTimeFormatter.ISO_DATE_TIME.format(
-                OffsetDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()).truncatedTo(ChronoUnit.SECONDS)
+                OffsetDateTime.ofInstant(date.toInstant(), ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS)
             )
         }
 
@@ -92,7 +92,7 @@ open class Akismet(apiKey: String) {
         @JvmStatic
         fun dateToGmt(date: LocalDateTime): String {
             return DateTimeFormatter.ISO_DATE_TIME.format(
-                date.atOffset(OffsetDateTime.now().offset).truncatedTo(ChronoUnit.SECONDS)
+                date.atOffset(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS)
             )
         }
     }
