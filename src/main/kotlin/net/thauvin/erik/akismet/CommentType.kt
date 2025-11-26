@@ -31,77 +31,97 @@
 
 package net.thauvin.erik.akismet
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+
+/**
+ * Serializer that encodes the enum as its string value and decodes unknown values to NONE.
+ */
+@SuppressFBWarnings("FCCD_FIND_CLASS_CIRCULAR_DEPENDENCY")
+object CommentTypeSerializer : KSerializer<CommentType> {
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("net.thauvin.erik.akismet.CommentType", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: CommentType) {
+        encoder.encodeString(value.value)
+    }
+
+    override fun deserialize(decoder: Decoder): CommentType {
+        val str = decoder.decodeString()
+        return CommentType.fromValue(str)
+    }
+}
 
 /**
  * Defines the comment types.
+ *
+ * Uses a custom serializer so unknown string values deserialize to NONE instead
+ * of throwing an exception.
  */
-@Serializable
-data class CommentType(var value: String) {
+@Serializable(with = CommentTypeSerializer::class)
+enum class CommentType(val value: String) {
+    /**
+     * A blog comment.
+     */
+    COMMENT("comment"),
+
+    /**
+     * A top-level forum post.
+     */
+    FORUM_POST("forum-post"),
+
+    /**
+     * A reply to a top-level forum post.
+     */
+    REPLY("reply"),
+
+    /**
+     * A blog post.
+     */
+    BLOG_POST("blog-post"),
+
+    /**
+     * A contact form or feedback form submission.
+     */
+    CONTACT_FORM("contact-form"),
+
+    /**
+     * A new user account.
+     */
+    SIGNUP("signup"),
+
+    /**
+     * A message sent between just a few users.
+     */
+    MESSAGE("message"),
+
+    /**
+     * A pingback.
+     */
+    PINGBACK("pingback"),
+
+    /**
+     * A trackback.
+     */
+    TRACKBACK("trackback"),
+
+    /**
+     * A Twitter message.
+     */
+    TWEET("tweet"),
+
+    /**
+     * Undefined / none.
+     */
+    NONE("");
+
     companion object {
-        /**
-         * A blog comment.
-         */
-        @JvmField
-        val COMMENT = CommentType("comment")
-
-        /**
-         * A top-level forum post.
-         */
-        @JvmField
-        val FORUM_POST = CommentType("forum-post")
-
-        /**
-         * A reply to a top-level forum post.
-         */
-        @JvmField
-        val REPLY = CommentType("reply")
-
-        /**
-         * A blog post.
-         */
-        @JvmField
-        val BLOG_POST = CommentType("blog-post")
-
-        /**
-         * A contact form or feedback form submission.
-         */
-        @JvmField
-        val CONTACT_FORM = CommentType("contact-form")
-
-        /** A new user account.
-         */
-        @JvmField
-        val SIGNUP = CommentType("signup")
-
-        /**
-         * A message sent between just a few users.
-         */
-        @JvmField
-        val MESSAGE = CommentType("message")
-
-        /**
-         * A pingback.
-         */
-        @JvmField
-        val PINGBACK = CommentType("pingback")
-
-        /**
-         * A trackback.
-         */
-        @JvmField
-        val TRACKBACK = CommentType("trackback")
-
-        /**
-         * A Twitter message.
-         */
-        @JvmField
-        val TWEET = CommentType("tweet")
-
-        /**
-         * Undefined type.
-         */
-        @JvmField
-        val NONE = CommentType("")
+        fun fromValue(value: String?): CommentType =
+            if (value == null) NONE else CommentType.entries.firstOrNull { it.value == value } ?: NONE
     }
 }
