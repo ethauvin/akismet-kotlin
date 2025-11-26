@@ -373,7 +373,7 @@ class AkismetTests {
 
                 akismet.reset()
                 assertThat(akismet, "akismet.reset()").all {
-                    prop(Akismet::isVerifiedKey).isFalse()
+                    prop(Akismet::isVerifiedKey).isTrue()
                     prop(Akismet::response).isEmpty()
                     prop(Akismet::httpStatusCode).isEqualTo(0)
                 }

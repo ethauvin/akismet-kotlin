@@ -361,15 +361,17 @@ open class Akismet(apiKey: String) {
     }
 
     /**
-     * Resets the [debugHelp], [errorMessage], [httpStatusCode], [isDiscard], [isVerifiedKey], [proTip], and
+     * Resets the [debugHelp], [errorMessage], [httpStatusCode], [isDiscard], [proTip], and
      * [response] properties.
+     *
+     * Note: [isVerifiedKey] is intentionally not reset here so that a successful verifyKey()
+     * remains reflected in the object's state across subsequent calls.
      */
     fun reset() {
         debugHelp = ""
         errorMessage = ""
         httpStatusCode = 0
         isDiscard = false
-        isVerifiedKey = false
         proTip = ""
         response = ""
     }
