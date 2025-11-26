@@ -28,8 +28,10 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.thauvin.erik.akismet
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import kotlinx.serialization.json.Json
 import okhttp3.FormBody
 import okhttp3.HttpUrl
@@ -52,8 +54,13 @@ import java.util.logging.Logger
  *
  * @constructor Creates a new instance using the provided [Akismet](https://www.askimet.com/) API key.
  */
-open class Akismet(apiKey: String) {
+class Akismet(apiKey: String) {
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
     companion object {
+        private const val API_END_POINT = "https://%srest.akismet.com/1.1/%s"
+        private const val LIB_USER_AGENT = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
+        private const val VERIFY_METHOD = "verify-key"
+
         /**
          * The logger instance.
          */
@@ -97,9 +104,6 @@ open class Akismet(apiKey: String) {
         }
     }
 
-    private val apiEndPoint = "https://%srest.akismet.com/1.1/%s"
-    private val libUserAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
-    private val verifyMethod = "verify-key"
     private var apiKey: String
     private var client: OkHttpClient
 
@@ -211,6 +215,7 @@ open class Akismet(apiKey: String) {
 
         val logging = HttpLoggingInterceptor { message ->
             if (logger.isLoggable(Level.FINE)) {
+                // mask the API key in logs
                 logger.log(Level.FINE, message.replace(apiKey, "xxxxxxxx" + apiKey.substring(8), true))
             }
         }
@@ -243,7 +248,7 @@ open class Akismet(apiKey: String) {
             add("key", apiKey)
             add("blog", blog)
         }.build()
-        isVerifiedKey = executeMethod(verifyMethod.toApiUrl(), body)
+        isVerifiedKey = executeMethod(VERIFY_METHOD.toApiUrl(), body)
         return isVerifiedKey
     }
 
@@ -328,9 +333,9 @@ open class Akismet(apiKey: String) {
         try {
             client.newCall(request).execute().use { result ->
                 httpStatusCode = result.code
-                proTip = result.header("x-akismet-pro-tip", "").toString().trim()
+                proTip = result.header("x-akismet-pro-tip", "")?.trim().orEmpty()
                 isDiscard = (proTip == "discard")
-                debugHelp = result.header("x-akismet-debug-help", "").toString().trim()
+                debugHelp = result.header("x-akismet-debug-help", "")?.trim().orEmpty()
                 val body = result.body.string()
                 if (body.isNotBlank()) {
                     response = body.trim()
@@ -377,15 +382,16 @@ open class Akismet(apiKey: String) {
     }
 
     private fun String.toApiUrl(): HttpUrl {
-        return if (this == verifyMethod) {
-            String.format(apiEndPoint, "", this).toHttpUrl()
+        return if (this == VERIFY_METHOD) {
+            String.format(API_END_POINT, "", this).toHttpUrl()
         } else {
-            String.format(apiEndPoint, "$apiKey.", this).toHttpUrl()
+            String.format(API_END_POINT, "$apiKey.", this).toHttpUrl()
         }
     }
 
+    @SuppressFBWarnings("CC_CYCLOMATIC_COMPLEXITY", "CE_CLASS_ENVY")
     private fun buildFormBody(comment: AkismetComment): FormBody {
-        require(!(comment.userIp.isBlank() && comment.userAgent.isBlank())) { "userIp and/or userAgent are required." }
+        require(comment.userIp.isNotBlank() && comment.userAgent.isNotBlank()) { "userIp and userAgent are required." }
         return FormBody.Builder().apply {
             add("blog", blog)
 
@@ -443,9 +449,9 @@ open class Akismet(apiKey: String) {
 
     internal fun buildUserAgent(): String {
         return if (appUserAgent.isNotBlank()) {
-            "$appUserAgent | $libUserAgent"
+            "$appUserAgent | $LIB_USER_AGENT"
         } else {
-            libUserAgent
+            LIB_USER_AGENT
         }
     }
 }
