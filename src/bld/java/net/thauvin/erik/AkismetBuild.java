@@ -269,6 +269,7 @@ public class AkismetBuild extends Project {
                 .fromProject(this)
                 .home("/opt/spotbugs")
                 .sourcePath(new File(srcMainDirectory(), "kotlin"))
+                .exclude("config/excludeFilter.xml")
                 .execute();
     }
 }

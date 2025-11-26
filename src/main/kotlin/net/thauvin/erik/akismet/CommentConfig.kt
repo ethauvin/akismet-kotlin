@@ -31,6 +31,7 @@
 
 package net.thauvin.erik.akismet
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import kotlinx.collections.immutable.PersistentMap
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toPersistentMap
@@ -66,6 +67,7 @@ class CommentConfig private constructor(builder: Builder) {
      * @param userIp IP address of the comment submitter
      * @param userAgent User agent string of the web browser submitting the comment
      */
+    @SuppressFBWarnings("USBR_UNNECESSARY_STORE_BEFORE_RETURN")
     data class Builder(var userIp: String, var userAgent: String) {
         var referrer = ""
         var permalink = ""
@@ -131,7 +133,7 @@ class CommentConfig private constructor(builder: Builder) {
         fun type(type: CommentType): Builder = apply { this.type = type }
 
         /**
-         * Sets the mame submitted with the comment.
+         * Sets the name submitted with the comment.
          */
         fun author(author: String): Builder = apply { this.author = author }
 

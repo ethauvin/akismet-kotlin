@@ -31,6 +31,7 @@
 
 package net.thauvin.erik.akismet
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import jakarta.servlet.http.HttpServletRequest
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
@@ -58,6 +59,7 @@ private fun String?.ifNull() = this ?: ""
 @Serializable
 @OptIn(ExperimentalSerializationApi::class)
 @JsonIgnoreUnknownKeys
+@SuppressFBWarnings("NM_CLASS_NAMING_CONVENTION", "MS_EXPOSE_REP", "EI_EXPOSE_REP")
 open class AkismetComment(val userIp: String, val userAgent: String) {
     companion object {
         /**
@@ -269,6 +271,7 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      *
      * @see [Akismet.jsonComment]
      */
+    @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
     override fun toString(): String {
         return Json.encodeToString(this)
     }
@@ -325,8 +328,7 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
         result = 31 * result + userRole.hashCode()
         result = 31 * result + isTest.hashCode()
         result = 31 * result + recheckReason.hashCode()
-        result = 31 * result + serverEnv.hashCode()
-        return result
+        return 31 * result + serverEnv.hashCode()
     }
 }
 

@@ -2,6 +2,7 @@
 <SmellBaseline>
   <ManuallySuppressedIssues/>
   <CurrentIssues>
+    <ID>CyclomaticComplexMethod:Akismet.kt$Akismet$@SuppressFBWarnings("CC_CYCLOMATIC_COMPLEXITY", "CE_CLASS_ENVY") private fun buildFormBody(comment: AkismetComment): FormBody</ID>
     <ID>CyclomaticComplexMethod:Akismet.kt$Akismet$private fun buildFormBody(comment: AkismetComment): FormBody</ID>
     <ID>CyclomaticComplexMethod:AkismetComment.kt$AkismetComment$@Suppress("DuplicatedCode") override fun equals(other: Any?): Boolean</ID>
     <ID>LongParameterList:AkismetServlet.kt$AkismetServlet$( id: String, name: String?, email: String?, date: String?, comment: String?, json: String, isSpam: Boolean )</ID>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <Match>
+        <Class name="net.thauvin.erik.akismet.Akismet"/>
+        <Method name="executeMethod"/>
+        <Bug pattern="STT_TOSTRING_STORED_IN_FIELD"/>
+    </Match>
+</FindBugsFilter>
