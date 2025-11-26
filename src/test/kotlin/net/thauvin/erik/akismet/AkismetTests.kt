@@ -252,7 +252,7 @@ class AkismetTests {
             val akismet = Akismet(apiKey)
             assertTrue(
                 akismet.executeMethod(
-                    "https://httpbin.org/status/200".toHttpUrl(), emptyFormBody, true
+                    "https://httpbin.dev/status/200".toHttpUrl(), emptyFormBody, true
                 )
             )
             val expected = ""

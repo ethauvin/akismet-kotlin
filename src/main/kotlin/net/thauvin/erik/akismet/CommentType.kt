@@ -31,6 +31,7 @@
 
 package net.thauvin.erik.akismet
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
