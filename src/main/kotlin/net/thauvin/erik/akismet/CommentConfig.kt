@@ -31,10 +31,16 @@
 
 package net.thauvin.erik.akismet
 
+import kotlinx.collections.immutable.PersistentMap
+import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.toPersistentMap
+
 /**
  * Provides a comment configuration.
  */
 class CommentConfig private constructor(builder: Builder) {
+    private val serverEnvInternal: PersistentMap<String, String> = builder.serverEnvForBuild()
+
     val userIp: String = builder.userIp
     val userAgent: String = builder.userAgent
     val referrer = builder.referrer
@@ -51,7 +57,8 @@ class CommentConfig private constructor(builder: Builder) {
     val userRole = builder.userRole
     val isTest = builder.isTest
     val recheckReason = builder.recheckReason
-    val serverEnv = builder.serverEnv
+    val serverEnv: Map<String, String>
+        get() = serverEnvInternal
 
     /**
      * Provides a configuration builder.
@@ -74,7 +81,14 @@ class CommentConfig private constructor(builder: Builder) {
         var userRole = ""
         var isTest = false
         var recheckReason = ""
-        var serverEnv: Map<String, String> = emptyMap()
+
+        private var serverEnvInternal: PersistentMap<String, String> = persistentMapOf()
+
+
+        /**
+         * Internal accessor used by the constructor to get the immutable map.
+         */
+        internal fun serverEnvForBuild(): PersistentMap<String, String> = serverEnvInternal
 
         /**
          * Sets the IP address of the comment submitter.
@@ -193,7 +207,9 @@ class CommentConfig private constructor(builder: Builder) {
          * How the submitted content interacts with the server can be very telling, so please include as much of it as
          * possible.
          */
-        fun serverEnv(serverEnv: Map<String, String>): Builder = apply { this.serverEnv = serverEnv }
+        fun serverEnv(serverEnv: Map<String, String>): Builder = apply {
+            this.serverEnvInternal = serverEnv.toPersistentMap()
+        }
 
         /**
          * Builds a new comment configuration.

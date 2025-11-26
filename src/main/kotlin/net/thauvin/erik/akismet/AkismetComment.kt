@@ -201,6 +201,9 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
             field = value.ifNull()
         }
 
+
+    private var _serverEnv: MutableMap<String, String> = mutableMapOf()
+
     /**
      * In PHP, there is an array of environmental variables called `$_SERVER` that contains information about the Web
      * server itself as well as a key/value for every HTTP header sent with the request. This data is highly useful to
@@ -208,8 +211,15 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
      *
      * How the submitted content interacts with the server can be very telling, so please include as much of it as
      * possible.
+     *
+     * Implementation note: use a private mutable backing map so the public getter can return a defensive copy. This
+     * prevents exposing the internal mutable representation.
      */
-    var serverEnv: Map<String, String> = emptyMap()
+    var serverEnv: Map<String, String>
+        get() = _serverEnv.toMap()
+        set(value) {
+            _serverEnv = value.toMutableMap()
+        }
 
     /**
      * Creates a new instance extracting the [userIp], [userAgent], [referrer] and [serverEnv] environment variables
