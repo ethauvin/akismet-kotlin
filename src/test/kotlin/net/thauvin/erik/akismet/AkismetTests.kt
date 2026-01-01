@@ -66,7 +66,6 @@ class AkismetTests {
     private val emptyFormBody = FormBody.Builder().build()
 
     companion object {
-        @Suppress("unused")
         @JvmField
         @RegisterExtension
         val loggingExtension = LoggingExtension(Akismet.logger)

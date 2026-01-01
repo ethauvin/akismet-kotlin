@@ -54,7 +54,6 @@ import kotlin.test.assertTrue
 @ExtendWith(LoggingExtension::class)
 class AkismetCommentTest {
     companion object {
-        @Suppress("unused")
         @JvmField
         @RegisterExtension
         val loggingExtension = LoggingExtension(Akismet.logger)
