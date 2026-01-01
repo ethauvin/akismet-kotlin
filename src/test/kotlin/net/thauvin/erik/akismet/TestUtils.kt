@@ -1,7 +1,7 @@
 /*
  * TestUtils.kt
  *
- * Copyright 2019-2025 Erik C. Thauvin (erik@thauvin.net)
+ * Copyright 2019-2026 Erik C. Thauvin (erik@thauvin.net)
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -33,10 +33,10 @@ package net.thauvin.erik.akismet
 
 import java.io.File
 import java.io.FileInputStream
-import java.util.Properties
+import java.util.*
 
 object TestUtils {
-     fun getKey(key: String): String {
+    fun getKey(key: String): String {
         return System.getenv(key)?.takeUnless { it.isBlank() } ?: loadPropertyValue(key)
     }
 
