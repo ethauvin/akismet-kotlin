@@ -8,7 +8,7 @@ package {{v packageName/}}
 /**
  * Provides semantic version information.
  */
- internal object {{v className/}} {
+internal object {{v className/}} {
     const val PROJECT = "{{v project/}}"
     const val VERSION = "{{v version/}}"
 }
