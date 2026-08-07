@@ -76,8 +76,8 @@ public class AkismetBuild extends Project {
         repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL, RIFE2_RELEASES);
 
         var okHttp = version(5, 4, 0);
-        var junit = version(6, 0, 3);
         var kotlin = version(2, 4, 10);
+        var junit = version(6, 1, 2);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib-jdk7", kotlin))
