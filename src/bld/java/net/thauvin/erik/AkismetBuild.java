@@ -77,7 +77,7 @@ public class AkismetBuild extends Project {
 
         var okHttp = version(5, 4, 0);
         var kotlin = version(2, 4, 10);
-        var junit = version(6, 1, 2);
+        var junit = version(6, 1, 3);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib-jdk7", kotlin))
