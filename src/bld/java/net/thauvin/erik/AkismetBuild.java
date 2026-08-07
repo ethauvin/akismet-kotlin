@@ -59,6 +59,7 @@ import static rife.bld.dependencies.Scope.*;
 public class AkismetBuild extends Project {
 
     private static final String DETEKT_BASELINE = "config/detekt/baseline.xml";
+    final File generatedDirectory = new File(srcDirectory(), "generated");
     final File srcMainKotlin = new File(srcMainDirectory(), "kotlin");
     final File testResultsDirectory = IOTools.resolveFile(buildDirectory(), "test-results", "test");
 
@@ -75,16 +76,16 @@ public class AkismetBuild extends Project {
         repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL, RIFE2_RELEASES);
 
         var okHttp = version(5, 3, 2);
-        var kotlin = version(2, 3, 10);
         var junit = version(6, 0, 3);
+        var kotlin = version(2, 4, 10);
         scope(compile)
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib", kotlin))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib-jdk7", kotlin))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", kotlin))
                 .include(dependency("com.squareup.okhttp3", "okhttp-jvm", okHttp))
                 .include(dependency("com.squareup.okhttp3", "logging-interceptor", okHttp))
-                .include(dependency("org.jetbrains.kotlinx", "kotlinx-collections-immutable-jvm", "0.4.0"))
-                .include(dependency("org.jetbrains.kotlinx", "kotlinx-serialization-json", "1.10.0"));
+                .include(dependency("org.jetbrains.kotlinx", "kotlinx-collections-immutable-jvm", "0.5.1"))
+                .include(dependency("org.jetbrains.kotlinx", "kotlinx-serialization-json", "1.11.0"));
         scope(provided)
                 .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 1, 0)))
                 .include(dependency("com.github.spotbugs", "spotbugs-annotations",
@@ -138,8 +139,9 @@ public class AkismetBuild extends Project {
         genver();
         var op = new CompileKotlinOperation()
                 .fromProject(this)
+                .mainSourceDirectories(generatedDirectory)
                 .plugins(CompilerPlugin.KOTLIN_SERIALIZATION);
-        op.compileOptions().languageVersion("1.9").verbose(true);
+        op.compileOptions().languageVersion("2.2").verbose(true);
         op.execute();
     }
 
@@ -239,7 +241,7 @@ public class AkismetBuild extends Project {
                 .projectName("Akismet Kotlin")
                 .packageName(pkg + ".akismet")
                 .classTemplate("version.txt")
-                .directory(srcMainKotlin)
+                .directory(generatedDirectory)
                 .extension(".kt")
                 .execute();
     }
