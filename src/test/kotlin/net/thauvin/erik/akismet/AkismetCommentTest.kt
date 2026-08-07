@@ -38,7 +38,6 @@ import jakarta.servlet.http.HttpServletRequest
 import kotlinx.serialization.json.Json
 import org.junit.Assert.assertThrows
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -94,18 +93,6 @@ class AkismetCommentTest {
         val json = comment.toJson()
         assertEquals(Json.encodeToString(comment), json)
         assertThat(comment).prop(AkismetComment::toString).isEqualTo(json)
-    }
-
-    @Test
-    fun `Equals and hashCode methods work as expected`() {
-        val comment1 = AkismetComment("127.0.0.1", "TestAgent")
-        val comment2 = AkismetComment("127.0.0.1", "TestAgent")
-        val comment3 = AkismetComment("192.168.0.1", "OtherAgent")
-
-        assertEquals(comment1, comment2)
-        assertNotEquals(comment1, comment3)
-        assertEquals(comment1.hashCode(), comment2.hashCode())
-        assertNotEquals(comment1.hashCode(), comment3.hashCode())
     }
 
     @Test

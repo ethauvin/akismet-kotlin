@@ -61,7 +61,7 @@ private fun String?.ifNull() = this ?: ""
 @OptIn(ExperimentalSerializationApi::class)
 @JsonIgnoreUnknownKeys
 @SuppressFBWarnings("NM_CLASS_NAMING_CONVENTION", "MS_EXPOSE_REP", "EI_EXPOSE_REP")
-open class AkismetComment(val userIp: String, val userAgent: String) {
+data class AkismetComment(val userIp: String, val userAgent: String) {
     companion object {
         /**
          * Administrator role. If used, Akismet will always return `false`.
@@ -275,61 +275,6 @@ open class AkismetComment(val userIp: String, val userAgent: String) {
     @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT")
     override fun toString(): String {
         return Json.encodeToString(this)
-    }
-
-    /**
-     * Indicates whether some other object is _equal to_ this one.
-     */
-    @Suppress("DuplicatedCode")
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as AkismetComment
-
-        if (userIp != other.userIp) return false
-        if (userAgent != other.userAgent) return false
-        if (referrer != other.referrer) return false
-        if (permalink != other.permalink) return false
-        if (type != other.type) return false
-        if (author != other.author) return false
-        if (authorEmail != other.authorEmail) return false
-        if (authorUrl != other.authorUrl) return false
-        if (content != other.content) return false
-        if (dateGmt != other.dateGmt) return false
-        if (postModifiedGmt != other.postModifiedGmt) return false
-        if (blogLang != other.blogLang) return false
-        if (blogCharset != other.blogCharset) return false
-        if (userRole != other.userRole) return false
-        if (isTest != other.isTest) return false
-        if (recheckReason != other.recheckReason) return false
-        if (serverEnv != other.serverEnv) return false
-
-        return true
-    }
-
-    /**
-     * Returns a hash code value for the object.
-     */
-    @Suppress("DuplicatedCode")
-    override fun hashCode(): Int {
-        var result = userIp.hashCode()
-        result = 31 * result + userAgent.hashCode()
-        result = 31 * result + referrer.hashCode()
-        result = 31 * result + permalink.hashCode()
-        result = 31 * result + type.hashCode()
-        result = 31 * result + author.hashCode()
-        result = 31 * result + authorEmail.hashCode()
-        result = 31 * result + authorUrl.hashCode()
-        result = 31 * result + content.hashCode()
-        result = 31 * result + dateGmt.hashCode()
-        result = 31 * result + postModifiedGmt.hashCode()
-        result = 31 * result + blogLang.hashCode()
-        result = 31 * result + blogCharset.hashCode()
-        result = 31 * result + userRole.hashCode()
-        result = 31 * result + isTest.hashCode()
-        result = 31 * result + recheckReason.hashCode()
-        return 31 * result + serverEnv.hashCode()
     }
 }
 

@@ -8,7 +8,9 @@ package net.thauvin.erik.akismet
 /**
  * Provides semantic version information.
  */
+ @Generated
 internal object GeneratedVersion {
     const val PROJECT = "Akismet Kotlin"
     const val VERSION = "1.1.0-SNAPSHOT"
+    const val WEBSITE = "https://github.com/ethauvin/akismet-kotlin"
 }

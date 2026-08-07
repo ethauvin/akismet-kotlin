@@ -396,7 +396,7 @@ class AkismetTests {
             @Nested
             @DisplayName("User Agent Validation Tests")
             inner class UserAgentValidationTests {
-                val libAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION}"
+                val libAgent = "${GeneratedVersion.PROJECT}/${GeneratedVersion.VERSION} (+${GeneratedVersion.WEBSITE}))"
 
                 @Test
                 fun `Validate custom user agent`() {
