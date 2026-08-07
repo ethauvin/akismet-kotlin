@@ -3,12 +3,18 @@ version: 2.1
 orbs:
   sdkman: joshdholtz/sdkman@0.2.0
 
-defaults: &defaults
-  working_directory: ~/repo
-  environment:
-    JVM_OPTS: -Xmx3200m
-    TERM: dumb
-    CI_NAME: "CircleCI"
+executors:
+  jdk:
+    parameters:
+      tag:
+        type: string
+    docker:
+      - image: cimg/openjdk:<< parameters.tag >>
+    working_directory: ~/repo
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+      CI_NAME: CircleCI
 
 commands:
   build_and_test:
@@ -17,46 +23,45 @@ commands:
       - sdkman/setup-sdkman
       - sdkman/sdkman-install:
           candidate: kotlin
-          version: 2.3.10
-      - run:
-          name: Download dependencies
-          command: ./bld download
+          version: 2.4.10
+      - restore_cache:
+          key: bld-lib-{{ arch }}-{{ .Environment.CIRCLE_JOB }}
       - run:
           name: Compile source
-          command: ./bld compile
+          command: ./bld clean compile
+      - save_cache:
+          key: bld-lib-{{ arch }}-{{ .Environment.CIRCLE_JOB }}
+          paths:
+            - lib
       - run:
           name: Run tests
           command: ./bld jacoco
       - run:
           name: Run reporter
           when: on_fail
-          command: ./bld reporter --all
+          command: ./bld --offline reporter --all
       - store_test_results:
           path: build/test-results/test/
       - store_artifacts:
           path: build/reports/jacoco/test/html
 
 jobs:
-  bld_jdk17:
-    <<: *defaults
-
-    docker:
-      - image: cimg/openjdk:17.0
-
-    steps:
-      - build_and_test
-
-  bld_jdk21:
-    <<: *defaults
-
-    docker:
-      - image: cimg/openjdk:21.0
-
+  test:
+    parameters:
+      jdk_version:
+        type: string
+    executor:
+      name: jdk
+      tag: << parameters.jdk_version >>
     steps:
       - build_and_test
 
 workflows:
   bld:
     jobs:
-      - bld_jdk17
-      - bld_jdk21
+      - test:
+          name: jdk17
+          jdk_version: "17.0"
+      - test:
+          name: jdk21
+          jdk_version: "21.0"
