@@ -89,7 +89,7 @@ public class AkismetBuild extends Project {
         scope(provided)
                 .include(dependency("jakarta.servlet", "jakarta.servlet-api", version(6, 1, 0)))
                 .include(dependency("com.github.spotbugs", "spotbugs-annotations",
-                        version(4, 10, 3)));
+                        version(4, 10, 4)));
         scope(test)
                 .include(dependency("com.uwyn.rife2", "bld-testing-helpers",
                         version(1, 1, 0, "SNAPSHOT")))
