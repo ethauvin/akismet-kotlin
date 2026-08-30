@@ -47,7 +47,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.RegisterExtension
-import rife.bld.extension.testing.LoggingExtension
+import rife.bld.testing.LoggingExtension
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime

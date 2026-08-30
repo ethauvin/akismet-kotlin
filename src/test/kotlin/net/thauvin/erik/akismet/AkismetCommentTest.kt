@@ -45,7 +45,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.RegisterExtension
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
-import rife.bld.extension.testing.LoggingExtension
+import rife.bld.testing.LoggingExtension
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.test.assertTrue
