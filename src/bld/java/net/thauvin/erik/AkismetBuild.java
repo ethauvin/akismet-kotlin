@@ -73,7 +73,7 @@ public class AkismetBuild extends Project {
 
         autoDownloadPurge = true;
         downloadSources = true;
-        repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL, RIFE2_SNAPSHOTS);
+        repositories = List.of(MAVEN_LOCAL, MAVEN_CENTRAL, RIFE2_SNAPSHOTS, RIFE2_RELEASES);
 
         var okHttp = version(5, 5, 0);
         var kotlin = version(2, 4, 20);
@@ -92,7 +92,7 @@ public class AkismetBuild extends Project {
                         version(4, 10, 4)));
         scope(test)
                 .include(dependency("com.uwyn.rife2", "bld-testing-helpers",
-                        version(1, 1, 0, "SNAPSHOT")))
+                        version(1, 1, 0)))
                 .include(dependency("org.mockito.kotlin", "mockito-kotlin",
                         version(6, 3, 0)))
                 .include(dependency("org.jetbrains.kotlin", "kotlin-test-junit5", kotlin))
